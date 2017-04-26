@@ -43,6 +43,7 @@ typedef unsigned int Color;
 #define ALPHA i+3
 #define CLAMP(c) (MAX(0, MIN(255, c)))
 
+__inline__ int  interp(unsigned char  *src, int p , int *off ,float dr,float dg, float db);
 __inline__ unsigned char  clamp(int c);
 __inline__ int clampMax(int c,int max);
 

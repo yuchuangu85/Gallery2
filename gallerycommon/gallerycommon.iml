@@ -17,5 +17,6 @@
         <jarDirectory url="file://$MODULE_DIR$/../libs" recursive="false" />
       </library>
     </orderEntry>
+    <orderEntry type="module" module-name="Gallery2-7.1.2-r6" />
   </component>
 </module>
