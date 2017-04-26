@@ -16,7 +16,7 @@
 
 #include "filters.h"
 
-int  interp(unsigned char  *src, int p , int *off ,float dr,float dg, float db){
+int interp(unsigned char  *src, int p , int *off ,float dr,float dg, float db){
 
     float fr00 = (src[p+off[0]])*(1-dr)+(src[p+off[1]])*dr;
     float fr01 = (src[p+off[2]])*(1-dr)+(src[p+off[3]])*dr;
