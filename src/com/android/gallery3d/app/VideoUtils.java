@@ -29,7 +29,7 @@ import android.util.Log;
 import com.android.gallery3d.common.ApiHelper;
 import com.android.gallery3d.util.SaveVideoFileInfo;
 import com.coremedia.iso.IsoFile;
-import com.googlecode.mp4parser.DirectFileReadDataSource;
+import com.coremedia.iso.boxes.TimeToSampleBox;
 import com.googlecode.mp4parser.authoring.Movie;
 import com.googlecode.mp4parser.authoring.Track;
 import com.googlecode.mp4parser.authoring.builder.DefaultMp4Builder;
@@ -40,6 +40,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.util.Arrays;
@@ -81,11 +82,8 @@ public class VideoUtils {
                                                 SaveVideoFileInfo dstFileInfo) throws FileNotFoundException, IOException {
         File dst = dstFileInfo.mFile;
         File src = new File(filePath);
-//        RandomAccessFile randomAccessFile = new RandomAccessFile(src, "r");
-//        Movie movie = MovieCreator.build(randomAccessFile.getChannel());
-
-        DirectFileReadDataSource source = new DirectFileReadDataSource(src);
-        Movie movie = MovieCreator.build(source);
+        RandomAccessFile randomAccessFile = new RandomAccessFile(src, "r");
+        Movie movie = MovieCreator.build(randomAccessFile.getChannel());
 
         // remove all tracks we will create new tracks from the old
         List<Track> tracks = movie.getTracks();
@@ -97,8 +95,7 @@ public class VideoUtils {
             }
         }
         writeMovieIntoFile(dst, movie);
-//        randomAccessFile.close();
-        source.close();
+        randomAccessFile.close();
     }
 
     private static void writeMovieIntoFile(File dst, Movie movie)
@@ -107,9 +104,8 @@ public class VideoUtils {
             dst.createNewFile();
         }
 
-//        IsoFile out = new DefaultMp4Builder().build(movie);
+        IsoFile out = new DefaultMp4Builder().build(movie);
 
-        IsoFile out = (IsoFile) new DefaultMp4Builder().build(movie);
         FileOutputStream fos = new FileOutputStream(dst);
         FileChannel fc = fos.getChannel();
         out.getBox(fc); // This one build up the memory.
@@ -235,10 +231,8 @@ public class VideoUtils {
 
     private static void trimUsingMp4Parser(File src, File dst, int startMs, int endMs)
             throws FileNotFoundException, IOException {
-//        RandomAccessFile randomAccessFile = new RandomAccessFile(src, "r");
-//        Movie movie = MovieCreator.build(randomAccessFile.getChannel());
-        DirectFileReadDataSource source = new DirectFileReadDataSource(src);
-        Movie movie = MovieCreator.build(source);
+        RandomAccessFile randomAccessFile = new RandomAccessFile(src, "r");
+        Movie movie = MovieCreator.build(randomAccessFile.getChannel());
 
         // remove all tracks we will create new tracks from the old
         List<Track> tracks = movie.getTracks();
@@ -271,96 +265,61 @@ public class VideoUtils {
         }
 
         for (Track track : tracks) {
-//            long currentSample = 0;
+            long currentSample = 0;
             double currentTime = 0;
             long startSample = -1;
             long endSample = -1;
 
-////            for (int i = 0; i < track.getDecodingTimeEntries().size(); i++) {
-//            for (int i = 0; i < track.getSampleDurations().size(); i++) {
-////                TimeToSampleBox.Entry entry = track.getDecodingTimeEntries().get(i);
-//                CompositionTimeToSample.Entry entry = track.getCompositionTimeEntries().get(i);
-//                for (int j = 0; j < entry.getCount(); j++) {
-//                    // entry.getDelta() is the amount of time the current sample
-//                    // covers.
-//
-//                    if (currentTime <= startTime) {
-//                        // current sample is still before the new starttime
-//                        startSample = currentSample;
-//                    }
-//                    if (currentTime <= endTime) {
-//                        // current sample is after the new start time and still
-//                        // before the new endtime
-//                        endSample = currentSample;
-//                    } else {
-//                        // current sample is after the end of the cropped video
-//                        break;
-//                    }
-////                    currentTime += (double) entry.getDelta()
-//                    currentTime += (double) entry.getCount()
-//                            / (double) track.getTrackMetaData().getTimescale();
-//                    currentSample++;
-//                }
-//            }
-            //------------------替换上面老的方法-----------------------
-            long[] sampleDurations = track.getSampleDurations();
-            for (int currentSample = 0; currentSample < sampleDurations.length; currentSample++) {
-                if (currentTime <= startTime) {
-                    // current sample is still before the new starttime
-                    startSample = currentSample;
+            for (int i = 0; i < track.getDecodingTimeEntries().size(); i++) {
+                TimeToSampleBox.Entry entry = track.getDecodingTimeEntries().get(i);
+                for (int j = 0; j < entry.getCount(); j++) {
+                    // entry.getDelta() is the amount of time the current sample
+                    // covers.
+
+                    if (currentTime <= startTime) {
+                        // current sample is still before the new starttime
+                        startSample = currentSample;
+                    }
+                    if (currentTime <= endTime) {
+                        // current sample is after the new start time and still
+                        // before the new endtime
+                        endSample = currentSample;
+                    } else {
+                        // current sample is after the end of the cropped video
+                        break;
+                    }
+                    currentTime += (double) entry.getDelta()
+                            / (double) track.getTrackMetaData().getTimescale();
+                    currentSample++;
                 }
-                if (currentTime <= endTime) {
-                    // current sample is after the new start time and still before the new endtime
-                    endSample = currentSample;
-                } else {
-                    // current sample is after the end of the cropped video
-                    break;
-                }
-                currentTime += sampleDurations[currentSample];
             }
-            //------------------替换上面老的方法-----------------------
+
             movie.addTrack(new CroppedTrack(track, startSample, endSample));
         }
         writeMovieIntoFile(dst, movie);
-//        randomAccessFile.close();
-        source.close();
+        randomAccessFile.close();
     }
 
     private static double correctTimeToSyncSample(Track track, double cutHere,
                                                   boolean next) {
         double[] timeOfSyncSamples = new double[track.getSyncSamples().length];
-//        long currentSample = 0;
-//        double currentTime = 0;
-//        for (int i = 0; i < track.getDecodingTimeEntries().size(); i++) {
-//            TimeToSampleBox.Entry entry = track.getDecodingTimeEntries().get(i);
-//        for (int i = 0; i < track.getCompositionTimeEntries().size(); i++) {
-//            CompositionTimeToSample.Entry entry = track.getCompositionTimeEntries().get(i);
-//            for (int j = 0; j < entry.getCount(); j++) {
-//                if (Arrays.binarySearch(track.getSyncSamples(), currentSample + 1) >= 0) {
-//                    // samples always start with 1 but we start with zero
-//                    // therefore +1
-//                    timeOfSyncSamples[Arrays.binarySearch(
-//                            track.getSyncSamples(), currentSample + 1)] = currentTime;
-//                }
-//                currentTime += (double) entry.getCount()
-//                        / (double) track.getTrackMetaData().getTimescale();
-//                currentSample++;
-//            }
-//        }
-
-        //------------------替换上面老的方法-----------------------
+        long currentSample = 0;
         double currentTime = 0;
-        long[] sampleDurations = track.getSampleDurations();
-        for (int currentSample = 0; currentSample < sampleDurations.length; currentSample++) {
-            if (Arrays.binarySearch(track.getSyncSamples(), currentSample + 1) >= 0) {
-                // samples always start with 1 but we start with zero
-                // therefore +1
-                timeOfSyncSamples[Arrays.binarySearch(
-                        track.getSyncSamples(), currentSample + 1)] = currentTime;
+        for (int i = 0; i < track.getDecodingTimeEntries().size(); i++) {
+            TimeToSampleBox.Entry entry = track.getDecodingTimeEntries().get(i);
+            for (int j = 0; j < entry.getCount(); j++) {
+                if (Arrays.binarySearch(track.getSyncSamples(), currentSample + 1) >= 0) {
+                    // samples always start with 1 but we start with zero
+                    // therefore +1
+                    timeOfSyncSamples[Arrays.binarySearch(
+                            track.getSyncSamples(), currentSample + 1)] = currentTime;
+                }
+                currentTime += (double) entry.getCount()
+                        / (double) track.getTrackMetaData().getTimescale();
+                currentSample++;
             }
-            currentTime += sampleDurations[currentSample];
         }
-        //------------------替换上面老的方法-----------------------
+
         double previous = 0;
         for (double timeOfSyncSample : timeOfSyncSamples) {
             if (timeOfSyncSample > cutHere) {

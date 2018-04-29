@@ -17,7 +17,7 @@
 package com.android.gallery3d.util;
 
 
-import com.adobe.internal.xmp.XMPMeta;
+import com.adobe.xmp.XMPMeta;
 
 import java.io.InputStream;
 
