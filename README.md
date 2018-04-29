@@ -7,9 +7,9 @@
 
 ## 流程图和数据结构图
 
-由于项目代码还在分析中，所以还没有绘制完成，所以之后会不断更新 ------ 2018-04-29
+由于项目代码还在分析中，所以还没有绘制完成，所以之后会不断更新 ------ 2018-04-29 更新
 
-<img src="/img/Gallery_ui1.png"/> 
-<img src="/img/Gallery_data.png"/> 
-<img src="/img/DataManager.png"/> 
+<img src="/img/Gallery_ui1.jpg"/> 
+<img src="/img/Gallery_data.jpg"/> 
+<img src="/img/DataManager.jpg"/> 
 
