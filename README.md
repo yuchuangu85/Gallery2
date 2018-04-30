@@ -12,4 +12,5 @@
 <img src="/img/Gallery_ui1.jpg"/> 
 <img src="/img/Gallery_data.jpg"/> 
 <img src="/img/DataManager.jpg"/> 
+<img src="/img/GalleryStart.jpg"/>
 
