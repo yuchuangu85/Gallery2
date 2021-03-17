@@ -35,8 +35,6 @@ typedef unsigned int Color;
 
 #define LOG(msg...) __android_log_print(ANDROID_LOG_VERBOSE, "NativeFilters", msg)
 
-#define int interp(unsigned char *src, int p, int *off, float dr, float dg, float db)
-
 #define JNIFUNCF(cls, name, vars...) Java_com_android_gallery3d_filtershow_filters_ ## cls ## _ ## name(JNIEnv* env, jobject obj_unused __unused, vars)
 
 #define RED i
