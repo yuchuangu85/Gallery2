@@ -10,8 +10,8 @@ android {
         applicationId "com.android.gallery3d"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 1
-        versionName "1.0"
+        versionCode 40030
+        versionName "1.1.40030"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -29,9 +29,11 @@ android {
         }
     }
 
-    sourceSets.main {
-        jniLibs.srcDirs = ['libs']
-        jni.srcDirs = []
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+            jni.srcDirs = []
+        }
     }
 
     externalNativeBuild {

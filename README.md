@@ -1,5 +1,9 @@
 # Gallery2-7.1.2-r6
 
+## 分支
+* master (Gallery2-11-r33)
+* Gallery2-7.1.2-r6
+
 ## 说明：
 1.软件编译不支持Android studio，只支持eclipse和Intellij idea开发。
 
