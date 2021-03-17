@@ -1,0 +1,43 @@
+ninja: Entering directory `/Users/yuchuan/Develop/Gallery/app/.cxx/Debug/5q3x371y/armeabi-v7a'
+[1/20] Building C object CMakeFiles/filter-lib.dir/src/main/jni/filters/exposure.c.o
+[2/20] Building C object CMakeFiles/filter-lib.dir/src/main/jni/filters/bwfilter.c.o
+[3/20] Building C object CMakeFiles/filter-lib.dir/src/main/jni/filters/contrast.c.o
+[4/20] Building C object CMakeFiles/filter-lib.dir/src/main/jni/filters/fx.c.o
+[5/20] Building C object CMakeFiles/filter-lib.dir/src/main/jni/filters/edge.c.o
+[6/20] Building C object CMakeFiles/filter-lib.dir/src/main/jni/filters/hue.c.o
+[7/20] Building C object CMakeFiles/filter-lib.dir/src/main/jni/filters/geometry.c.o
+[8/20] Building C object CMakeFiles/filter-lib.dir/src/main/jni/filters/highlight.c.o
+[9/20] Building C object CMakeFiles/filter-lib.dir/src/main/jni/filters/hsv.c.o
+[10/20] Building C object CMakeFiles/filter-lib.dir/src/main/jni/filters/negative.c.o
+[11/20] Building C object CMakeFiles/filter-lib.dir/src/main/jni/filters/redeye.c.o
+[12/20] Building C object CMakeFiles/filter-lib.dir/src/main/jni/filters/saturated.c.o
+[13/20] Building C object CMakeFiles/filter-lib.dir/src/main/jni/filters/shadows.c.o
+[14/20] Building C object CMakeFiles/filter-lib.dir/src/main/jni/filters/redEyeMath.c.o
+[15/20] Building C object CMakeFiles/filter-lib.dir/src/main/jni/filters/vibrance.c.o
+[16/20] Building C object CMakeFiles/filter-lib.dir/src/main/jni/filters/wbalance.c.o
+[17/20] Building CXX object CMakeFiles/filter-lib.dir/src/main/jni/jni_egl_fence.cpp.o
+[18/20] Building CXX object CMakeFiles/filter-lib.dir/src/main/jni/filters/kmeans.cc.o
+[19/20] Building CXX object CMakeFiles/filter-lib.dir/src/main/jni/filters/tinyplanet.cc.o
+[20/20] Linking CXX shared library ../../../../build/intermediates/cxx/Debug/5q3x371y/obj/armeabi-v7a/libfilter-lib.so
+FAILED: ../../../../build/intermediates/cxx/Debug/5q3x371y/obj/armeabi-v7a/libfilter-lib.so 
+: && /Users/yuchuan/AndroidSDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++ --target=armv7-none-linux-androideabi21 --gcc-toolchain=/Users/yuchuan/AndroidSDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/yuchuan/AndroidSDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -fPIC -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security   -O0 -fno-limit-debug-info  -Wl,--exclude-libs,libgcc.a -Wl,--exclude-libs,libgcc_real.a -Wl,--exclude-libs,libatomic.a -static-libstdc++ -Wl,--build-id -Wl,--fatal-warnings -Wl,--exclude-libs,libunwind.a -Wl,--no-undefined -Qunused-arguments -shared -Wl,-soname,libfilter-lib.so -o ../../../../build/intermediates/cxx/Debug/5q3x371y/obj/armeabi-v7a/libfilter-lib.so CMakeFiles/filter-lib.dir/src/main/jni/filters/bwfilter.c.o CMakeFiles/filter-lib.dir/src/main/jni/filters/contrast.c.o CMakeFiles/filter-lib.dir/src/main/jni/filters/edge.c.o CMakeFiles/filter-lib.dir/src/main/jni/filters/exposure.c.o CMakeFiles/filter-lib.dir/src/main/jni/filters/fx.c.o CMakeFiles/filter-lib.dir/src/main/jni/filters/geometry.c.o CMakeFiles/filter-lib.dir/src/main/jni/filters/highlight.c.o CMakeFiles/filter-lib.dir/src/main/jni/filters/hsv.c.o CMakeFiles/filter-lib.dir/src/main/jni/filters/hue.c.o CMakeFiles/filter-lib.dir/src/main/jni/filters/kmeans.cc.o CMakeFiles/filter-lib.dir/src/main/jni/filters/negative.c.o CMakeFiles/filter-lib.dir/src/main/jni/filters/redeye.c.o CMakeFiles/filter-lib.dir/src/main/jni/filters/redEyeMath.c.o CMakeFiles/filter-lib.dir/src/main/jni/filters/saturated.c.o CMakeFiles/filter-lib.dir/src/main/jni/filters/shadows.c.o CMakeFiles/filter-lib.dir/src/main/jni/filters/tinyplanet.cc.o CMakeFiles/filter-lib.dir/src/main/jni/filters/vibrance.c.o CMakeFiles/filter-lib.dir/src/main/jni/filters/wbalance.c.o CMakeFiles/filter-lib.dir/src/main/jni/jni_egl_fence.cpp.o  -llog -latomic -lm && :
+../../../../src/main/jni/filters/bwfilter.c:23: error: undefined reference to 'AndroidBitmap_lockPixels'
+../../../../src/main/jni/filters/bwfilter.c:54: error: undefined reference to 'AndroidBitmap_unlockPixels'
+../../../../src/main/jni/filters/contrast.c:42: error: undefined reference to 'AndroidBitmap_lockPixels'
+../../../../src/main/jni/filters/contrast.c:54: error: undefined reference to 'AndroidBitmap_unlockPixels'
+../../../../src/main/jni/filters/edge.c:23: error: undefined reference to 'AndroidBitmap_lockPixels'
+../../../../src/main/jni/filters/edge.c:125: error: undefined reference to 'AndroidBitmap_unlockPixels'
+../../../../src/main/jni/filters/exposure.c:22: error: undefined reference to 'AndroidBitmap_lockPixels'
+../../../../src/main/jni/filters/exposure.c:35: error: undefined reference to 'AndroidBitmap_unlockPixels'
+../../../../src/main/jni/filters/fx.c:80: error: undefined reference to 'interp'
+../../../../src/main/jni/filters/fx.c:81: error: undefined reference to 'interp'
+../../../../src/main/jni/filters/fx.c:82: error: undefined reference to 'interp'
+../../../../src/main/jni/jni_egl_fence.cpp:40: error: undefined reference to 'eglGetCurrentDisplay'
+../../../../src/main/jni/jni_egl_fence.cpp:41: error: undefined reference to 'eglQueryString'
+../../../../src/main/jni/jni_egl_fence.cpp:43: error: undefined reference to 'eglGetProcAddress'
+../../../../src/main/jni/jni_egl_fence.cpp:44: error: undefined reference to 'eglGetProcAddress'
+../../../../src/main/jni/jni_egl_fence.cpp:45: error: undefined reference to 'eglGetProcAddress'
+../../../../src/main/jni/jni_egl_fence.cpp:60: error: undefined reference to 'eglGetCurrentDisplay'
+../../../../src/main/jni/jni_egl_fence.cpp:75: error: undefined reference to 'eglGetError'
+clang++: error: linker command failed with exit code 1 (use -v to see invocation)
+ninja: build stopped: subcommand failed.

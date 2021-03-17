@@ -1,0 +1,115 @@
+[
+{
+  "directory": "/Users/yuchuan/Develop/Gallery/app/.cxx/Debug/5q3x371y/armeabi-v7a",
+  "command": "/Users/yuchuan/AndroidSDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang --target=armv7-none-linux-androideabi21 --gcc-toolchain=/Users/yuchuan/AndroidSDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/yuchuan/AndroidSDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -Dfilter_lib_EXPORTS  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security  -O0 -fno-limit-debug-info  -fPIC   -o CMakeFiles/filter-lib.dir/src/main/jni/filters/bwfilter.c.o   -c /Users/yuchuan/Develop/Gallery/app/src/main/jni/filters/bwfilter.c",
+  "file": "/Users/yuchuan/Develop/Gallery/app/src/main/jni/filters/bwfilter.c"
+},
+
+{
+  "directory": "/Users/yuchuan/Develop/Gallery/app/.cxx/Debug/5q3x371y/armeabi-v7a",
+  "command": "/Users/yuchuan/AndroidSDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang --target=armv7-none-linux-androideabi21 --gcc-toolchain=/Users/yuchuan/AndroidSDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/yuchuan/AndroidSDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -Dfilter_lib_EXPORTS  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security  -O0 -fno-limit-debug-info  -fPIC   -o CMakeFiles/filter-lib.dir/src/main/jni/filters/contrast.c.o   -c /Users/yuchuan/Develop/Gallery/app/src/main/jni/filters/contrast.c",
+  "file": "/Users/yuchuan/Develop/Gallery/app/src/main/jni/filters/contrast.c"
+},
+
+{
+  "directory": "/Users/yuchuan/Develop/Gallery/app/.cxx/Debug/5q3x371y/armeabi-v7a",
+  "command": "/Users/yuchuan/AndroidSDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang --target=armv7-none-linux-androideabi21 --gcc-toolchain=/Users/yuchuan/AndroidSDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/yuchuan/AndroidSDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -Dfilter_lib_EXPORTS  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security  -O0 -fno-limit-debug-info  -fPIC   -o CMakeFiles/filter-lib.dir/src/main/jni/filters/edge.c.o   -c /Users/yuchuan/Develop/Gallery/app/src/main/jni/filters/edge.c",
+  "file": "/Users/yuchuan/Develop/Gallery/app/src/main/jni/filters/edge.c"
+},
+
+{
+  "directory": "/Users/yuchuan/Develop/Gallery/app/.cxx/Debug/5q3x371y/armeabi-v7a",
+  "command": "/Users/yuchuan/AndroidSDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang --target=armv7-none-linux-androideabi21 --gcc-toolchain=/Users/yuchuan/AndroidSDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/yuchuan/AndroidSDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -Dfilter_lib_EXPORTS  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security  -O0 -fno-limit-debug-info  -fPIC   -o CMakeFiles/filter-lib.dir/src/main/jni/filters/exposure.c.o   -c /Users/yuchuan/Develop/Gallery/app/src/main/jni/filters/exposure.c",
+  "file": "/Users/yuchuan/Develop/Gallery/app/src/main/jni/filters/exposure.c"
+},
+
+{
+  "directory": "/Users/yuchuan/Develop/Gallery/app/.cxx/Debug/5q3x371y/armeabi-v7a",
+  "command": "/Users/yuchuan/AndroidSDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang --target=armv7-none-linux-androideabi21 --gcc-toolchain=/Users/yuchuan/AndroidSDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/yuchuan/AndroidSDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -Dfilter_lib_EXPORTS  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security  -O0 -fno-limit-debug-info  -fPIC   -o CMakeFiles/filter-lib.dir/src/main/jni/filters/fx.c.o   -c /Users/yuchuan/Develop/Gallery/app/src/main/jni/filters/fx.c",
+  "file": "/Users/yuchuan/Develop/Gallery/app/src/main/jni/filters/fx.c"
+},
+
+{
+  "directory": "/Users/yuchuan/Develop/Gallery/app/.cxx/Debug/5q3x371y/armeabi-v7a",
+  "command": "/Users/yuchuan/AndroidSDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang --target=armv7-none-linux-androideabi21 --gcc-toolchain=/Users/yuchuan/AndroidSDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/yuchuan/AndroidSDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -Dfilter_lib_EXPORTS  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security  -O0 -fno-limit-debug-info  -fPIC   -o CMakeFiles/filter-lib.dir/src/main/jni/filters/geometry.c.o   -c /Users/yuchuan/Develop/Gallery/app/src/main/jni/filters/geometry.c",
+  "file": "/Users/yuchuan/Develop/Gallery/app/src/main/jni/filters/geometry.c"
+},
+
+{
+  "directory": "/Users/yuchuan/Develop/Gallery/app/.cxx/Debug/5q3x371y/armeabi-v7a",
+  "command": "/Users/yuchuan/AndroidSDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang --target=armv7-none-linux-androideabi21 --gcc-toolchain=/Users/yuchuan/AndroidSDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/yuchuan/AndroidSDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -Dfilter_lib_EXPORTS  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security  -O0 -fno-limit-debug-info  -fPIC   -o CMakeFiles/filter-lib.dir/src/main/jni/filters/highlight.c.o   -c /Users/yuchuan/Develop/Gallery/app/src/main/jni/filters/highlight.c",
+  "file": "/Users/yuchuan/Develop/Gallery/app/src/main/jni/filters/highlight.c"
+},
+
+{
+  "directory": "/Users/yuchuan/Develop/Gallery/app/.cxx/Debug/5q3x371y/armeabi-v7a",
+  "command": "/Users/yuchuan/AndroidSDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang --target=armv7-none-linux-androideabi21 --gcc-toolchain=/Users/yuchuan/AndroidSDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/yuchuan/AndroidSDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -Dfilter_lib_EXPORTS  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security  -O0 -fno-limit-debug-info  -fPIC   -o CMakeFiles/filter-lib.dir/src/main/jni/filters/hsv.c.o   -c /Users/yuchuan/Develop/Gallery/app/src/main/jni/filters/hsv.c",
+  "file": "/Users/yuchuan/Develop/Gallery/app/src/main/jni/filters/hsv.c"
+},
+
+{
+  "directory": "/Users/yuchuan/Develop/Gallery/app/.cxx/Debug/5q3x371y/armeabi-v7a",
+  "command": "/Users/yuchuan/AndroidSDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang --target=armv7-none-linux-androideabi21 --gcc-toolchain=/Users/yuchuan/AndroidSDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/yuchuan/AndroidSDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -Dfilter_lib_EXPORTS  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security  -O0 -fno-limit-debug-info  -fPIC   -o CMakeFiles/filter-lib.dir/src/main/jni/filters/hue.c.o   -c /Users/yuchuan/Develop/Gallery/app/src/main/jni/filters/hue.c",
+  "file": "/Users/yuchuan/Develop/Gallery/app/src/main/jni/filters/hue.c"
+},
+
+{
+  "directory": "/Users/yuchuan/Develop/Gallery/app/.cxx/Debug/5q3x371y/armeabi-v7a",
+  "command": "/Users/yuchuan/AndroidSDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++ --target=armv7-none-linux-androideabi21 --gcc-toolchain=/Users/yuchuan/AndroidSDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/yuchuan/AndroidSDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/sysroot  -Dfilter_lib_EXPORTS  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security   -O0 -fno-limit-debug-info  -fPIC   -o CMakeFiles/filter-lib.dir/src/main/jni/filters/kmeans.cc.o -c /Users/yuchuan/Develop/Gallery/app/src/main/jni/filters/kmeans.cc",
+  "file": "/Users/yuchuan/Develop/Gallery/app/src/main/jni/filters/kmeans.cc"
+},
+
+{
+  "directory": "/Users/yuchuan/Develop/Gallery/app/.cxx/Debug/5q3x371y/armeabi-v7a",
+  "command": "/Users/yuchuan/AndroidSDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang --target=armv7-none-linux-androideabi21 --gcc-toolchain=/Users/yuchuan/AndroidSDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/yuchuan/AndroidSDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -Dfilter_lib_EXPORTS  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security  -O0 -fno-limit-debug-info  -fPIC   -o CMakeFiles/filter-lib.dir/src/main/jni/filters/negative.c.o   -c /Users/yuchuan/Develop/Gallery/app/src/main/jni/filters/negative.c",
+  "file": "/Users/yuchuan/Develop/Gallery/app/src/main/jni/filters/negative.c"
+},
+
+{
+  "directory": "/Users/yuchuan/Develop/Gallery/app/.cxx/Debug/5q3x371y/armeabi-v7a",
+  "command": "/Users/yuchuan/AndroidSDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang --target=armv7-none-linux-androideabi21 --gcc-toolchain=/Users/yuchuan/AndroidSDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/yuchuan/AndroidSDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -Dfilter_lib_EXPORTS  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security  -O0 -fno-limit-debug-info  -fPIC   -o CMakeFiles/filter-lib.dir/src/main/jni/filters/redeye.c.o   -c /Users/yuchuan/Develop/Gallery/app/src/main/jni/filters/redeye.c",
+  "file": "/Users/yuchuan/Develop/Gallery/app/src/main/jni/filters/redeye.c"
+},
+
+{
+  "directory": "/Users/yuchuan/Develop/Gallery/app/.cxx/Debug/5q3x371y/armeabi-v7a",
+  "command": "/Users/yuchuan/AndroidSDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang --target=armv7-none-linux-androideabi21 --gcc-toolchain=/Users/yuchuan/AndroidSDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/yuchuan/AndroidSDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -Dfilter_lib_EXPORTS  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security  -O0 -fno-limit-debug-info  -fPIC   -o CMakeFiles/filter-lib.dir/src/main/jni/filters/redEyeMath.c.o   -c /Users/yuchuan/Develop/Gallery/app/src/main/jni/filters/redEyeMath.c",
+  "file": "/Users/yuchuan/Develop/Gallery/app/src/main/jni/filters/redEyeMath.c"
+},
+
+{
+  "directory": "/Users/yuchuan/Develop/Gallery/app/.cxx/Debug/5q3x371y/armeabi-v7a",
+  "command": "/Users/yuchuan/AndroidSDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang --target=armv7-none-linux-androideabi21 --gcc-toolchain=/Users/yuchuan/AndroidSDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/yuchuan/AndroidSDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -Dfilter_lib_EXPORTS  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security  -O0 -fno-limit-debug-info  -fPIC   -o CMakeFiles/filter-lib.dir/src/main/jni/filters/saturated.c.o   -c /Users/yuchuan/Develop/Gallery/app/src/main/jni/filters/saturated.c",
+  "file": "/Users/yuchuan/Develop/Gallery/app/src/main/jni/filters/saturated.c"
+},
+
+{
+  "directory": "/Users/yuchuan/Develop/Gallery/app/.cxx/Debug/5q3x371y/armeabi-v7a",
+  "command": "/Users/yuchuan/AndroidSDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang --target=armv7-none-linux-androideabi21 --gcc-toolchain=/Users/yuchuan/AndroidSDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/yuchuan/AndroidSDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -Dfilter_lib_EXPORTS  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security  -O0 -fno-limit-debug-info  -fPIC   -o CMakeFiles/filter-lib.dir/src/main/jni/filters/shadows.c.o   -c /Users/yuchuan/Develop/Gallery/app/src/main/jni/filters/shadows.c",
+  "file": "/Users/yuchuan/Develop/Gallery/app/src/main/jni/filters/shadows.c"
+},
+
+{
+  "directory": "/Users/yuchuan/Develop/Gallery/app/.cxx/Debug/5q3x371y/armeabi-v7a",
+  "command": "/Users/yuchuan/AndroidSDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++ --target=armv7-none-linux-androideabi21 --gcc-toolchain=/Users/yuchuan/AndroidSDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/yuchuan/AndroidSDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/sysroot  -Dfilter_lib_EXPORTS  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security   -O0 -fno-limit-debug-info  -fPIC   -o CMakeFiles/filter-lib.dir/src/main/jni/filters/tinyplanet.cc.o -c /Users/yuchuan/Develop/Gallery/app/src/main/jni/filters/tinyplanet.cc",
+  "file": "/Users/yuchuan/Develop/Gallery/app/src/main/jni/filters/tinyplanet.cc"
+},
+
+{
+  "directory": "/Users/yuchuan/Develop/Gallery/app/.cxx/Debug/5q3x371y/armeabi-v7a",
+  "command": "/Users/yuchuan/AndroidSDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang --target=armv7-none-linux-androideabi21 --gcc-toolchain=/Users/yuchuan/AndroidSDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/yuchuan/AndroidSDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -Dfilter_lib_EXPORTS  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security  -O0 -fno-limit-debug-info  -fPIC   -o CMakeFiles/filter-lib.dir/src/main/jni/filters/vibrance.c.o   -c /Users/yuchuan/Develop/Gallery/app/src/main/jni/filters/vibrance.c",
+  "file": "/Users/yuchuan/Develop/Gallery/app/src/main/jni/filters/vibrance.c"
+},
+
+{
+  "directory": "/Users/yuchuan/Develop/Gallery/app/.cxx/Debug/5q3x371y/armeabi-v7a",
+  "command": "/Users/yuchuan/AndroidSDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang --target=armv7-none-linux-androideabi21 --gcc-toolchain=/Users/yuchuan/AndroidSDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/yuchuan/AndroidSDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/sysroot -Dfilter_lib_EXPORTS  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security  -O0 -fno-limit-debug-info  -fPIC   -o CMakeFiles/filter-lib.dir/src/main/jni/filters/wbalance.c.o   -c /Users/yuchuan/Develop/Gallery/app/src/main/jni/filters/wbalance.c",
+  "file": "/Users/yuchuan/Develop/Gallery/app/src/main/jni/filters/wbalance.c"
+},
+
+{
+  "directory": "/Users/yuchuan/Develop/Gallery/app/.cxx/Debug/5q3x371y/armeabi-v7a",
+  "command": "/Users/yuchuan/AndroidSDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/bin/clang++ --target=armv7-none-linux-androideabi21 --gcc-toolchain=/Users/yuchuan/AndroidSDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64 --sysroot=/Users/yuchuan/AndroidSDK/ndk/21.4.7075529/toolchains/llvm/prebuilt/darwin-x86_64/sysroot  -Dfilter_lib_EXPORTS  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security   -O0 -fno-limit-debug-info  -fPIC   -o CMakeFiles/filter-lib.dir/src/main/jni/jni_egl_fence.cpp.o -c /Users/yuchuan/Develop/Gallery/app/src/main/jni/jni_egl_fence.cpp",
+  "file": "/Users/yuchuan/Develop/Gallery/app/src/main/jni/jni_egl_fence.cpp"
+}
+]

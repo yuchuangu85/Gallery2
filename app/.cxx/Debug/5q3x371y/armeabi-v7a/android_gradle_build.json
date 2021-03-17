@@ -1,0 +1,43 @@
+{
+  "stringTable": {},
+  "buildFiles": [
+    "/Users/yuchuan/Develop/Gallery/app/CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "/Users/yuchuan/AndroidSDK/cmake/3.10.2.4988404/bin/ninja",
+      "-C",
+      "/Users/yuchuan/Develop/Gallery/app/.cxx/Debug/5q3x371y/armeabi-v7a",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "/Users/yuchuan/AndroidSDK/cmake/3.10.2.4988404/bin/ninja",
+    "-C",
+    "/Users/yuchuan/Develop/Gallery/app/.cxx/Debug/5q3x371y/armeabi-v7a",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {
+    "filter-lib-Debug-armeabi-v7a": {
+      "buildCommandComponents": [
+        "/Users/yuchuan/AndroidSDK/cmake/3.10.2.4988404/bin/ninja",
+        "-C",
+        "/Users/yuchuan/Develop/Gallery/app/.cxx/Debug/5q3x371y/armeabi-v7a",
+        "filter-lib"
+      ],
+      "buildType": "debug",
+      "abi": "armeabi-v7a",
+      "artifactName": "filter-lib",
+      "output": "/Users/yuchuan/Develop/Gallery/app/build/intermediates/cxx/Debug/5q3x371y/obj/armeabi-v7a/libfilter-lib.so",
+      "runtimeFiles": []
+    }
+  },
+  "toolchains": {},
+  "cFileExtensions": [
+    "c"
+  ],
+  "cppFileExtensions": [
+    "cc",
+    "cpp"
+  ]
+}

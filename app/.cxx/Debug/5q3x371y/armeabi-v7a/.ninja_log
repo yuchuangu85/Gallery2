@@ -1,0 +1,20 @@
+# ninja log v5
+3	151	1615941961	CMakeFiles/filter-lib.dir/src/main/jni/filters/exposure.c.o	2b1ce384bd382dec
+1	160	1615941961	CMakeFiles/filter-lib.dir/src/main/jni/filters/bwfilter.c.o	49078c2f54933516
+2	303	1615941961	CMakeFiles/filter-lib.dir/src/main/jni/filters/contrast.c.o	4ec3a2c5a3d291d0
+4	350	1615941961	CMakeFiles/filter-lib.dir/src/main/jni/filters/fx.c.o	8d852ed8992b024c
+2	398	1615941961	CMakeFiles/filter-lib.dir/src/main/jni/filters/edge.c.o	8405b72911024f1f
+303	454	1615941961	CMakeFiles/filter-lib.dir/src/main/jni/filters/hue.c.o	b9adef1998222952
+6	501	1615941961	CMakeFiles/filter-lib.dir/src/main/jni/filters/geometry.c.o	c6fd32abcee0c713
+153	588	1615941961	CMakeFiles/filter-lib.dir/src/main/jni/filters/highlight.c.o	967090d3b748a0a4
+161	601	1615941961	CMakeFiles/filter-lib.dir/src/main/jni/filters/hsv.c.o	e04b0de3e254e3c9
+398	621	1615941961	CMakeFiles/filter-lib.dir/src/main/jni/filters/negative.c.o	8bace69415878ba5
+454	740	1615941961	CMakeFiles/filter-lib.dir/src/main/jni/filters/redeye.c.o	4e02df178911371d
+588	757	1615941961	CMakeFiles/filter-lib.dir/src/main/jni/filters/saturated.c.o	af9d6932638aee6
+601	883	1615941961	CMakeFiles/filter-lib.dir/src/main/jni/filters/shadows.c.o	57c3815a6381501b
+502	917	1615941961	CMakeFiles/filter-lib.dir/src/main/jni/filters/redEyeMath.c.o	aca597c26694c65b
+740	977	1615941961	CMakeFiles/filter-lib.dir/src/main/jni/filters/vibrance.c.o	ae8ecc138d1b0f05
+757	1045	1615941961	CMakeFiles/filter-lib.dir/src/main/jni/filters/wbalance.c.o	cb856c5f6e538a63
+883	1127	1615941961	CMakeFiles/filter-lib.dir/src/main/jni/jni_egl_fence.cpp.o	b7c762a1c4637949
+350	1286	1615941962	CMakeFiles/filter-lib.dir/src/main/jni/filters/kmeans.cc.o	ba9ab57fedff2b0f
+622	1287	1615941962	CMakeFiles/filter-lib.dir/src/main/jni/filters/tinyplanet.cc.o	d35419839d7498b4

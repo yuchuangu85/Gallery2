@@ -1,0 +1,43 @@
+{
+  "stringTable": {},
+  "buildFiles": [
+    "/Users/yuchuan/Develop/Gallery/app/CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "/Users/yuchuan/AndroidSDK/cmake/3.10.2.4988404/bin/ninja",
+      "-C",
+      "/Users/yuchuan/Develop/Gallery/app/.cxx/Debug/5q3x371y/x86",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "/Users/yuchuan/AndroidSDK/cmake/3.10.2.4988404/bin/ninja",
+    "-C",
+    "/Users/yuchuan/Develop/Gallery/app/.cxx/Debug/5q3x371y/x86",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {
+    "filter-lib-Debug-x86": {
+      "buildCommandComponents": [
+        "/Users/yuchuan/AndroidSDK/cmake/3.10.2.4988404/bin/ninja",
+        "-C",
+        "/Users/yuchuan/Develop/Gallery/app/.cxx/Debug/5q3x371y/x86",
+        "filter-lib"
+      ],
+      "buildType": "debug",
+      "abi": "x86",
+      "artifactName": "filter-lib",
+      "output": "/Users/yuchuan/Develop/Gallery/app/build/intermediates/cxx/Debug/5q3x371y/obj/x86/libfilter-lib.so",
+      "runtimeFiles": []
+    }
+  },
+  "toolchains": {},
+  "cFileExtensions": [
+    "c"
+  ],
+  "cppFileExtensions": [
+    "cc",
+    "cpp"
+  ]
+}

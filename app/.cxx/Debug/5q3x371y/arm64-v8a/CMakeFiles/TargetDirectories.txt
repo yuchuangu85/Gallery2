@@ -1,0 +1,3 @@
+/Users/yuchuan/Develop/Gallery/app/.cxx/Debug/5q3x371y/arm64-v8a/CMakeFiles/rebuild_cache.dir
+/Users/yuchuan/Develop/Gallery/app/.cxx/Debug/5q3x371y/arm64-v8a/CMakeFiles/edit_cache.dir
+/Users/yuchuan/Develop/Gallery/app/.cxx/Debug/5q3x371y/arm64-v8a/CMakeFiles/filter-lib.dir

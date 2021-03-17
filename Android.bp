@@ -1,0 +1,44 @@
+android_app {
+    name: "Gallery2",
+
+    static_libs: [
+        "androidx.fragment_fragment",
+        "androidx.legacy_legacy-support-core-ui",
+        "androidx.core_core",
+        "androidx.legacy_legacy-support-v13",
+        "com.android.gallery3d.common2",
+        "xmp_toolkit",
+        "mp4parser",
+    ],
+
+    srcs: [
+        "src/**/*.java",
+        "src_pd/**/*.java",
+    ],
+
+    resource_dirs: ["res"],
+
+    product_specific: true,
+
+    overrides: [
+        "Gallery",
+        "Gallery3D",
+        "GalleryNew3D",
+    ],
+
+    sdk_version: "current",
+
+    jni_libs: [
+        "libjni_eglfence",
+        "libjni_filtershow_filters",
+        "libjni_jpegstream",
+    ],
+
+    optimize: {
+        proguard_flags_files: ["proguard.flags"],
+    },
+
+    libs: ["org.apache.http.legacy"],
+
+    jarjar_rules: "jarjar-rules.txt",
+}
