@@ -15,6 +15,7 @@
  */
 
 #include "filters.h"
+#include "fx.h"
 
 __inline__ int  interp(unsigned char  *src, int p , int *off ,float dr,float dg, float db){
 
