@@ -76,8 +76,7 @@ extern "C" void Java_com_android_gallery3d_photoeditor_FilterStack_nativeEglSetF
                                              EGL_SYNC_FLUSH_COMMANDS_BIT_KHR,
                                              EGL_FOREVER_KHR);
     if (result == EGL_FALSE) {
-        ALOGE("EGL FENCE: error waiting for fence: %#x", "eglGetError");
-//        ALOGE("EGL FENCE: error waiting for fence: %#x", eglGetError());
+        ALOGE("EGL FENCE: error waiting for fence: %#x", eglGetError());
     }
     FuncEglDestroySyncKHR(display, fence);
 }
