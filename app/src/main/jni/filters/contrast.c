@@ -16,6 +16,7 @@
 
 #include <math.h>
 #include "filters.h"
+#include "android/bitmap.h"
 
 unsigned char clamp(int c)
 {

@@ -17,7 +17,7 @@
 #include "filters.h"
 #include "fx.h"
 
-__inline__ int  interp(unsigned char  *src, int p , int *off ,float dr,float dg, float db){
+__inline__; int  interp(unsigned char  *src, int p , int *off ,float dr,float dg, float db){
 
     float fr00 = (src[p+off[0]])*(1-dr)+(src[p+off[1]])*dr;
     float fr01 = (src[p+off[2]])*(1-dr)+(src[p+off[3]])*dr;

@@ -1,7 +1,0 @@
-Executable : /Users/yuchuan/AndroidSDK/cmake/3.10.2.4988404/bin/ninja
-arguments : 
--C
-/Users/yuchuan/Develop/Gallery/app/.cxx/Debug/5q3x371y/armeabi-v7a
-filter-lib
-jvmArgs : 
-
