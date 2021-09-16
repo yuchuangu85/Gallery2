@@ -73,7 +73,7 @@ target_link_libraries( # Specifies the target library.
         android
         log
 
-        # 导入nkd(android/bitmap.h)
+        # 导入ndk(android/bitmap.h)
         jnigraphics
 
         # Links the target library to the log library
