@@ -9,6 +9,12 @@
 
 2.由于未加入动态权限，编译需在sdk<23的版本下编译。
 
+3.jni_jpegstream代码来源
+* http://www.ijg.org/files/
+* http://libjpeg.sourceforge.net/
+替代方案：
+  https://github.com/libjpeg-turbo/libjpeg-turbo
+
 ## 流程图和数据结构图
 
 由于项目代码还在分析中，所以还没有绘制完成，所以之后会不断更新 ------ 2018-04-29 更新
