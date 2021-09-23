@@ -6,8 +6,8 @@ android {
     compileSdkVersion 30
 
     defaultConfig {
-        applicationId "com.android.gallery3d"
-        minSdkVersion 21
+        applicationId "com.androidx.gallery3d"
+        minSdkVersion 24
         targetSdkVersion 30
         versionCode 40030
         versionName "1.1.40030"
@@ -62,6 +62,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
     api project(path: ':gallerycommon')
+    api project(path: ':rxpermission')
 
     implementation 'androidx.legacy:legacy-support-v13:1.0.0'
 }

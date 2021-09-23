@@ -16,12 +16,15 @@
 
 package com.android.gallery3d.app;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.InputDevice;
 import android.view.MotionEvent;
@@ -38,6 +41,10 @@ import com.android.gallery3d.data.MediaSet;
 import com.android.gallery3d.data.Path;
 import com.android.gallery3d.picasasource.PicasaSource;
 import com.android.gallery3d.util.GalleryUtils;
+import com.codemx.rxpermission.RxPermissions;
+
+import androidx.annotation.RequiresApi;
+import io.reactivex.functions.Consumer;
 
 public final class GalleryActivity extends AbstractGalleryActivity implements OnCancelListener {
     public static final String EXTRA_SLIDESHOW = "slideshow";
@@ -66,12 +73,31 @@ public final class GalleryActivity extends AbstractGalleryActivity implements On
         }
 
         setContentView(R.layout.main);
+        requestPermission(this);
 
         if (savedInstanceState != null) {
             getStateManager().restoreFromState(savedInstanceState);
         } else {
             initializeByIntent();
         }
+    }
+
+    @SuppressLint("CheckResult")
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void requestPermission(Activity activity) {
+        Consumer<? super Boolean> consumer = (Consumer<Boolean>) granted -> {
+            if (granted) { // Always true pre-M
+
+            } else {
+                // Oups permission denied
+
+            }
+        };
+
+        RxPermissions rxPermissions = new RxPermissions(activity);
+        rxPermissions.request(android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                android.Manifest.permission.READ_EXTERNAL_STORAGE)
+                .subscribe(consumer);
     }
 
     private void initializeByIntent() {

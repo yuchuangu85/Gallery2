@@ -73,7 +73,7 @@
         </FrameLayout>
 
         <com.android.gallery3d.filtershow.CenteredLinearLayout
-                xmlns:custom="http://schemas.android.com/apk/res/com.android.gallery3d"
+                xmlns:custom="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/mainPanel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
