@@ -13,13 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
+extern "C" {
 #include "jni_egl_fence.h"
 
-#include <android/log.h>
 #include <EGL/egl.h>
 #include <EGL/eglext.h>
 #include <cstring>
+}
+#include <android/log.h>
 
 #define  ALOGE(...)  __android_log_print(ANDROID_LOG_ERROR,"egl_fence",__VA_ARGS__)
 
