@@ -22,7 +22,7 @@ android {
 
 
 dependencies {
-    api 'io.reactivex.rxjava2:rxjava:2.2.17'
+    api 'io.reactivex.rxjava2:rxjava:2.2.21'
     implementation 'androidx.annotation:annotation:1.2.0'
 }
 
