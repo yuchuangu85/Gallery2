@@ -15,7 +15,6 @@
  */
 
 #include "filters.h"
-#include "android/bitmap.h"
 
 void JNIFUNCF(ImageFilterExposure, nativeApplyFilter, jobject bitmap, jint width, jint height, jfloat bright)
 {

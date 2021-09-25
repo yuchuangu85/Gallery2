@@ -16,7 +16,6 @@
 
 #include <math.h>
 #include "filters.h"
-#include "android/bitmap.h"
 
 void JNIFUNCF(ImageFilterEdge, nativeApplyFilter, jobject bitmap, jint width, jint height, jfloat p)
 {

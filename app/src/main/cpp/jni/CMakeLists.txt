@@ -30,6 +30,7 @@ add_library( # Sets the name of the library.
         filters/exposure.c
         filters/fx.c
         filters/geometry.c
+        filters/gradient.c
         filters/highlight.c
         filters/hsv.c
         filters/hue.c
