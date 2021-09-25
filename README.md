@@ -12,8 +12,10 @@
 3.jni_jpegstream代码来源
 * http://www.ijg.org/files/
 * http://libjpeg.sourceforge.net/
-替代方案：
-  https://github.com/libjpeg-turbo/libjpeg-turbo
+* https://github.com/libjpeg-turbo/libjpeg-turbo：替代方案
+* https://gitee.com/floatWind/Gallery2  参考项目
+
+4. jniLibs-backup为备用
 
 ## 流程图和数据结构图
 

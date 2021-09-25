@@ -14,16 +14,16 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
-//        ndk {
-//            moduleName "jnifilter"
-//            abiFilters 'x86', 'armeabi-v7a', 'arm64-v8a'
-//        }
+        ndk {
+            moduleName "jnifilter"
+            abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
+        }
 
         externalNativeBuild {
             cmake {
                 cppFlags ""
                 // 生成多个版本的so库
-                abiFilters 'arm64-v8a', 'armeabi-v7a', 'x86', 'x86_64'
+                abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
             }
         }
     }
@@ -31,13 +31,13 @@ android {
     sourceSets {
         main {
             jniLibs.srcDirs = ['libs']
-            jni.srcDirs = []
+            jni.srcDirs = ['src/main/cpp/jniLibs/']
         }
     }
 
     externalNativeBuild {
         cmake {
-            path "CMakeLists.txt"
+            path "src/main/cpp/CMakeLists.txt"
         }
     }
 

@@ -27,7 +27,7 @@ import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;
-import android.util.Log;
+
 import com.android.gallery3d.R;
 import com.android.gallery3d.filtershow.FilterShowActivity;
 import com.android.gallery3d.filtershow.filters.FiltersManager;

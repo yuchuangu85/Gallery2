@@ -72,6 +72,9 @@ public final class GalleryActivity extends AbstractGalleryActivity implements On
                     WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
         }
 
+        String CPU_ABI = android.os.Build.CPU_ABI;//查看Android设备的ABI
+        Log.d("ABI", "CPU_ABI = " + CPU_ABI);
+
         setContentView(R.layout.main);
         requestPermission(this);
 
