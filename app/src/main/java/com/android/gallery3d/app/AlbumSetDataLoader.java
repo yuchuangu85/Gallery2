@@ -54,6 +54,7 @@ public class AlbumSetDataLoader {
     }
 
     private final MediaSet[] mData;
+    // 封面对象数组
     private final MediaItem[] mCoverItem;
     private final int[] mTotalCount;
     private final long[] mItemVersion;

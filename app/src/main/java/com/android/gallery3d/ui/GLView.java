@@ -26,6 +26,7 @@ import com.android.gallery3d.common.Utils;
 import com.android.gallery3d.glrenderer.GLCanvas;
 
 import java.util.ArrayList;
+import java.util.List;
 
 // GLView is a UI component. It can render to a GLCanvas and accept touch
 // events. A GLView may have zero or more child GLView and they form a tree
@@ -61,7 +62,7 @@ public class GLView {
 
     private GLRoot mRoot;
     protected GLView mParent;
-    private ArrayList<GLView> mComponents;
+    private List<GLView> mComponents;
     private GLView mMotionTarget;
 
     private CanvasAnimation mAnimation;
@@ -143,7 +144,7 @@ public class GLView {
 
         // Build parent-child links
         if (mComponents == null) {
-            mComponents = new ArrayList<GLView>();
+            mComponents = new ArrayList<>();
         }
         mComponents.add(component);
         component.mParent = this;
@@ -232,6 +233,7 @@ public class GLView {
         if (transitionActive) {
             mTransition.applyContentTransform(this, canvas);
         }
+        // render all children
         for (int i = 0, n = getComponentCount(); i < n; ++i) {
             renderChild(canvas, getComponent(i));
         }
@@ -260,7 +262,6 @@ public class GLView {
         }
         if (mTransition != null && mTransition.isActive()) {
             mTransition.applyBackground(this, view);
-            return;
         }
     }
 

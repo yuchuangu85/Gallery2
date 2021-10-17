@@ -3,9 +3,11 @@
 ## 分支
 * master (Gallery2-11-r33)
 * Gallery2-7.1.2-r6
+* dev 开发分支，优化布局以及增加图片处理功能。
 
 ## 说明：
-1.软件编译不支持Android studio，只支持eclipse和Intellij idea开发。
+1. Gallery2-7.1.2-r6分支编译不支持Android studio，只支持eclipse和Intellij idea开发。
+master和dev分支已经切换到Gallery2-11-r33版本，并且支持Android studio开发
 
 2.由于未加入动态权限，编译需在sdk<23的版本下编译。
 
