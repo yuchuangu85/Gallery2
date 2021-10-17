@@ -62,6 +62,9 @@ import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
 
+/**
+ * 相册列表，展示所有相册的封面，点击进入相片列表
+ */
 public class AlbumSetPage extends ActivityState implements
         SelectionManager.SelectionListener, GalleryActionBar.ClusterRunner,
         EyePosition.EyePositionListener, MediaSet.SyncListener {
@@ -101,7 +104,7 @@ public class AlbumSetPage extends ActivityState implements
     private ActionModeHandler mActionModeHandler;
     private DetailsHelper mDetailsHelper;
     private MyDetailsSource mDetailsSource;
-    private boolean mShowDetails;
+    private boolean mShowDetails;// 是否显示详情
     private EyePosition mEyePosition;
     private Handler mHandler;
 
@@ -128,8 +131,7 @@ public class AlbumSetPage extends ActivityState implements
         private final float[] mMatrix = new float[16];
 
         @Override
-        protected void onLayout(
-                boolean changed, int left, int top, int right, int bottom) {
+        protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
             mEyePosition.resetPosition();
 
             int slotViewTop = mActionBar.getHeight() + mConfig.paddingTop;
@@ -234,6 +236,10 @@ public class AlbumSetPage extends ActivityState implements
         }
     }
 
+    /**
+     * 选择相册
+     * @param slotIndex 被选相册对应的index
+     */
     private void pickAlbum(int slotIndex) {
         if (!mIsActive) return;
 
@@ -464,6 +470,7 @@ public class AlbumSetPage extends ActivityState implements
 
         // Set the reload bit here to prevent it exit this page in clearLoadingBit().
         setLoadingBit(BIT_LOADING_RELOAD);
+
         // start load data
         mAlbumSetDataAdapter.resume();
 
@@ -499,6 +506,7 @@ public class AlbumSetPage extends ActivityState implements
                 mActivity, mSelectionManager, mSlotView, mConfig.labelSpec,
                 mConfig.placeholderColor);
         mSlotView.setSlotRenderer(mAlbumSetView);
+        // 相册手势处理
         mSlotView.setListener(new SlotView.SimpleListener() {
             @Override
             public void onDown(int index) {
@@ -537,7 +545,7 @@ public class AlbumSetPage extends ActivityState implements
             int typeBits = mData.getInt(
                     GalleryActivity.KEY_TYPE_BITS, DataManager.INCLUDE_IMAGE);
             mActionBar.setTitle(GalleryUtils.getSelectionModePrompt(typeBits));
-        } else if (mGetAlbum) {
+        } else if (mGetAlbum) {// 选取相册
             inflater.inflate(R.menu.pickup, menu);
             mActionBar.setTitle(R.string.select_album);
         } else {
@@ -579,15 +587,15 @@ public class AlbumSetPage extends ActivityState implements
     protected boolean onItemSelected(MenuItem item) {
         Activity activity = mActivity;
         switch (item.getItemId()) {
-            case R.id.action_cancel:
+            case R.id.action_cancel:// 取消
                 activity.setResult(Activity.RESULT_CANCELED);
                 activity.finish();
                 return true;
-            case R.id.action_select:
+            case R.id.action_select:// 选择相册
                 mSelectionManager.setAutoLeaveSelectionMode(false);
                 mSelectionManager.enterSelectionMode();
                 return true;
-            case R.id.action_details:
+            case R.id.action_details:// 详细信息
                 if (mAlbumSetDataAdapter.size() != 0) {
                     if (mShowDetails) {
                         hideDetails();
@@ -600,11 +608,11 @@ public class AlbumSetPage extends ActivityState implements
                             Toast.LENGTH_SHORT).show();
                 }
                 return true;
-            case R.id.action_camera: {
+            case R.id.action_camera: {// 切换至相册
                 GalleryUtils.startCameraActivity(activity);
                 return true;
             }
-            case R.id.action_manage_offline: {
+            case R.id.action_manage_offline: {// 允许离线查看
                 Bundle data = new Bundle();
                 String mediaPath = mActivity.getDataManager().getTopSetPath(
                         DataManager.INCLUDE_ALL);
@@ -612,11 +620,11 @@ public class AlbumSetPage extends ActivityState implements
                 mActivity.getStateManager().startState(ManageCachePage.class, data);
                 return true;
             }
-            case R.id.action_sync_picasa_albums: {
+            case R.id.action_sync_picasa_albums: {// 刷新
                 PicasaSource.requestSync(activity);
                 return true;
             }
-            case R.id.action_settings: {
+            case R.id.action_settings: {// 设置
                 activity.startActivity(new Intent(activity, GallerySettings.class));
                 return true;
             }
@@ -689,7 +697,7 @@ public class AlbumSetPage extends ActivityState implements
         mShowDetails = true;
         if (mDetailsHelper == null) {
             mDetailsHelper = new DetailsHelper(mActivity, mRootPane, mDetailsSource);
-            mDetailsHelper.setCloseListener(() -> hideDetails());
+            mDetailsHelper.setCloseListener(this::hideDetails);
         }
         mDetailsHelper.show();
     }

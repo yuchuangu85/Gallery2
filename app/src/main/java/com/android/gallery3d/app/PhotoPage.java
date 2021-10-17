@@ -16,6 +16,7 @@
 
 package com.android.gallery3d.app;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.ActionBar.OnMenuVisibilityListener;
 import android.app.Activity;
@@ -27,8 +28,6 @@ import android.content.res.Configuration;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.nfc.NfcAdapter;
-import android.nfc.NfcAdapter.CreateBeamUrisCallback;
-import android.nfc.NfcEvent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -46,7 +45,6 @@ import com.android.gallery3d.data.ComboAlbum;
 import com.android.gallery3d.data.DataManager;
 import com.android.gallery3d.data.FilterDeleteSet;
 import com.android.gallery3d.data.FilterSource;
-import com.android.gallery3d.data.LocalImage;
 import com.android.gallery3d.data.MediaDetails;
 import com.android.gallery3d.data.MediaItem;
 import com.android.gallery3d.data.MediaObject;
@@ -62,7 +60,6 @@ import com.android.gallery3d.filtershow.FilterShowActivity;
 import com.android.gallery3d.filtershow.crop.CropActivity;
 import com.android.gallery3d.picasasource.PicasaSource;
 import com.android.gallery3d.ui.DetailsHelper;
-import com.android.gallery3d.ui.DetailsHelper.CloseListener;
 import com.android.gallery3d.ui.DetailsHelper.DetailsSource;
 import com.android.gallery3d.ui.GLRootView;
 import com.android.gallery3d.ui.GLView;
@@ -179,7 +176,7 @@ public abstract class PhotoPage extends ActivityState implements
     private Path mDeletePath;
     private boolean mDeleteIsFocus;  // whether the deleted item was in focus
 
-    private Uri[] mNfcPushUris = new Uri[1];
+    private final Uri[] mNfcPushUris = new Uri[1];
 
     private final MyMenuVisibilityListener mMenuVisibilityListener =
             new MyMenuVisibilityListener();
@@ -189,7 +186,7 @@ public abstract class PhotoPage extends ActivityState implements
     private final PanoramaSupportCallback mUpdatePanoramaMenuItemsCallback = new PanoramaSupportCallback() {
         @Override
         public void panoramaInfoAvailable(MediaObject mediaObject, boolean isPanorama,
-                boolean isPanorama360) {
+                                          boolean isPanorama360) {
             if (mediaObject == mCurrentPhoto) {
                 mHandler.obtainMessage(MSG_UPDATE_PANORAMA_UI, isPanorama360 ? 1 : 0, 0,
                         mediaObject).sendToTarget();
@@ -200,7 +197,7 @@ public abstract class PhotoPage extends ActivityState implements
     private final PanoramaSupportCallback mRefreshBottomControlsCallback = new PanoramaSupportCallback() {
         @Override
         public void panoramaInfoAvailable(MediaObject mediaObject, boolean isPanorama,
-                boolean isPanorama360) {
+                                          boolean isPanorama360) {
             if (mediaObject == mCurrentPhoto) {
                 mHandler.obtainMessage(MSG_REFRESH_BOTTOM_CONTROLS, isPanorama ? 1 : 0, isPanorama360 ? 1 : 0,
                         mediaObject).sendToTarget();
@@ -211,7 +208,7 @@ public abstract class PhotoPage extends ActivityState implements
     private final PanoramaSupportCallback mUpdateShareURICallback = new PanoramaSupportCallback() {
         @Override
         public void panoramaInfoAvailable(MediaObject mediaObject, boolean isPanorama,
-                boolean isPanorama360) {
+                                          boolean isPanorama360) {
             if (mediaObject == mCurrentPhoto) {
                 mHandler.obtainMessage(MSG_UPDATE_SHARE_URI, isPanorama360 ? 1 : 0, 0, mediaObject)
                         .sendToTarget();
@@ -219,11 +216,14 @@ public abstract class PhotoPage extends ActivityState implements
         }
     };
 
-    public static interface Model extends PhotoView.Model {
-        public void resume();
-        public void pause();
-        public boolean isEmpty();
-        public void setCurrentPhoto(Path path, int indexHint);
+    public interface Model extends PhotoView.Model {
+        void resume();
+
+        void pause();
+
+        boolean isEmpty();
+
+        void setCurrentPhoto(Path path, int indexHint);
     }
 
     private class MyMenuVisibilityListener implements OnMenuVisibilityListener {
@@ -260,7 +260,7 @@ public abstract class PhotoPage extends ActivityState implements
         mPhotoView = new PhotoView(mActivity);
         mPhotoView.setListener(this);
         mRootPane.addComponent(mPhotoView);
-        mApplication = (GalleryApp) ((Activity) mActivity).getApplication();
+        mApplication = (GalleryApp) (mActivity).getApplication();
         mOrientationManager = mActivity.getOrientationManager();
         mActivity.getGLRoot().setOrientationSource(mOrientationManager);
 
@@ -375,7 +375,8 @@ public abstract class PhotoPage extends ActivityState implements
                         }
                         break;
                     }
-                    default: throw new AssertionError(message.what);
+                    default:
+                        throw new AssertionError(message.what);
                 }
             }
         };
@@ -387,7 +388,7 @@ public abstract class PhotoPage extends ActivityState implements
         String itemPathString = data.getString(KEY_MEDIA_ITEM_PATH);
         Path itemPath = itemPathString != null ?
                 Path.fromString(data.getString(KEY_MEDIA_ITEM_PATH)) :
-                    null;
+                null;
         mTreatBackAsUp = data.getBoolean(KEY_TREAT_BACK_AS_UP, false);
         mStartInFilmstrip = data.getBoolean(KEY_START_IN_FILMSTRIP, false);
         boolean inCameraRoll = data.getBoolean(KEY_IN_CAMERA_ROLL, false);
@@ -423,7 +424,7 @@ public abstract class PhotoPage extends ActivityState implements
                                 .getMediaSet(mSetPathString);
                         mShowSpinner = false;
                     }
-                    mSetPathString = "/filter/empty/{"+mSetPathString+"}";
+                    mSetPathString = "/filter/empty/{" + mSetPathString + "}";
                 }
 
                 // Combine the original MediaSet with the one for ScreenNail
@@ -459,7 +460,7 @@ public abstract class PhotoPage extends ActivityState implements
                 if (mediaItemCount > 0) {
                     if (mCurrentIndex >= mediaItemCount) mCurrentIndex = 0;
                     itemPath = mMediaSet.getMediaItem(mCurrentIndex, 1)
-                        .get(0).getPath();
+                            .get(0).getPath();
                 } else {
                     // Bail out, PhotoPage can't load on an empty album
                     return;
@@ -468,8 +469,8 @@ public abstract class PhotoPage extends ActivityState implements
             PhotoDataAdapter pda = new PhotoDataAdapter(
                     mActivity, mPhotoView, mMediaSet, itemPath, mCurrentIndex,
                     mAppBridge == null ? -1 : 0,
-                    mAppBridge == null ? false : mAppBridge.isPanorama(),
-                    mAppBridge == null ? false : mAppBridge.isStaticCamera());
+                    mAppBridge != null && mAppBridge.isPanorama(),
+                    mAppBridge != null && mAppBridge.isStaticCamera());
             mModel = pda;
             mPhotoView.setModel(mModel);
 
@@ -542,7 +543,7 @@ public abstract class PhotoPage extends ActivityState implements
         }
 
         mPhotoView.setFilmMode(mStartInFilmstrip && mMediaSet.getMediaItemCount() > 1);
-        RelativeLayout galleryRoot = (RelativeLayout) ((Activity) mActivity)
+        RelativeLayout galleryRoot = (mActivity)
                 .findViewById(mAppBridge != null ? R.id.content : R.id.gallery_root);
         if (galleryRoot != null) {
             if (mSecureAlbum == null) {
@@ -551,15 +552,12 @@ public abstract class PhotoPage extends ActivityState implements
         }
 
         ((GLRootView) mActivity.getGLRoot()).setOnSystemUiVisibilityChangeListener(
-                new View.OnSystemUiVisibilityChangeListener() {
-                @Override
-                    public void onSystemUiVisibilityChange(int visibility) {
-                        int diff = mLastSystemUiVis ^ visibility;
-                        mLastSystemUiVis = visibility;
-                        if ((diff & View.SYSTEM_UI_FLAG_FULLSCREEN) != 0
-                                && (visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
-                            showBars();
-                        }
+                visibility -> {
+                    int diff = mLastSystemUiVis ^ visibility;
+                    mLastSystemUiVis = visibility;
+                    if ((diff & View.SYSTEM_UI_FLAG_FULLSCREEN) != 0
+                            && (visibility & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0) {
+                        showBars();
                     }
                 });
     }
@@ -578,12 +576,13 @@ public abstract class PhotoPage extends ActivityState implements
         return mIsActive && !mPhotoView.canUndo();
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean canDisplayBottomControl(int control) {
         if (mCurrentPhoto == null) {
             return false;
         }
-        switch(control) {
+        switch (control) {
             case R.id.photopage_bottom_control_edit:
                 return mHaveImageEditor && mShowBars && !mReadOnlyView
                         && !mPhotoView.getFilmMode()
@@ -599,9 +598,10 @@ public abstract class PhotoPage extends ActivityState implements
         }
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public void onBottomControlClicked(int control) {
-        switch(control) {
+        switch (control) {
             case R.id.photopage_bottom_control_edit:
                 launchPhotoEditor();
                 return;
@@ -624,12 +624,7 @@ public abstract class PhotoPage extends ActivityState implements
         NfcAdapter adapter = NfcAdapter.getDefaultAdapter(mActivity);
         if (adapter != null) {
             adapter.setBeamPushUris(null, mActivity);
-            adapter.setBeamPushUrisCallback(new CreateBeamUrisCallback() {
-                @Override
-                public Uri[] createBeamUris(NfcEvent event) {
-                    return mNfcPushUris;
-                }
-            }, mActivity);
+            adapter.setBeamPushUrisCallback(event -> mNfcPushUris, mActivity);
         }
     }
 
@@ -653,7 +648,7 @@ public abstract class PhotoPage extends ActivityState implements
     }
 
     private void overrideTransitionToEditor() {
-        ((Activity) mActivity).overridePendingTransition(android.R.anim.fade_in,
+        (mActivity).overridePendingTransition(android.R.anim.fade_in,
                 android.R.anim.fade_out);
     }
 
@@ -663,7 +658,7 @@ public abstract class PhotoPage extends ActivityState implements
         Intent intent = new Intent(FilterShowActivity.TINY_PLANET_ACTION);
         intent.setClass(mActivity, FilterShowActivity.class);
         intent.setDataAndType(current.getContentUri(), current.getMimeType())
-            .setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                .setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         intent.putExtra(FilterShowActivity.LAUNCH_FULLSCREEN,
                 mActivity.isFullscreen());
         mActivity.startActivityForResult(intent, REQUEST_EDIT);
@@ -692,7 +687,7 @@ public abstract class PhotoPage extends ActivityState implements
         }
         intent.putExtra(FilterShowActivity.LAUNCH_FULLSCREEN,
                 mActivity.isFullscreen());
-        ((Activity) mActivity).startActivityForResult(Intent.createChooser(intent, null),
+        (mActivity).startActivityForResult(Intent.createChooser(intent, null),
                 REQUEST_EDIT);
         overrideTransitionToEditor();
     }
@@ -714,7 +709,7 @@ public abstract class PhotoPage extends ActivityState implements
         }
         intent.putExtra(FilterShowActivity.LAUNCH_FULLSCREEN,
                 mActivity.isFullscreen());
-        ((Activity) mActivity).startActivityForResult(Intent.createChooser(intent, null),
+        (mActivity).startActivityForResult(Intent.createChooser(intent, null),
                 REQUEST_EDIT);
         overrideTransitionToEditor();
     }
@@ -790,10 +785,7 @@ public abstract class PhotoPage extends ActivityState implements
         if (mMediaSet == null || mCurrentPhoto == null) {
             return false;
         }
-        if (mCurrentPhoto.getMediaType() != MediaObject.MEDIA_TYPE_IMAGE) {
-            return false;
-        }
-        return true;
+        return mCurrentPhoto.getMediaType() == MediaObject.MEDIA_TYPE_IMAGE;
     }
 
     //////////////////////////////////////////////////////////////////////////
@@ -835,11 +827,7 @@ public abstract class PhotoPage extends ActivityState implements
         if (!mActionBarAllowed) return false;
 
         Configuration config = mActivity.getResources().getConfiguration();
-        if (config.touchscreen == Configuration.TOUCHSCREEN_NOTOUCH) {
-            return false;
-        }
-
-        return true;
+        return config.touchscreen != Configuration.TOUCHSCREEN_NOTOUCH;
     }
 
     private void wantBars() {
@@ -952,27 +940,30 @@ public abstract class PhotoPage extends ActivityState implements
         return true;
     }
 
-    private MenuExecutor.ProgressListener mConfirmDialogListener =
+    private final MenuExecutor.ProgressListener mConfirmDialogListener =
             new MenuExecutor.ProgressListener() {
-        @Override
-        public void onProgressUpdate(int index) {}
+                @Override
+                public void onProgressUpdate(int index) {
+                }
 
-        @Override
-        public void onProgressComplete(int result) {}
+                @Override
+                public void onProgressComplete(int result) {
+                }
 
-        @Override
-        public void onConfirmDialogShown() {
-            mHandler.removeMessages(MSG_HIDE_BARS);
-        }
+                @Override
+                public void onConfirmDialogShown() {
+                    mHandler.removeMessages(MSG_HIDE_BARS);
+                }
 
-        @Override
-        public void onConfirmDialogDismissed(boolean confirmed) {
-            refreshHidingMessage();
-        }
+                @Override
+                public void onConfirmDialogDismissed(boolean confirmed) {
+                    refreshHidingMessage();
+                }
 
-        @Override
-        public void onProgressStart() {}
-    };
+                @Override
+                public void onProgressStart() {
+                }
+            };
 
     private void switchToGrid() {
         if (mActivity.getStateManager().hasStateClass(AlbumPage.class)) {
@@ -1005,6 +996,7 @@ public abstract class PhotoPage extends ActivityState implements
         }
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     protected boolean onItemSelected(MenuItem item) {
         if (mModel == null) return true;
@@ -1047,7 +1039,7 @@ public abstract class PhotoPage extends ActivityState implements
                 Intent intent = new Intent(CropActivity.CROP_ACTION);
                 intent.setClass(activity, CropActivity.class);
                 intent.setDataAndType(manager.getContentUri(path), current.getMimeType())
-                    .setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                        .setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 activity.startActivityForResult(intent, PicasaSource.isPicasaImage(current)
                         ? REQUEST_CROP_PICASA
                         : REQUEST_CROP);
@@ -1098,7 +1090,7 @@ public abstract class PhotoPage extends ActivityState implements
                 mSelectionManager.toggle(path);
                 mMenuExecutor.onMenuClicked(item, confirmMsg, mConfirmDialogListener);
                 return true;
-            default :
+            default:
                 return false;
         }
     }
@@ -1112,12 +1104,7 @@ public abstract class PhotoPage extends ActivityState implements
         mShowDetails = true;
         if (mDetailsHelper == null) {
             mDetailsHelper = new DetailsHelper(mActivity, mRootPane, new MyDetailsSource());
-            mDetailsHelper.setCloseListener(new CloseListener() {
-                @Override
-                public void onClose() {
-                    hideDetails();
-                }
-            });
+            mDetailsHelper.setCloseListener(this::hideDetails);
         }
         mDetailsHelper.show();
     }
@@ -1149,7 +1136,7 @@ public abstract class PhotoPage extends ActivityState implements
             int w = mPhotoView.getWidth();
             int h = mPhotoView.getHeight();
             playVideo = (Math.abs(x - w / 2) * 12 <= w)
-                && (Math.abs(y - h / 2) * 12 <= h);
+                    && (Math.abs(y - h / 2) * 12 <= h);
         }
 
         if (playVideo) {
@@ -1514,7 +1501,7 @@ public abstract class PhotoPage extends ActivityState implements
         UsageStatistics.onEvent(UsageStatistics.COMPONENT_GALLERY,
                 UsageStatistics.ACTION_SHARE,
                 mediaType,
-                        timestampMillis > 0
+                timestampMillis > 0
                         ? System.currentTimeMillis() - timestampMillis
                         : -1);
         return false;

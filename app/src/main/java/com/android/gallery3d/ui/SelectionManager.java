@@ -24,34 +24,39 @@ import com.android.gallery3d.data.Path;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+/**
+ * 选择管理
+ */
 public class SelectionManager {
     @SuppressWarnings("unused")
     private static final String TAG = "SelectionManager";
 
-    public static final int ENTER_SELECTION_MODE = 1;
-    public static final int LEAVE_SELECTION_MODE = 2;
-    public static final int SELECT_ALL_MODE = 3;
+    public static final int ENTER_SELECTION_MODE = 1;// 进去选择
+    public static final int LEAVE_SELECTION_MODE = 2;// 退出选择
+    public static final int SELECT_ALL_MODE = 3;// 选择全部
 
-    private Set<Path> mClickedSet;
+    private final Set<Path> mClickedSet;
     private MediaSet mSourceMediaSet;
     private SelectionListener mListener;
-    private DataManager mDataManager;
+    private final DataManager mDataManager;
     private boolean mInverseSelection;
-    private boolean mIsAlbumSet;
+    private final boolean mIsAlbumSet;
     private boolean mInSelectionMode;
     private boolean mAutoLeave = true;
     private int mTotal;
 
     public interface SelectionListener {
-        public void onSelectionModeChange(int mode);
-        public void onSelectionChange(Path path, boolean selected);
+        void onSelectionModeChange(int mode);
+
+        void onSelectionChange(Path path, boolean selected);
     }
 
     public SelectionManager(AbstractGalleryActivity activity, boolean isAlbumSet) {
         mDataManager = activity.getDataManager();
-        mClickedSet = new HashSet<Path>();
+        mClickedSet = new HashSet<>();
         mIsAlbumSet = isAlbumSet;
         mTotal = -1;
     }
@@ -147,7 +152,7 @@ public class SelectionManager {
         }
     }
 
-    private static boolean expandMediaSet(ArrayList<Path> items, MediaSet set, int maxSelection) {
+    private static boolean expandMediaSet(List<Path> items, MediaSet set, int maxSelection) {
         int subCount = set.getSubMediaSetCount();
         for (int i = 0; i < subCount; i++) {
             if (!expandMediaSet(items, set.getSubMediaSet(i), maxSelection)) {
@@ -162,7 +167,7 @@ public class SelectionManager {
             int count = index + batch < total
                     ? batch
                     : total - index;
-            ArrayList<MediaItem> list = set.getMediaItem(index, count);
+            List<MediaItem> list = set.getMediaItem(index, count);
             if (list != null
                     && list.size() > (maxSelection - items.size())) {
                 return false;
@@ -175,12 +180,12 @@ public class SelectionManager {
         return true;
     }
 
-    public ArrayList<Path> getSelected(boolean expandSet) {
+    public List<Path> getSelected(boolean expandSet) {
         return getSelected(expandSet, Integer.MAX_VALUE);
     }
 
-    public ArrayList<Path> getSelected(boolean expandSet, int maxSelection) {
-        ArrayList<Path> selected = new ArrayList<Path>();
+    public List<Path> getSelected(boolean expandSet, int maxSelection) {
+        List<Path> selected = new ArrayList<Path>();
         if (mIsAlbumSet) {
             if (mInverseSelection) {
                 int total = getTotalCount();

@@ -31,7 +31,8 @@ public class SlotView extends GLView {
     @SuppressWarnings("unused")
     private static final String TAG = "SlotView";
 
-    private static final boolean WIDE = true;
+    // 横向还是纵向显示相册列表
+    private static final boolean WIDE = false;
     private static final int INDEX_NONE = -1;
 
     public static final int RENDER_MORE_PASS = 1;
@@ -60,6 +61,7 @@ public class SlotView extends GLView {
          int renderSlot(GLCanvas canvas, int index, int pass, int width, int height);
     }
 
+    // 手势监听
     private final GestureDetector mGestureDetector;
     private final ScrollerHelper mScroller;
     private final Paper mPaper = new Paper();
@@ -569,6 +571,7 @@ public class SlotView extends GLView {
             return mVisibleEnd;
         }
 
+        // 根据x,y查找相册的index
         public int getSlotIndexByPosition(float x, float y) {
             int absoluteX = Math.round(x) + (WIDE ? mScrollPosition : 0);
             int absoluteY = Math.round(y) + (WIDE ? 0 : mScrollPosition);

@@ -47,6 +47,7 @@ import com.android.gallery3d.util.ThreadPool.Job;
 import com.android.gallery3d.util.ThreadPool.JobContext;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ActionModeHandler implements Callback, PopupList.OnPopupItemClickListener {
 
@@ -263,7 +264,7 @@ public class ActionModeHandler implements Callback, PopupList.OnPopupItemClickLi
     }
 
     private ArrayList<MediaObject> getSelectedMediaObjects(JobContext jc) {
-        ArrayList<Path> unexpandedPaths = mSelectionManager.getSelected(false);
+        List<Path> unexpandedPaths = mSelectionManager.getSelected(false);
         if (unexpandedPaths.isEmpty()) {
             // This happens when starting selection mode from overflow menu
             // (instead of long press a media object)
@@ -318,7 +319,7 @@ public class ActionModeHandler implements Callback, PopupList.OnPopupItemClickLi
     // Share intent needs to expand the selection set so we can get URI of
     // each media item
     private Intent computePanoramaSharingIntent(JobContext jc, int maxItems) {
-        ArrayList<Path> expandedPaths = mSelectionManager.getSelected(true, maxItems);
+        List<Path> expandedPaths = mSelectionManager.getSelected(true, maxItems);
         if (expandedPaths == null || expandedPaths.size() == 0) {
             return new Intent();
         }
@@ -348,7 +349,7 @@ public class ActionModeHandler implements Callback, PopupList.OnPopupItemClickLi
     }
 
     private Intent computeSharingIntent(JobContext jc, int maxItems) {
-        ArrayList<Path> expandedPaths = mSelectionManager.getSelected(true, maxItems);
+        List<Path> expandedPaths = mSelectionManager.getSelected(true, maxItems);
         if (expandedPaths == null || expandedPaths.size() == 0) {
             setNfcBeamPushUris(null);
             return new Intent();

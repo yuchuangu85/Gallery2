@@ -121,8 +121,7 @@ public abstract class MediaObject {
     }
 
     public MediaDetails getDetails() {
-        MediaDetails details = new MediaDetails();
-        return details;
+        return new MediaDetails();
     }
 
     public long getDataVersion() {

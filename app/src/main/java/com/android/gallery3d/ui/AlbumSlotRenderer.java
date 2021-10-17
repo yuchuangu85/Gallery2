@@ -31,7 +31,7 @@ public class AlbumSlotRenderer extends AbstractSlotRenderer {
     private static final String TAG = "AlbumView";
 
     public interface SlotFilter {
-        public boolean acceptSlot(int index);
+        boolean acceptSlot(int index);
     }
 
     private final int mPlaceholderColor;
@@ -51,7 +51,7 @@ public class AlbumSlotRenderer extends AbstractSlotRenderer {
     private SlotFilter mSlotFilter;
 
     public AlbumSlotRenderer(AbstractGalleryActivity activity, SlotView slotView,
-            SelectionManager selectionManager, int placeholderColor) {
+                             SelectionManager selectionManager, int placeholderColor) {
         super(activity);
         mActivity = activity;
         mSlotView = slotView;
@@ -137,7 +137,7 @@ public class AlbumSlotRenderer extends AbstractSlotRenderer {
     }
 
     private int renderOverlay(GLCanvas canvas, int index,
-            AlbumSlidingWindow.AlbumEntry entry, int width, int height) {
+                              AlbumSlidingWindow.AlbumEntry entry, int width, int height) {
         int renderRequestFlags = 0;
         if (mPressedIndex == index) {
             if (mAnimatePressedUp) {

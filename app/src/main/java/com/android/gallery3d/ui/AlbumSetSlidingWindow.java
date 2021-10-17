@@ -42,6 +42,7 @@ public class AlbumSetSlidingWindow implements AlbumSetDataLoader.DataListener {
 
     public static interface Listener {
         public void onSizeChanged(int size);
+
         public void onContentChanged();
     }
 
@@ -92,7 +93,7 @@ public class AlbumSetSlidingWindow implements AlbumSetDataLoader.DataListener {
     }
 
     public AlbumSetSlidingWindow(AbstractGalleryActivity activity,
-            AlbumSetDataLoader source, AlbumSetSlotRenderer.LabelSpec labelSpec, int cacheSize) {
+                                 AlbumSetDataLoader source, AlbumSetSlotRenderer.LabelSpec labelSpec, int cacheSize) {
         source.setModelListener(this);
         mSource = source;
         mData = new AlbumSetEntry[cacheSize];
@@ -192,7 +193,7 @@ public class AlbumSetSlidingWindow implements AlbumSetDataLoader.DataListener {
     private void requestNonactiveImages() {
         int range = Math.max(
                 mContentEnd - mActiveEnd, mActiveStart - mContentStart);
-        for (int i = 0 ;i < range; ++i) {
+        for (int i = 0; i < range; ++i) {
             requestImagesInSlot(mActiveEnd + i);
             requestImagesInSlot(mActiveStart - 1 - i);
         }
@@ -201,7 +202,7 @@ public class AlbumSetSlidingWindow implements AlbumSetDataLoader.DataListener {
     private void cancelNonactiveImages() {
         int range = Math.max(
                 mContentEnd - mActiveEnd, mActiveStart - mContentStart);
-        for (int i = 0 ;i < range; ++i) {
+        for (int i = 0; i < range; ++i) {
             cancelImagesInSlot(mActiveEnd + i);
             cancelImagesInSlot(mActiveStart - 1 - i);
         }
@@ -370,7 +371,7 @@ public class AlbumSetSlidingWindow implements AlbumSetDataLoader.DataListener {
         if (index < mContentStart || index >= mContentEnd) {
             Log.w(TAG, String.format(
                     "invalid update: %s is outside (%s, %s)",
-                    index, mContentStart, mContentEnd) );
+                    index, mContentStart, mContentEnd));
             return;
         }
 
@@ -413,12 +414,12 @@ public class AlbumSetSlidingWindow implements AlbumSetDataLoader.DataListener {
         updateAllImageRequests();
     }
 
-    private static interface EntryUpdater {
-        public void updateEntry();
+    private interface EntryUpdater {
+        void updateEntry();
     }
 
     private class AlbumCoverLoader extends BitmapLoader implements EntryUpdater {
-        private MediaItem mMediaItem;
+        private final MediaItem mMediaItem;
         private final int mSlotIndex;
 
         public AlbumCoverLoader(int slotIndex, MediaItem item) {

@@ -26,7 +26,6 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
-import androidx.print.PrintHelper;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -44,6 +43,9 @@ import com.android.gallery3d.util.ThreadPool.Job;
 import com.android.gallery3d.util.ThreadPool.JobContext;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import androidx.print.PrintHelper;
 
 public class MenuExecutor {
     private static final String TAG = "MenuExecutor";
@@ -212,7 +214,7 @@ public class MenuExecutor {
     }
 
     private Path getSingleSelectedPath() {
-        ArrayList<Path> ids = mSelectionManager.getSelected(true);
+        List<Path> ids = mSelectionManager.getSelected(true);
         Utils.assertTrue(ids.size() == 1);
         return ids.get(0);
     }
@@ -332,7 +334,7 @@ public class MenuExecutor {
 
     public void startAction(int action, int title, ProgressListener listener,
             boolean waitOnStop, boolean showDialog) {
-        ArrayList<Path> ids = mSelectionManager.getSelected(false);
+        List<Path> ids = mSelectionManager.getSelected(false);
         stopTaskAndDismissDialog();
 
         Activity activity = mActivity;
@@ -411,11 +413,11 @@ public class MenuExecutor {
     }
 
     private class MediaOperation implements Job<Void> {
-        private final ArrayList<Path> mItems;
+        private final List<Path> mItems;
         private final int mOperation;
         private final ProgressListener mListener;
 
-        public MediaOperation(int operation, ArrayList<Path> items,
+        public MediaOperation(int operation, List<Path> items,
                 ProgressListener listener) {
             mOperation = operation;
             mItems = items;

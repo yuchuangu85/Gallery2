@@ -133,6 +133,7 @@ public class AlbumSetDataLoader {
 
     public void resume() {
         mSource.addContentListener(mSourceListener);
+        // start load data
         mReloadTask = new ReloadTask();
         mReloadTask.start();
     }

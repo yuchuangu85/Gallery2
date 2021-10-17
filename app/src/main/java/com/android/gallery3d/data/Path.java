@@ -39,7 +39,7 @@ public class Path {
     public Path getChild(String segment) {
         synchronized (Path.class) {
             if (mChildren == null) {
-                mChildren = new IdentityCache<String, Path>();
+                mChildren = new IdentityCache<>();
             } else {
                 Path p = mChildren.get(segment);
                 if (p != null) return p;
@@ -68,7 +68,7 @@ public class Path {
     public void setObject(MediaObject object) {
         synchronized (Path.class) {
             Utils.assertTrue(mObject == null || mObject.get() == null);
-            mObject = new WeakReference<MediaObject>(object);
+            mObject = new WeakReference<>(object);
         }
     }
 
@@ -84,9 +84,9 @@ public class Path {
         synchronized (Path.class) {
             StringBuilder sb = new StringBuilder();
             String[] segments = split();
-            for (int i = 0; i < segments.length; i++) {
+            for (String segment : segments) {
                 sb.append("/");
-                sb.append(segments[i]);
+                sb.append(segment);
             }
             return sb.toString();
         }
@@ -129,7 +129,7 @@ public class Path {
         if (s.charAt(0) != '/') {
             throw new RuntimeException("malformed path:" + s);
         }
-        ArrayList<String> segments = new ArrayList<String>();
+        ArrayList<String> segments = new ArrayList<>();
         int i = 1;
         while (i < n) {
             int brace = 0;
@@ -158,7 +158,7 @@ public class Path {
         if (s.charAt(0) != '{' || s.charAt(n-1) != '}') {
             throw new RuntimeException("bad sequence: " + s);
         }
-        ArrayList<String> segments = new ArrayList<String>();
+        ArrayList<String> segments = new ArrayList<>();
         int i = 1;
         while (i < n - 1) {
             int brace = 0;

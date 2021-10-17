@@ -49,7 +49,7 @@ import com.android.gallery3d.util.GalleryUtils;
 import com.android.gallery3d.util.ThreadPool.Job;
 import com.android.gallery3d.util.ThreadPool.JobContext;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class ManageCachePage extends ActivityState implements
         SelectionManager.SelectionListener, MenuExecutor.ProgressListener,
@@ -329,7 +329,7 @@ public class ManageCachePage extends ActivityState implements
         GLRoot root = mActivity.getGLRoot();
         root.lockRenderThread();
         try {
-            ArrayList<Path> ids = mSelectionManager.getSelected(false);
+            List<Path> ids = mSelectionManager.getSelected(false);
             if (ids.size() == 0) {
                 onBackPressed();
                 return;
