@@ -459,6 +459,7 @@ public class AlbumSetPage extends ActivityState implements
 
         // Set the reload bit here to prevent it exit this page in clearLoadingBit().
         setLoadingBit(BIT_LOADING_RELOAD);
+        // start load data
         mAlbumSetDataAdapter.resume();
 
         mAlbumSetView.resume();

@@ -26,28 +26,39 @@ public interface GLRoot {
 
     // Listener will be called when GL is idle AND before each frame.
     // Mainly used for uploading textures.
-    public static interface OnGLIdleListener {
-        public boolean onGLIdle(
-                GLCanvas canvas, boolean renderRequested);
+    interface OnGLIdleListener {
+        boolean onGLIdle(GLCanvas canvas, boolean renderRequested);
     }
 
-    public void addOnGLIdleListener(OnGLIdleListener listener);
-    public void registerLaunchedAnimation(CanvasAnimation animation);
-    public void requestRenderForced();
-    public void requestRender();
-    public void requestLayoutContentPane();
+    void addOnGLIdleListener(OnGLIdleListener listener);
 
-    public void lockRenderThread();
-    public void unlockRenderThread();
+    void registerLaunchedAnimation(CanvasAnimation animation);
 
-    public void setContentPane(GLView content);
-    public void setOrientationSource(OrientationSource source);
-    public int getDisplayRotation();
-    public int getCompensation();
-    public Matrix getCompensationMatrix();
-    public void freeze();
-    public void unfreeze();
-    public void setLightsOutMode(boolean enabled);
+    void requestRenderForced();
 
-    public Context getContext();
+    void requestRender();
+
+    void requestLayoutContentPane();
+
+    void lockRenderThread();
+
+    void unlockRenderThread();
+
+    void setContentPane(GLView content);
+
+    void setOrientationSource(OrientationSource source);
+
+    int getDisplayRotation();
+
+    int getCompensation();
+
+    Matrix getCompensationMatrix();
+
+    void freeze();
+
+    void unfreeze();
+
+    void setLightsOutMode(boolean enabled);
+
+    Context getContext();
 }

@@ -168,7 +168,7 @@ abstract public class ActivityState {
     }
 
     protected void transitionOnNextPause(Class<? extends ActivityState> outgoing,
-            Class<? extends ActivityState> incoming, StateTransitionAnimation.Transition hint) {
+                                         Class<? extends ActivityState> incoming, StateTransitionAnimation.Transition hint) {
         if (outgoing == SinglePhotoPage.class && incoming == AlbumPage.class) {
             mNextTransition = StateTransitionAnimation.Transition.Outgoing;
         } else if (outgoing == AlbumPage.class && incoming == SinglePhotoPage.class) {
@@ -185,7 +185,7 @@ abstract public class ActivityState {
 
     protected void onPause() {
         if (0 != (mFlags & FLAG_SCREEN_ON_WHEN_PLUGGED)) {
-            ((Activity) mActivity).unregisterReceiver(mPowerIntentReceiver);
+            mActivity.unregisterReceiver(mPowerIntentReceiver);
         }
         if (mNextTransition != StateTransitionAnimation.Transition.None) {
             mActivity.getTransitionStore().put(KEY_TRANSITION_IN, mNextTransition);
@@ -238,10 +238,10 @@ abstract public class ActivityState {
 
     // a subclass of ActivityState should override the method to resume itself
     protected void onResume() {
-        RawTexture fade = mActivity.getTransitionStore().get(
-                PreparePageFadeoutTexture.KEY_FADE_TEXTURE);
-        mNextTransition = mActivity.getTransitionStore().get(
-                KEY_TRANSITION_IN, StateTransitionAnimation.Transition.None);
+        RawTexture fade = mActivity.getTransitionStore()
+                .get(PreparePageFadeoutTexture.KEY_FADE_TEXTURE);
+        mNextTransition = mActivity.getTransitionStore()
+                .get(KEY_TRANSITION_IN, StateTransitionAnimation.Transition.None);
         if (mNextTransition != StateTransitionAnimation.Transition.None) {
             mIntroAnimation = new StateTransitionAnimation(mNextTransition, fade);
             mNextTransition = StateTransitionAnimation.Transition.None;

@@ -26,8 +26,10 @@ import com.android.gallery3d.data.MediaItem;
 import com.android.gallery3d.data.MediaObject;
 import com.android.gallery3d.data.MediaSet;
 import com.android.gallery3d.data.Path;
+import com.android.gallery3d.ui.GLRoot;
 import com.android.gallery3d.ui.SynchronizedHandler;
 
+import java.lang.ref.SoftReference;
 import java.util.Arrays;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -45,9 +47,10 @@ public class AlbumSetDataLoader {
     private static final int MSG_LOAD_FINISH = 2;
     private static final int MSG_RUN_OBJECT = 3;
 
-    public static interface DataListener {
-        public void onContentChanged(int index);
-        public void onSizeChanged(int size);
+    public interface DataListener {
+        void onContentChanged(int index);
+
+        void onSizeChanged(int size);
     }
 
     private final MediaSet[] mData;
@@ -74,8 +77,43 @@ public class AlbumSetDataLoader {
 
     private final MySourceListener mSourceListener = new MySourceListener();
 
+    private static class AlbumSetDataLoaderHandler extends SynchronizedHandler {
+        SoftReference<AlbumSetDataLoader> mLoaderSoftReference;
+
+        public AlbumSetDataLoaderHandler(AlbumSetDataLoader albumSetDataLoader, GLRoot root) {
+            super(root);
+            mLoaderSoftReference = new SoftReference<>(albumSetDataLoader);
+        }
+
+        @Override
+        public void handleMessage(Message message) {
+            switch (message.what) {
+                case MSG_RUN_OBJECT:
+                    ((Runnable) message.obj).run();
+                    return;
+                case MSG_LOAD_START:
+                    if (mLoaderSoftReference != null && mLoaderSoftReference.get() != null) {
+                        if (mLoaderSoftReference.get().mLoadingListener != null) {
+                            mLoaderSoftReference.get().mLoadingListener.onLoadingStarted();
+                        }
+                    }
+                    return;
+                case MSG_LOAD_FINISH:
+                    if (mLoaderSoftReference != null && mLoaderSoftReference.get() != null) {
+                        if (mLoaderSoftReference.get().mLoadingListener != null) {
+                            mLoaderSoftReference.get().mLoadingListener.onLoadingFinished(false);
+                        }
+                    }
+                    return;
+                default:
+                    break;
+            }
+        }
+    }
+
     public AlbumSetDataLoader(AbstractGalleryActivity activity, MediaSet albumSet, int cacheSize) {
         mSource = Utils.checkNotNull(albumSet);
+        Log.i(TAG, "AlbumSetDataLoader#mSource: " + mSource);
         mCoverItem = new MediaItem[cacheSize];
         mData = new MediaSet[cacheSize];
         mTotalCount = new int[cacheSize];
@@ -83,23 +121,7 @@ public class AlbumSetDataLoader {
         mSetVersion = new long[cacheSize];
         Arrays.fill(mItemVersion, MediaObject.INVALID_DATA_VERSION);
         Arrays.fill(mSetVersion, MediaObject.INVALID_DATA_VERSION);
-
-        mMainHandler = new SynchronizedHandler(activity.getGLRoot()) {
-            @Override
-            public void handleMessage(Message message) {
-                switch (message.what) {
-                    case MSG_RUN_OBJECT:
-                        ((Runnable) message.obj).run();
-                        return;
-                    case MSG_LOAD_START:
-                        if (mLoadingListener != null) mLoadingListener.onLoadingStarted();
-                        return;
-                    case MSG_LOAD_FINISH:
-                        if (mLoadingListener != null) mLoadingListener.onLoadingFinished(false);
-                        return;
-                }
-            }
-        };
+        mMainHandler = new AlbumSetDataLoaderHandler(this, activity.getGLRoot());
     }
 
     public void pause() {
@@ -195,7 +217,9 @@ public class AlbumSetDataLoader {
     }
 
     public void setActiveWindow(int start, int end) {
-        if (start == mActiveStart && end == mActiveEnd) return;
+        if (start == mActiveStart && end == mActiveEnd) {
+            return;
+        }
 
         Utils.assertTrue(start <= end
                 && end - start <= mCoverItem.length && end <= mSize);
@@ -250,11 +274,13 @@ public class AlbumSetDataLoader {
         }
 
         private int getInvalidIndex(long version) {
-            long setVersion[] = mSetVersion;
+            long[] setVersion = mSetVersion;
             int length = setVersion.length;
             for (int i = mContentStart, n = mContentEnd; i < n; ++i) {
                 int index = i % length;
-                if (setVersion[i % length] != version) return i;
+                if (setVersion[i % length] != version) {
+                    return i;
+                }
             }
             return INDEX_NONE;
         }
@@ -287,22 +313,29 @@ public class AlbumSetDataLoader {
             mSourceVersion = info.version;
             if (mSize != info.size) {
                 mSize = info.size;
-                if (mDataListener != null) mDataListener.onSizeChanged(mSize);
-                if (mContentEnd > mSize) mContentEnd = mSize;
-                if (mActiveEnd > mSize) mActiveEnd = mSize;
+                if (mDataListener != null) {
+                    mDataListener.onSizeChanged(mSize);
+                }
+                if (mContentEnd > mSize) {
+                    mContentEnd = mSize;
+                }
+                if (mActiveEnd > mSize) {
+                    mActiveEnd = mSize;
+                }
             }
             // Note: info.index could be INDEX_NONE, i.e., -1
             if (info.index >= mContentStart && info.index < mContentEnd) {
                 int pos = info.index % mCoverItem.length;
                 mSetVersion[pos] = info.version;
                 long itemVersion = info.item.getDataVersion();
-                if (mItemVersion[pos] == itemVersion) return null;
+                if (mItemVersion[pos] == itemVersion) {
+                    return null;
+                }
                 mItemVersion[pos] = itemVersion;
                 mData[pos] = info.item;
                 mCoverItem[pos] = info.cover;
                 mTotalCount[pos] = info.totalCount;
-                if (mDataListener != null
-                        && info.index >= mActiveStart && info.index < mActiveEnd) {
+                if (mDataListener != null && info.index >= mActiveStart && info.index < mActiveEnd) {
                     mDataListener.onContentChanged(info.index);
                 }
             }
@@ -311,9 +344,8 @@ public class AlbumSetDataLoader {
     }
 
     private <T> T executeAndWait(Callable<T> callable) {
-        FutureTask<T> task = new FutureTask<T>(callable);
-        mMainHandler.sendMessage(
-                mMainHandler.obtainMessage(MSG_RUN_OBJECT, task));
+        FutureTask<T> task = new FutureTask<>(callable);
+        mMainHandler.sendMessage(mMainHandler.obtainMessage(MSG_RUN_OBJECT, task));
         try {
             return task.get();
         } catch (InterruptedException e) {
@@ -337,24 +369,30 @@ public class AlbumSetDataLoader {
 
         @Override
         public void run() {
+            Log.i(TAG, "ReloadTask#run");
             Process.setThreadPriority(Process.THREAD_PRIORITY_BACKGROUND);
 
             boolean updateComplete = false;
             while (mActive) {
                 synchronized (this) {
                     if (mActive && !mDirty && updateComplete) {
-                        if (!mSource.isLoading()) updateLoading(false);
+                        if (!mSource.isLoading()) {
+                            updateLoading(false);
+                        }
                         Utils.waitWithoutInterrupt(this);
                         continue;
                     }
                 }
                 mDirty = false;
+                // start loading
                 updateLoading(true);
 
                 long version = mSource.reload();
                 UpdateInfo info = executeAndWait(new GetUpdateInfo(version));
-                updateComplete = info == null;
-                if (updateComplete) continue;
+                updateComplete = (info == null);
+                if (updateComplete) {
+                    continue;
+                }
                 if (info.version != version) {
                     info.version = version;
                     info.size = mSource.getSubMediaSetCount();
@@ -369,7 +407,9 @@ public class AlbumSetDataLoader {
                 }
                 if (info.index != INDEX_NONE) {
                     info.item = mSource.getSubMediaSet(info.index);
-                    if (info.item == null) continue;
+                    if (info.item == null) {
+                        continue;
+                    }
                     info.cover = info.item.getCoverMediaItem();
                     info.totalCount = info.item.getTotalMediaItemCount();
                 }

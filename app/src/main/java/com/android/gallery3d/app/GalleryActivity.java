@@ -169,7 +169,7 @@ public final class GalleryActivity extends AbstractGalleryActivity implements On
     }
 
     private void startViewAction(Intent intent) {
-        Boolean slideshow = intent.getBooleanExtra(EXTRA_SLIDESHOW, false);
+        boolean slideshow = intent.getBooleanExtra(EXTRA_SLIDESHOW, false);
         if (slideshow) {
             getActionBar().hide();
             DataManager manager = getDataManager();

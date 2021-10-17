@@ -17,11 +17,12 @@
 package com.android.gallery3d.app;
 
 public interface LoadingListener {
-    public void onLoadingStarted();
+    void onLoadingStarted();
+
     /**
      * Called when loading is complete or no further progress can be made.
      *
      * @param loadingFailed true if data source cannot provide requested data
      */
-    public void onLoadingFinished(boolean loadingFailed);
+    void onLoadingFinished(boolean loadingFailed);
 }

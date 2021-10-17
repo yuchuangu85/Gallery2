@@ -101,8 +101,8 @@ public class Path {
         synchronized (Path.class) {
             String[] segments = split(s);
             Path current = sRoot;
-            for (int i = 0; i < segments.length; i++) {
-                current = current.getChild(segments[i]);
+            for (String segment : segments) {
+                current = current.getChild(segment);
             }
             return current;
         }
