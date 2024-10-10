@@ -16,16 +16,8 @@
 
 package com.android.gallery3d.filtershow.pipeline;
 
-import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.renderscript.Allocation;
-import android.renderscript.RenderScript;
 
 public interface PipelineInterface {
     public String getName();
-    public Resources getResources();
-    public Allocation getInPixelsAllocation();
-    public Allocation getOutPixelsAllocation();
-    public boolean prepareRenderscriptAllocations(Bitmap bitmap);
-    public RenderScript getRSContext();
 }

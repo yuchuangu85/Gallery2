@@ -46,7 +46,7 @@ void JNIFUNCF(ImageFilterEdge, nativeApplyFilter, jobject bitmap, jint width, ji
     // set initial buffer to black
     memset(buf, 0, buf_len * sizeof(char));
     for (j = 3; j < buf_len; j+=4) {
-        *(buf + j) = 255;  // set initial alphas
+        *(buf + j) = (uint8_t) 255;  // set initial alphas
     }
 
     // apply sobel filter
@@ -120,7 +120,7 @@ void JNIFUNCF(ImageFilterEdge, nativeApplyFilter, jobject bitmap, jint width, ji
     int last_row = row_stride * (height - 1);
     memset((dst + last_row), 0, row_stride * sizeof(char));
     for (j = 3; j < row_stride; j+=4) {
-        *(dst + last_row + j) = 255;  // set alphas
+        *(dst + last_row + j) = (uint8_t) 255;  // set alphas
     }
     AndroidBitmap_unlockPixels(env, bitmap);
 }

@@ -1,23 +1,22 @@
-# Gallery2-7.1.2-r6
+# Gellery2
 
-## 分支
-* master (Gallery2-11-r33)
-* Gallery2-7.1.2-r6
-* dev 开发分支，优化布局以及增加图片处理功能。
+> base android15-s1-release
 
-## 说明：
-1. Gallery2-7.1.2-r6分支编译不支持Android studio，只支持eclipse和Intellij idea开发。
-master和dev分支已经切换到Gallery2-11-r33版本，并且支持Android studio开发
+## 编译说明
+1.原生代码编译不支持Gradle编译，这里进行了修改，支持Android studio编译。
 
-2.由于未加入动态权限，编译需在sdk<23的版本下编译。
+2.jni_libjpeg_turbo代码来源
+* 原生方案
+  * http://www.ijg.org/files/ 
+  * http://libjpeg.sourceforge.net/
 
-3.jni_jpegstream代码来源
-* http://www.ijg.org/files/
-* http://libjpeg.sourceforge.net/
-* https://github.com/libjpeg-turbo/libjpeg-turbo：替代方案
-* https://gitee.com/floatWind/Gallery2  参考项目
+* 替代方案
+编译jni_jpegstream时需要依赖libjpeg.a和libturbojpeg.a两个静态库，需要使用下面库根据对应教程编译生成，当前已经编译放到了jniLibs里面
+  * https://github.com/libjpeg-turbo/libjpeg-turbo
+  * https://blog.csdn.net/unonoi/article/details/121386689 -- 编译
 
-4. jniLibs-backup为备用
+
+3.jniLibs-backup为备用
 
 ## 流程图和数据结构图
 
@@ -27,4 +26,3 @@ master和dev分支已经切换到Gallery2-11-r33版本，并且支持Android stu
 <img src="/img/Gallery_data.jpg"/> 
 <img src="/img/DataManager.jpg"/> 
 <img src="/img/GalleryStart.jpg"/>
-

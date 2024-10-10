@@ -299,7 +299,7 @@ public class CropView extends View {
         mScreenBounds = new RectF(0, 0, canvas.getWidth(), canvas.getHeight());
         mScreenBounds.inset(mMargin, mMargin);
 
-        // If crop object doesn't exist, create it and update it from master
+        // If crop object doesn't exist, create it and update it from primary
         // state
         if (mCropObj == null) {
             reset();
@@ -310,8 +310,8 @@ public class CropView extends View {
         if (mDisplayMatrix == null || mDisplayMatrixInverse == null) {
             mDisplayMatrix = new Matrix();
             mDisplayMatrix.reset();
-            if (!CropDrawingUtils.setImageToScreenMatrix(mDisplayMatrix, mImageBounds, mScreenBounds,
-                    mRotation)) {
+            if (!CropDrawingUtils.setImageToScreenMatrix(
+                        mDisplayMatrix, mImageBounds, mScreenBounds, mRotation)) {
                 Log.w(LOGTAG, "failed to get screen matrix");
                 mDisplayMatrix = null;
                 return;
@@ -371,7 +371,8 @@ public class CropView extends View {
                         mSpotX, mSpotY, wpPaint, p);
             }
             CropDrawingUtils.drawIndicators(canvas, mCropIndicator, mIndicatorSize,
-                    mScreenCropBounds, mCropObj.isFixedAspect(), decode(mCropObj.getSelectState(), mRotation));
+                    mScreenCropBounds, mCropObj.isFixedAspect(),
+                    decode(mCropObj.getSelectState(), mRotation));
         }
 
     }

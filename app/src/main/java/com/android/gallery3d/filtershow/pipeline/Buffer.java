@@ -18,30 +18,19 @@ package com.android.gallery3d.filtershow.pipeline;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.renderscript.Allocation;
-import android.renderscript.RenderScript;
 import android.util.Log;
 import com.android.gallery3d.filtershow.cache.BitmapCache;
-import com.android.gallery3d.filtershow.imageshow.MasterImage;
+import com.android.gallery3d.filtershow.imageshow.PrimaryImage;
 
 public class Buffer {
     private static final String LOGTAG = "Buffer";
     private Bitmap mBitmap;
-    private Allocation mAllocation;
-    private boolean mUseAllocation = false;
     private ImagePreset mPreset;
 
     public Buffer(Bitmap bitmap) {
-        RenderScript rs = CachingPipeline.getRenderScriptContext();
         if (bitmap != null) {
-            BitmapCache cache = MasterImage.getImage().getBitmapCache();
+            BitmapCache cache = PrimaryImage.getImage().getBitmapCache();
             mBitmap = cache.getBitmapCopy(bitmap, BitmapCache.PREVIEW_CACHE);
-        }
-        if (mUseAllocation) {
-            // TODO: recreate the allocation when the RS context changes
-            mAllocation = Allocation.createFromBitmap(rs, mBitmap,
-                    Allocation.MipmapControl.MIPMAP_NONE,
-                    Allocation.USAGE_SHARED | Allocation.USAGE_SCRIPT);
         }
     }
 
@@ -65,14 +54,7 @@ public class Buffer {
         return mBitmap;
     }
 
-    public Allocation getAllocation() {
-        return mAllocation;
-    }
-
     public void sync() {
-        if (mUseAllocation) {
-            mAllocation.copyTo(mBitmap);
-        }
     }
 
     public ImagePreset getPreset() {
@@ -88,10 +70,9 @@ public class Buffer {
     }
 
     public void remove() {
-        BitmapCache cache = MasterImage.getImage().getBitmapCache();
+        BitmapCache cache = PrimaryImage.getImage().getBitmapCache();
         if (cache.cache(mBitmap)) {
             mBitmap = null;
         }
     }
 }
-

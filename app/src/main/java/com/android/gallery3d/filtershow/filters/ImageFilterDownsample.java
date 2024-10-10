@@ -22,7 +22,7 @@ import android.graphics.Rect;
 
 import com.android.gallery3d.R;
 import com.android.gallery3d.filtershow.cache.ImageLoader;
-import com.android.gallery3d.filtershow.imageshow.MasterImage;
+import com.android.gallery3d.filtershow.imageshow.PrimaryImage;
 
 public class ImageFilterDownsample extends SimpleImageFilter {
     private static final String SERIALIZATION_NAME = "DOWNSAMPLE";
@@ -59,7 +59,7 @@ public class ImageFilterDownsample extends SimpleImageFilter {
         int p = getParameters().getValue();
 
         // size of original precached image
-        Rect size = MasterImage.getImage().getOriginalBounds();
+        Rect size = PrimaryImage.getImage().getOriginalBounds();
         int orig_w = size.width();
         int orig_h = size.height();
 

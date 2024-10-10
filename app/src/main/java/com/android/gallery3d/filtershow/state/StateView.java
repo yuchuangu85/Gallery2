@@ -26,7 +26,7 @@ import com.android.gallery3d.R;
 import com.android.gallery3d.filtershow.FilterShowActivity;
 import com.android.gallery3d.filtershow.category.SwipableView;
 import com.android.gallery3d.filtershow.filters.FilterRepresentation;
-import com.android.gallery3d.filtershow.imageshow.MasterImage;
+import com.android.gallery3d.filtershow.imageshow.PrimaryImage;
 import com.android.gallery3d.filtershow.pipeline.ImagePreset;
 
 public class StateView extends View implements SwipableView {
@@ -314,18 +314,18 @@ public class StateView extends View implements SwipableView {
             mStartTouchY = event.getY();
             mStartTouchX = event.getX();
             if (mType == BEGIN) {
-                MasterImage.getImage().setShowsOriginal(true);
+                PrimaryImage.getImage().setShowsOriginal(true);
             }
         }
         if (event.getActionMasked() == MotionEvent.ACTION_UP
             || event.getActionMasked() == MotionEvent.ACTION_CANCEL) {
             setTranslationX(0);
             setTranslationY(0);
-            MasterImage.getImage().setShowsOriginal(false);
+            PrimaryImage.getImage().setShowsOriginal(false);
             if (mType != BEGIN && event.getActionMasked() == MotionEvent.ACTION_UP) {
                 setSelected(true);
                 FilterRepresentation representation = getState().getFilterRepresentation();
-                MasterImage image = MasterImage.getImage();
+                PrimaryImage image = PrimaryImage.getImage();
                 ImagePreset preset = image != null ? image.getCurrentPreset() : null;
                 if (getTranslationY() == 0
                         && image != null && preset != null

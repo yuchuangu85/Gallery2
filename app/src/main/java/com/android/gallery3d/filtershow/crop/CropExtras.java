@@ -92,7 +92,7 @@ public class CropExtras {
     }
 
     public boolean getSetAsWallpaper() {
-        return mSetAsWallpaper;
+        return false;
     }
 
     public boolean getReturnData() {

@@ -99,7 +99,7 @@ public class IngestActivity extends Activity implements
     setContentView(R.layout.ingest_activity_item_list);
     mGridView = (IngestGridView) findViewById(R.id.ingest_gridview);
     mAdapter = new MtpAdapter(this);
-    mAdapter.registerDataSetObserver(mMasterObserver);
+    mAdapter.registerDataSetObserver(mPrimaryObserver);
     mGridView.setAdapter(mAdapter);
     mGridView.setMultiChoiceModeListener(mMultiChoiceModeListener);
     mGridView.setOnItemClickListener(mOnItemClickListener);
@@ -336,7 +336,7 @@ public class IngestActivity extends Activity implements
     }
   }
 
-  private DataSetObserver mMasterObserver = new DataSetObserver() {
+  private DataSetObserver mPrimaryObserver = new DataSetObserver() {
     @Override
     public void onChanged() {
       if (mPagerAdapter != null) {

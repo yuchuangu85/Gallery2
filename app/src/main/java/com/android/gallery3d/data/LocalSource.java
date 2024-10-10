@@ -269,7 +269,7 @@ class LocalSource extends MediaSource {
 
     @Override
     public void pause() {
-        mClient.close();
+        mClient.release();
         mClient = null;
     }
 }

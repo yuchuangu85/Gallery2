@@ -140,9 +140,9 @@ public class ImageTinyPlanet extends ImageShow {
 
     @Override
     public void onDraw(Canvas canvas) {
-        Bitmap bitmap = MasterImage.getImage().getHighresImage();
+        Bitmap bitmap = PrimaryImage.getImage().getHighresImage();
         if (bitmap == null) {
-            bitmap = MasterImage.getImage().getFilteredImage();
+            bitmap = PrimaryImage.getImage().getFilteredImage();
         }
 
         if (bitmap != null) {

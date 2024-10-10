@@ -27,32 +27,27 @@ import com.android.gallery3d.ui.DetailsAddressResolver.AddressResolvingListener;
 
 public class DetailsHelper {
     private static DetailsAddressResolver sAddressResolver;
-    private final DetailsViewContainer mContainer;
+    private DetailsViewContainer mContainer;
 
     public interface DetailsSource {
-        int size();
-
-        int setIndex();
-
-        MediaDetails getDetails();
+        public int size();
+        public int setIndex();
+        public MediaDetails getDetails();
     }
 
     public interface CloseListener {
-        void onClose();
+        public void onClose();
     }
 
     public interface DetailsViewContainer {
-        void reloadDetails();
-
-        void setCloseListener(CloseListener listener);
-
-        void show();
-
-        void hide();
+        public void reloadDetails();
+        public void setCloseListener(CloseListener listener);
+        public void show();
+        public void hide();
     }
 
     public interface ResolutionResolvingListener {
-        void onResolutionAvailable(int width, int height);
+        public void onResolutionAvailable(int width, int height);
     }
 
     public DetailsHelper(AbstractGalleryActivity activity, GLView rootPane, DetailsSource source) {
@@ -77,7 +72,7 @@ public class DetailsHelper {
     }
 
     public static String resolveAddress(AbstractGalleryActivity activity, double[] latlng,
-                                        AddressResolvingListener listener) {
+            AddressResolvingListener listener) {
         if (sAddressResolver == null) {
             sAddressResolver = new DetailsAddressResolver(activity);
         } else {

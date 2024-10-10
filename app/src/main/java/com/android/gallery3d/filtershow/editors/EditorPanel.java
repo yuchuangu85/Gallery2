@@ -30,7 +30,7 @@ import com.android.gallery3d.R;
 import com.android.gallery3d.filtershow.FilterShowActivity;
 import com.android.gallery3d.filtershow.history.HistoryManager;
 import com.android.gallery3d.filtershow.category.MainPanel;
-import com.android.gallery3d.filtershow.imageshow.MasterImage;
+import com.android.gallery3d.filtershow.imageshow.PrimaryImage;
 import com.android.gallery3d.filtershow.state.StatePanel;
 
 public class EditorPanel extends Fragment {
@@ -53,11 +53,11 @@ public class EditorPanel extends Fragment {
     }
 
     public void cancelCurrentFilter() {
-        MasterImage masterImage = MasterImage.getImage();
-        HistoryManager adapter = masterImage.getHistory();
+        PrimaryImage primaryImage = PrimaryImage.getImage();
+        HistoryManager adapter = primaryImage.getHistory();
 
         int position = adapter.undo();
-        masterImage.onHistoryItemClick(position);
+        primaryImage.onHistoryItemClick(position);
         ((FilterShowActivity)getActivity()).invalidateViews();
     }
 
@@ -145,7 +145,8 @@ public class EditorPanel extends Fragment {
             StatePanel statePanel = new StatePanel();
             transaction.replace(R.id.state_panel_container, statePanel, StatePanel.FRAGMENT_TAG);
         } else {
-            Fragment statePanel = getChildFragmentManager().findFragmentByTag(StatePanel.FRAGMENT_TAG);
+            Fragment statePanel = getChildFragmentManager().findFragmentByTag(
+                    StatePanel.FRAGMENT_TAG);
             if (child) {
                 statePanel = getFragmentManager().findFragmentByTag(StatePanel.FRAGMENT_TAG);
             }

@@ -27,12 +27,12 @@ import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;
-
+import android.util.Log;
 import com.android.gallery3d.R;
 import com.android.gallery3d.filtershow.FilterShowActivity;
 import com.android.gallery3d.filtershow.filters.FiltersManager;
 import com.android.gallery3d.filtershow.filters.ImageFilter;
-import com.android.gallery3d.filtershow.imageshow.MasterImage;
+import com.android.gallery3d.filtershow.imageshow.PrimaryImage;
 import com.android.gallery3d.filtershow.tools.SaveImage;
 
 import java.io.File;
@@ -214,7 +214,7 @@ public class ProcessingService extends Service {
             mNeedsAlive = false;
             mSaving = true;
             handleSaveRequest(sourceUri, selectedUri, destinationFile, preset,
-                    MasterImage.getImage().getHighresImage(),
+                    PrimaryImage.getImage().getHighresImage(),
                     flatten, quality, sizeFactor, exit);
         }
         return START_REDELIVER_INTENT;
@@ -297,7 +297,6 @@ public class ProcessingService extends Service {
     private void setupPipeline() {
         Resources res = getResources();
         FiltersManager.setResources(res);
-        CachingPipeline.createRenderscriptContext(this);
 
         FiltersManager filtersManager = FiltersManager.getManager();
         filtersManager.addLooks(this);
@@ -315,7 +314,6 @@ public class ProcessingService extends Service {
     private void tearDownPipeline() {
         ImageFilter.resetStatics();
         FiltersManager.reset();
-        CachingPipeline.destroyRenderScriptContext();
     }
 
     static {

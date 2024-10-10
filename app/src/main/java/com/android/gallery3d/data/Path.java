@@ -39,7 +39,7 @@ public class Path {
     public Path getChild(String segment) {
         synchronized (Path.class) {
             if (mChildren == null) {
-                mChildren = new IdentityCache<>();
+                mChildren = new IdentityCache<String, Path>();
             } else {
                 Path p = mChildren.get(segment);
                 if (p != null) return p;
@@ -68,7 +68,7 @@ public class Path {
     public void setObject(MediaObject object) {
         synchronized (Path.class) {
             Utils.assertTrue(mObject == null || mObject.get() == null);
-            mObject = new WeakReference<>(object);
+            mObject = new WeakReference<MediaObject>(object);
         }
     }
 
@@ -84,9 +84,9 @@ public class Path {
         synchronized (Path.class) {
             StringBuilder sb = new StringBuilder();
             String[] segments = split();
-            for (String segment : segments) {
+            for (int i = 0; i < segments.length; i++) {
                 sb.append("/");
-                sb.append(segment);
+                sb.append(segments[i]);
             }
             return sb.toString();
         }
@@ -101,8 +101,8 @@ public class Path {
         synchronized (Path.class) {
             String[] segments = split(s);
             Path current = sRoot;
-            for (String segment : segments) {
-                current = current.getChild(segment);
+            for (int i = 0; i < segments.length; i++) {
+                current = current.getChild(segments[i]);
             }
             return current;
         }
@@ -129,7 +129,7 @@ public class Path {
         if (s.charAt(0) != '/') {
             throw new RuntimeException("malformed path:" + s);
         }
-        ArrayList<String> segments = new ArrayList<>();
+        ArrayList<String> segments = new ArrayList<String>();
         int i = 1;
         while (i < n) {
             int brace = 0;
@@ -158,7 +158,7 @@ public class Path {
         if (s.charAt(0) != '{' || s.charAt(n-1) != '}') {
             throw new RuntimeException("bad sequence: " + s);
         }
-        ArrayList<String> segments = new ArrayList<>();
+        ArrayList<String> segments = new ArrayList<String>();
         int i = 1;
         while (i < n - 1) {
             int brace = 0;

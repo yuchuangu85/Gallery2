@@ -24,7 +24,7 @@ import com.android.gallery3d.R;
 import com.android.gallery3d.filtershow.editors.EditorMirror;
 import com.android.gallery3d.filtershow.editors.ImageOnlyEditor;
 import com.android.gallery3d.filtershow.imageshow.GeometryMathUtils;
-import com.android.gallery3d.filtershow.imageshow.MasterImage;
+import com.android.gallery3d.filtershow.imageshow.PrimaryImage;
 import com.android.gallery3d.filtershow.pipeline.ImagePreset;
 
 import java.io.IOException;
@@ -159,7 +159,8 @@ public class FilterMirrorRepresentation extends FilterRepresentation {
     @Override
     protected void copyAllParameters(FilterRepresentation representation) {
         if (!(representation instanceof FilterMirrorRepresentation)) {
-            throw new IllegalArgumentException("calling copyAllParameters with incompatible types!");
+            throw new IllegalArgumentException(
+                    "calling copyAllParameters with incompatible types!");
         }
         super.copyAllParameters(representation);
         representation.useParametersFrom(this);
@@ -168,7 +169,8 @@ public class FilterMirrorRepresentation extends FilterRepresentation {
     @Override
     public void useParametersFrom(FilterRepresentation a) {
         if (!(a instanceof FilterMirrorRepresentation)) {
-            throw new IllegalArgumentException("calling useParametersFrom with incompatible types!");
+            throw new IllegalArgumentException(
+                    "calling useParametersFrom with incompatible types!");
         }
         setMirror(((FilterMirrorRepresentation) a).getMirror());
     }

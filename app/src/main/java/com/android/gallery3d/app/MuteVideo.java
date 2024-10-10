@@ -24,6 +24,8 @@ import android.os.Handler;
 import android.provider.MediaStore;
 import android.widget.Toast;
 
+import androidx.core.content.FileProvider;
+
 import com.android.gallery3d.R;
 import com.android.gallery3d.data.MediaItem;
 import com.android.gallery3d.util.SaveVideoFileInfo;
@@ -83,7 +85,11 @@ public class MuteVideo {
                             // Show the result only when the activity not
                             // stopped.
                             Intent intent = new Intent(android.content.Intent.ACTION_VIEW);
-                            intent.setDataAndType(Uri.fromFile(mDstFileInfo.mFile), "video/*");
+                            Uri videoUri = FileProvider.getUriForFile(
+                                    mActivity,
+                                    mActivity.getApplicationContext().getPackageName()
+                                            + ".provider", mDstFileInfo.mFile);
+                            intent.setDataAndType(videoUri, "video/*");
                             intent.putExtra(MediaStore.EXTRA_FINISH_ON_COMPLETION, false);
                             mActivity.startActivity(intent);
                         }

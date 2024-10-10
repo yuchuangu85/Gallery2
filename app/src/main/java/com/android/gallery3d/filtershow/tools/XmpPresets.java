@@ -25,7 +25,7 @@ import com.adobe.xmp.XMPMeta;
 import com.adobe.xmp.XMPMetaFactory;
 import com.android.gallery3d.R;
 import com.android.gallery3d.common.Utils;
-import com.android.gallery3d.filtershow.imageshow.MasterImage;
+import com.android.gallery3d.filtershow.imageshow.PrimaryImage;
 import com.android.gallery3d.filtershow.pipeline.ImagePreset;
 import com.android.gallery3d.util.XmpUtilHelper;
 
@@ -89,7 +89,7 @@ public class XmpPresets {
     }
 
     public static XMresults extractXMPData(
-            Context context, MasterImage mMasterImage, Uri uriToEdit) {
+            Context context, PrimaryImage mPrimaryImage, Uri uriToEdit) {
         XMresults ret = new XMresults();
 
         InputStream is = null;

@@ -180,7 +180,7 @@ public class Utils {
     }
 
     public static int compare(long a, long b) {
-        return Long.compare(a, b);
+        return a < b ? -1 : a == b ? 0 : 1;
     }
 
     public static int ceilLog2(float value) {

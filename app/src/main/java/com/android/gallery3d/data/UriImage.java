@@ -37,6 +37,7 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URL;
+import java.util.Locale;
 
 public class UriImage extends MediaItem {
     private static final String TAG = "UriImage";
@@ -91,7 +92,7 @@ public class UriImage extends MediaItem {
     }
 
     private int openOrDownloadInner(JobContext jc) {
-        String scheme = mUri.getScheme();
+        String scheme = mUri.getScheme().toLowerCase(Locale.ENGLISH);
         if (ContentResolver.SCHEME_CONTENT.equals(scheme)
                 || ContentResolver.SCHEME_ANDROID_RESOURCE.equals(scheme)
                 || ContentResolver.SCHEME_FILE.equals(scheme)) {

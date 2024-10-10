@@ -174,6 +174,11 @@ public class VideoUtils {
         retrieverSrc.setDataSource(srcPath);
         String degreesString = retrieverSrc.extractMetadata(
                 MediaMetadataRetriever.METADATA_KEY_VIDEO_ROTATION);
+        try {
+            retrieverSrc.release();
+        } catch (IOException e) {
+            // Ignore errors occurred while releasing the MediaMetadataRetriever.
+        }
         if (degreesString != null) {
             int degrees = Integer.parseInt(degreesString);
             if (degrees >= 0) {

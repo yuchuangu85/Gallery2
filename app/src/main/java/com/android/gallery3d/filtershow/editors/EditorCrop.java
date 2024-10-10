@@ -32,7 +32,7 @@ import com.android.gallery3d.filtershow.FilterShowActivity;
 import com.android.gallery3d.filtershow.filters.FilterCropRepresentation;
 import com.android.gallery3d.filtershow.filters.FilterRepresentation;
 import com.android.gallery3d.filtershow.imageshow.ImageCrop;
-import com.android.gallery3d.filtershow.imageshow.MasterImage;
+import com.android.gallery3d.filtershow.imageshow.PrimaryImage;
 
 public class EditorCrop extends Editor implements EditorInfo {
     public static final String TAG = EditorCrop.class.getSimpleName();
@@ -83,8 +83,8 @@ public class EditorCrop extends Editor implements EditorInfo {
 
     @Override
     public void reflectCurrentFilter() {
-        MasterImage master = MasterImage.getImage();
-        master.setCurrentFilterRepresentation(master.getPreset()
+        PrimaryImage primary = PrimaryImage.getImage();
+        primary.setCurrentFilterRepresentation(primary.getPreset()
                 .getFilterWithSerializationName(FilterCropRepresentation.SERIALIZATION_NAME));
         super.reflectCurrentFilter();
         FilterRepresentation rep = getLocalRepresentation();

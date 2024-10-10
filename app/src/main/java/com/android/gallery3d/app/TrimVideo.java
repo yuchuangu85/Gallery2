@@ -33,6 +33,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import androidx.core.content.FileProvider;
+
 import com.android.gallery3d.R;
 import com.android.gallery3d.util.SaveVideoFileInfo;
 import com.android.gallery3d.util.SaveVideoFileUtils;
@@ -261,7 +263,11 @@ public class TrimVideo extends Activity implements
                             mProgress = null;
                             // Show the result only when the activity not stopped.
                             Intent intent = new Intent(android.content.Intent.ACTION_VIEW);
-                            intent.setDataAndType(Uri.fromFile(mDstFileInfo.mFile), "video/*");
+                            Uri videoUri = FileProvider.getUriForFile(
+                                    TrimVideo.this,
+                                    getApplicationContext().getPackageName()
+                                            + ".provider", mDstFileInfo.mFile);
+                            intent.setDataAndType(videoUri, "video/*");
                             intent.putExtra(MediaStore.EXTRA_FINISH_ON_COMPLETION, false);
                             startActivity(intent);
                             finish();

@@ -31,19 +31,18 @@ public class SlotView extends GLView {
     @SuppressWarnings("unused")
     private static final String TAG = "SlotView";
 
-    // 横向还是纵向显示相册列表
-    private static final boolean WIDE = false;
+    private static final boolean WIDE = true;
     private static final int INDEX_NONE = -1;
 
     public static final int RENDER_MORE_PASS = 1;
     public static final int RENDER_MORE_FRAME = 2;
 
     public interface Listener {
-         void onDown(int index);
-         void onUp(boolean followedByLongPress);
-         void onSingleTapUp(int index);
-         void onLongTap(int index);
-         void onScrollPositionChanged(int position, int total);
+        public void onDown(int index);
+        public void onUp(boolean followedByLongPress);
+        public void onSingleTapUp(int index);
+        public void onLongTap(int index);
+        public void onScrollPositionChanged(int position, int total);
     }
 
     public static class SimpleListener implements Listener {
@@ -54,14 +53,13 @@ public class SlotView extends GLView {
         @Override public void onScrollPositionChanged(int position, int total) {}
     }
 
-    public interface SlotRenderer {
-         void prepareDrawing();
-         void onVisibleRangeChanged(int visibleStart, int visibleEnd);
-         void onSlotSizeChanged(int width, int height);
-         int renderSlot(GLCanvas canvas, int index, int pass, int width, int height);
+    public static interface SlotRenderer {
+        public void prepareDrawing();
+        public void onVisibleRangeChanged(int visibleStart, int visibleEnd);
+        public void onSlotSizeChanged(int width, int height);
+        public int renderSlot(GLCanvas canvas, int index, int pass, int width, int height);
     }
 
-    // 手势监听
     private final GestureDetector mGestureDetector;
     private final ScrollerHelper mScroller;
     private final Paper mPaper = new Paper();
@@ -81,7 +79,7 @@ public class SlotView extends GLView {
 
     private SlotRenderer mRenderer;
 
-    private final int[] mRequestRenderSlots = new int[16];
+    private int[] mRequestRenderSlots = new int[16];
 
     public static final int OVERSCROLL_3D = 0;
     public static final int OVERSCROLL_SYSTEM = 1;
@@ -230,7 +228,7 @@ public class SlotView extends GLView {
         mScroller.setOverfling(kind == OVERSCROLL_SYSTEM);
     }
 
-    private static int[] expandIntArray(int[] array, int capacity) {
+    private static int[] expandIntArray(int array[], int capacity) {
         while (array.length < capacity) {
             array = new int[array.length * 2];
         }
@@ -276,7 +274,7 @@ public class SlotView extends GLView {
         canvas.translate(-mScrollX, -mScrollY);
 
         int requestCount = 0;
-        int[] requestedSlot = expandIntArray(mRequestRenderSlots,
+        int requestedSlot[] = expandIntArray(mRequestRenderSlots,
                 mLayout.mVisibleEnd - mLayout.mVisibleStart);
 
         for (int i = mLayout.mVisibleEnd - 1; i >= mLayout.mVisibleStart; --i) {
@@ -302,7 +300,12 @@ public class SlotView extends GLView {
 
         final UserInteractionListener listener = mUIListener;
         if (mMoreAnimation && !more && listener != null) {
-            mHandler.post(listener::onUserInteractionEnd);
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    listener.onUserInteractionEnd();
+                }
+            });
         }
         mMoreAnimation = more;
     }
@@ -351,7 +354,8 @@ public class SlotView extends GLView {
     }
 
     public static class ScatteringAnimation extends SlotAnimation {
-        private final RelativePosition mCenter;
+        private int PHOTO_DISTANCE = 1000;
+        private RelativePosition mCenter;
 
         public ScatteringAnimation(RelativePosition center) {
             mCenter = center;
@@ -359,7 +363,6 @@ public class SlotView extends GLView {
 
         @Override
         public void apply(GLCanvas canvas, int slotIndex, Rect target) {
-            int PHOTO_DISTANCE = 1000;
             canvas.translate(
                     (mCenter.getX() - target.centerX()) * (1 - mProgress),
                     (mCenter.getY() - target.centerY()) * (1 - mProgress),
@@ -408,8 +411,8 @@ public class SlotView extends GLView {
         private int mContentLength;
         private int mScrollPosition;
 
-        private final IntegerAnimation mVerticalPadding = new IntegerAnimation();
-        private final IntegerAnimation mHorizontalPadding = new IntegerAnimation();
+        private IntegerAnimation mVerticalPadding = new IntegerAnimation();
+        private IntegerAnimation mHorizontalPadding = new IntegerAnimation();
 
         public void setSlotSpec(Spec spec) {
             mSpec = spec;
@@ -571,7 +574,6 @@ public class SlotView extends GLView {
             return mVisibleEnd;
         }
 
-        // 根据x,y查找相册的index
         public int getSlotIndexByPosition(float x, float y) {
             int absoluteX = Math.round(x) + (WIDE ? mScrollPosition : 0);
             int absoluteY = Math.round(y) + (WIDE ? 0 : mScrollPosition);
@@ -611,7 +613,7 @@ public class SlotView extends GLView {
 
         public int getScrollLimit() {
             int limit = WIDE ? mContentLength - mWidth : mContentLength - mHeight;
-            return Math.max(limit, 0);
+            return limit <= 0 ? 0 : limit;
         }
 
         public boolean advanceAnimation(long animTime) {

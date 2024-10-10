@@ -117,7 +117,11 @@ public class LocalVideo extends LocalMediaItem {
     private void parseResolution(String resolution) {
         if (resolution == null) return;
         int m = resolution.indexOf('x');
-        if (m == -1) return;
+        if (m == -1) {
+          // Fix b/216176283 - Handle special character '×' in the resolution.
+          m = resolution.indexOf('×');
+          if (m == -1) return;
+        }
         try {
             int w = Integer.parseInt(resolution.substring(0, m));
             int h = Integer.parseInt(resolution.substring(m + 1));

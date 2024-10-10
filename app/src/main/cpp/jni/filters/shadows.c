@@ -40,7 +40,7 @@ void JNIFUNCF(ImageFilterShadows, nativeApplyFilter, jobject bitmap, jint width,
         poly[i] = fastevalPoly(shadowFilterMap+i*2,2 , s);
     }
 
-    unsigned short * hsv = (unsigned short *)malloc(3*sizeof(short));
+    unsigned short * hsv = (unsigned short *)malloc(3*sizeof(unsigned short));
 
     for (i = 0; i < len; i+=4)
     {

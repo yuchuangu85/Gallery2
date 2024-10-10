@@ -66,9 +66,6 @@
     <item android:id="@+id/action_mute"
             android:title="@string/mute_action"
             android:showAsAction="never" />
-    <item android:id="@+id/action_setas"
-            android:title="@string/set_image"
-            android:showAsAction="never" />
     <item android:id="@+id/action_details"
             android:title="@string/details"
             android:showAsAction="never" />

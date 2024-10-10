@@ -20,8 +20,10 @@ import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.app.ActionBar.OnMenuVisibilityListener;
 import android.app.ActionBar.OnNavigationListener;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.view.LayoutInflater;
@@ -30,18 +32,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.LinearLayout;
 import android.widget.ShareActionProvider;
 import android.widget.TextView;
+import android.widget.TwoLineListItem;
 
 import com.android.gallery3d.R;
 import com.android.gallery3d.common.ApiHelper;
 
 import java.util.ArrayList;
 
-/**
- * 相册的ActionBar
- */
 public class GalleryActionBar implements OnNavigationListener {
     @SuppressWarnings("unused")
     private static final String TAG = "GalleryActionBar";
@@ -49,26 +48,26 @@ public class GalleryActionBar implements OnNavigationListener {
     private ClusterRunner mClusterRunner;
     private CharSequence[] mTitles;
     private ArrayList<Integer> mActions;
-    private final Context mContext;
-    private final LayoutInflater mInflater;
-    private final AbstractGalleryActivity mActivity;
-    private final ActionBar mActionBar;
+    private Context mContext;
+    private LayoutInflater mInflater;
+    private AbstractGalleryActivity mActivity;
+    private ActionBar mActionBar;
     private int mCurrentIndex;
-    private final ClusterAdapter mAdapter = new ClusterAdapter();
+    private ClusterAdapter mAdapter = new ClusterAdapter();
 
     private AlbumModeAdapter mAlbumModeAdapter;
     private OnAlbumModeSelectedListener mAlbumModeListener;
     private int mLastAlbumModeSelected;
-    private CharSequence[] mAlbumModes;
+    private CharSequence [] mAlbumModes;
     public static final int ALBUM_FILMSTRIP_MODE_SELECTED = 0;
     public static final int ALBUM_GRID_MODE_SELECTED = 1;
 
     public interface ClusterRunner {
-        void doCluster(int id);
+        public void doCluster(int id);
     }
 
     public interface OnAlbumModeSelectedListener {
-        void onAlbumModeSelected(int mode);
+        public void onAlbumModeSelected(int mode);
     }
 
     private static class ActionItem {
@@ -80,12 +79,12 @@ public class GalleryActionBar implements OnNavigationListener {
         public int clusterBy;
 
         public ActionItem(int action, boolean applied, boolean enabled, int title,
-                          int clusterBy) {
+                int clusterBy) {
             this(action, applied, enabled, title, title, clusterBy);
         }
 
         public ActionItem(int action, boolean applied, boolean enabled, int spinnerTitle,
-                          int dialogTitle, int clusterBy) {
+                int dialogTitle, int clusterBy) {
             this.action = action;
             this.enabled = enabled;
             this.spinnerTitle = spinnerTitle;
@@ -95,17 +94,17 @@ public class GalleryActionBar implements OnNavigationListener {
         }
     }
 
-    private static final ActionItem[] sClusterItems = new ActionItem[]{
-            new ActionItem(FilterUtils.CLUSTER_BY_ALBUM, true, false, R.string.albums,
-                    R.string.group_by_album),
-            new ActionItem(FilterUtils.CLUSTER_BY_LOCATION, true, false,
-                    R.string.locations, R.string.location, R.string.group_by_location),
-            new ActionItem(FilterUtils.CLUSTER_BY_TIME, true, false, R.string.times,
-                    R.string.time, R.string.group_by_time),
-            new ActionItem(FilterUtils.CLUSTER_BY_FACE, true, false, R.string.people,
-                    R.string.group_by_faces),
-            new ActionItem(FilterUtils.CLUSTER_BY_TAG, true, false, R.string.tags,
-                    R.string.group_by_tags)
+    private static final ActionItem[] sClusterItems = new ActionItem[] {
+        new ActionItem(FilterUtils.CLUSTER_BY_ALBUM, true, false, R.string.albums,
+                R.string.group_by_album),
+        new ActionItem(FilterUtils.CLUSTER_BY_LOCATION, true, false,
+                R.string.locations, R.string.location, R.string.group_by_location),
+        new ActionItem(FilterUtils.CLUSTER_BY_TIME, true, false, R.string.times,
+                R.string.time, R.string.group_by_time),
+        new ActionItem(FilterUtils.CLUSTER_BY_FACE, true, false, R.string.people,
+                R.string.group_by_faces),
+        new ActionItem(FilterUtils.CLUSTER_BY_TAG, true, false, R.string.tags,
+                R.string.group_by_tags)
     };
 
     private class ClusterAdapter extends BaseAdapter {
@@ -159,9 +158,9 @@ public class GalleryActionBar implements OnNavigationListener {
                 convertView = mInflater.inflate(R.layout.action_bar_two_line_text,
                         parent, false);
             }
-            LinearLayout view = (LinearLayout) convertView;
-            ((TextView) view.findViewById(R.id.text1)).setText(mActionBar.getTitle());
-            ((TextView) view.findViewById(R.id.text2)).setText((CharSequence) getItem(position));
+            TwoLineListItem view = (TwoLineListItem) convertView;
+            view.getText1().setText(mActionBar.getTitle());
+            view.getText2().setText((CharSequence) getItem(position));
             return convertView;
         }
 
@@ -190,13 +189,13 @@ public class GalleryActionBar implements OnNavigationListener {
         mActionBar = activity.getActionBar();
         mContext = activity.getAndroidContext();
         mActivity = activity;
-        mInflater = (mActivity).getLayoutInflater();
+        mInflater = ((Activity) mActivity).getLayoutInflater();
         mCurrentIndex = 0;
     }
 
     private void createDialogData() {
         ArrayList<CharSequence> titles = new ArrayList<CharSequence>();
-        mActions = new ArrayList<>();
+        mActions = new ArrayList<Integer>();
         for (ActionItem item : sClusterItems) {
             if (item.enabled && item.visible) {
                 titles.add(mContext.getString(item.dialogTitle));
@@ -268,7 +267,7 @@ public class GalleryActionBar implements OnNavigationListener {
             if (mAlbumModeAdapter == null) {
                 // Initialize the album mode options if they haven't been already
                 Resources res = mActivity.getResources();
-                mAlbumModes = new CharSequence[]{
+                mAlbumModes = new CharSequence[] {
                         res.getString(R.string.switch_photo_filmstrip),
                         res.getString(R.string.switch_photo_grid)};
                 mAlbumModeAdapter = new AlbumModeAdapter();
@@ -295,16 +294,19 @@ public class GalleryActionBar implements OnNavigationListener {
         createDialogData();
         final ArrayList<Integer> actions = mActions;
         new AlertDialog.Builder(mContext).setTitle(R.string.group_by).setItems(
-                mTitles, (dialog, which) -> {
-                    // Need to lock rendering when operations invoked by system UI (main thread) are
-                    // modifying slot data used in GL thread for rendering.
-                    mActivity.getGLRoot().lockRenderThread();
-                    try {
-                        clusterRunner.doCluster(actions.get(which).intValue());
-                    } finally {
-                        mActivity.getGLRoot().unlockRenderThread();
-                    }
-                }).create().show();
+                mTitles, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Need to lock rendering when operations invoked by system UI (main thread) are
+                // modifying slot data used in GL thread for rendering.
+                mActivity.getGLRoot().lockRenderThread();
+                try {
+                    clusterRunner.doCluster(actions.get(which).intValue());
+                } finally {
+                    mActivity.getGLRoot().unlockRenderThread();
+                }
+            }
+        }).create().show();
     }
 
     @TargetApi(ApiHelper.VERSION_CODES.ICE_CREAM_SANDWICH)
@@ -400,18 +402,18 @@ public class GalleryActionBar implements OnNavigationListener {
         MenuItem item = menu.findItem(R.id.action_share_panorama);
         if (item != null) {
             mSharePanoramaActionProvider = (ShareActionProvider)
-                    item.getActionProvider();
+                item.getActionProvider();
             mSharePanoramaActionProvider
-                    .setShareHistoryFileName("panorama_share_history.xml");
+                .setShareHistoryFileName("panorama_share_history.xml");
             mSharePanoramaActionProvider.setShareIntent(mSharePanoramaIntent);
         }
 
         item = menu.findItem(R.id.action_share);
         if (item != null) {
             mShareActionProvider = (ShareActionProvider)
-                    item.getActionProvider();
+                item.getActionProvider();
             mShareActionProvider
-                    .setShareHistoryFileName("share_history.xml");
+                .setShareHistoryFileName("share_history.xml");
             mShareActionProvider.setShareIntent(mShareIntent);
         }
     }
@@ -421,7 +423,7 @@ public class GalleryActionBar implements OnNavigationListener {
     }
 
     public void setShareIntents(Intent sharePanoramaIntent, Intent shareIntent,
-                                ShareActionProvider.OnShareTargetSelectedListener onShareListener) {
+        ShareActionProvider.OnShareTargetSelectedListener onShareListener) {
         mSharePanoramaIntent = sharePanoramaIntent;
         if (mSharePanoramaActionProvider != null) {
             mSharePanoramaActionProvider.setShareIntent(sharePanoramaIntent);
@@ -430,7 +432,7 @@ public class GalleryActionBar implements OnNavigationListener {
         if (mShareActionProvider != null) {
             mShareActionProvider.setShareIntent(shareIntent);
             mShareActionProvider.setOnShareTargetSelectedListener(
-                    onShareListener);
+                onShareListener);
         }
     }
 }

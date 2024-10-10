@@ -28,6 +28,7 @@ import android.provider.MediaStore.Video.VideoColumns;
 import com.android.gallery3d.filtershow.tools.SaveImage.ContentResolverQueryCallback;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -101,7 +102,7 @@ public class SaveVideoFileUtils {
         values.put(Video.Media.DATE_ADDED, nowInSec);
         values.put(Video.Media.DATA, mDstFileInfo.mFile.getAbsolutePath());
         values.put(Video.Media.SIZE, mDstFileInfo.mFile.length());
-        int durationMs = retriveVideoDurationMs(mDstFileInfo.mFile.getPath());
+        int durationMs = retrieveVideoDurationMs(mDstFileInfo.mFile.getPath());
         values.put(Video.Media.DURATION, durationMs);
         // Copy the data taken and location info from src.
         String[] projection = new String[] {
@@ -137,7 +138,7 @@ public class SaveVideoFileUtils {
         return contentResolver.insert(Video.Media.EXTERNAL_CONTENT_URI, values);
     }
 
-    public static int retriveVideoDurationMs(String path) {
+    private static int retrieveVideoDurationMs(String path) {
         int durationMs = 0;
         // Calculate the duration of the destination file.
         MediaMetadataRetriever retriever = new MediaMetadataRetriever();
@@ -147,7 +148,11 @@ public class SaveVideoFileUtils {
         if (duration != null) {
             durationMs = Integer.parseInt(duration);
         }
-        retriever.release();
+        try {
+            retriever.release();
+        } catch (IOException e) {
+            // Ignore errors occurred while releasing the retriever.
+        }
         return durationMs;
     }
 

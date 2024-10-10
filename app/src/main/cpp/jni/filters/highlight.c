@@ -27,7 +27,7 @@ void JNIFUNCF(ImageFilterHighlights, nativeApplyFilter, jobject bitmap,
     int i;
     int len = width * height * 4;
     jfloat* lum = (*env)->GetFloatArrayElements(env, luminanceMap,0);
-    unsigned short * hsv = (unsigned short *)malloc(3*sizeof(short));
+    unsigned short * hsv = (unsigned short *)malloc(3*sizeof(unsigned short));
 
     for (i = 0; i < len; i+=4)
     {

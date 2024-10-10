@@ -101,7 +101,7 @@ import com.android.gallery3d.filtershow.filters.ImageFilter;
 import com.android.gallery3d.filtershow.history.HistoryItem;
 import com.android.gallery3d.filtershow.history.HistoryManager;
 import com.android.gallery3d.filtershow.imageshow.ImageShow;
-import com.android.gallery3d.filtershow.imageshow.MasterImage;
+import com.android.gallery3d.filtershow.imageshow.PrimaryImage;
 import com.android.gallery3d.filtershow.imageshow.Spline;
 import com.android.gallery3d.filtershow.info.InfoPanel;
 import com.android.gallery3d.filtershow.pipeline.CachingPipeline;
@@ -131,7 +131,7 @@ public class FilterShowActivity extends FragmentActivity implements OnItemClickL
         DialogInterface.OnDismissListener, PopupMenu.OnDismissListener{
 
     private String mAction = "";
-    MasterImage mMasterImage = null;
+    PrimaryImage mPrimaryImage = null;
 
     private static final long LIMIT_SUPPORTS_HIGHRES = 134217728; // 128Mb
 
@@ -250,12 +250,12 @@ public class FilterShowActivity extends FragmentActivity implements OnItemClickL
     }
 
     public void updateUIAfterServiceStarted() {
-        MasterImage.setMaster(mMasterImage);
+        PrimaryImage.setPrimary(mPrimaryImage);
         ImageFilter.setActivityForMemoryToasts(this);
         mUserPresetsManager = new UserPresetsManager(this);
         mUserPresetsAdapter = new UserPresetsAdapter(this);
 
-        setupMasterImage();
+        setupPrimaryImage();
         setupMenu();
         setDefaultValues();
         fillEditors();
@@ -310,7 +310,8 @@ public class FilterShowActivity extends FragmentActivity implements OnItemClickL
                 EditorPanel panel = new EditorPanel();
                 panel.setEditor(currentId);
                 FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                transaction.remove(getSupportFragmentManager().findFragmentByTag(MainPanel.FRAGMENT_TAG));
+                transaction.remove(getSupportFragmentManager().findFragmentByTag(
+                        MainPanel.FRAGMENT_TAG));
                 transaction.replace(R.id.main_panel_container, panel, MainPanel.FRAGMENT_TAG);
                 transaction.commit();
             }
@@ -318,7 +319,8 @@ public class FilterShowActivity extends FragmentActivity implements OnItemClickL
         Fragment main = getSupportFragmentManager().findFragmentByTag(MainPanel.FRAGMENT_TAG);
         boolean doAnimation = false;
         if (mShowingImageStatePanel
-                && getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+                && getResources().getConfiguration().orientation ==
+                        Configuration.ORIENTATION_PORTRAIT) {
             doAnimation = true;
         }
         if (doAnimation && main != null && main instanceof MainPanel) {
@@ -381,7 +383,7 @@ public class FilterShowActivity extends FragmentActivity implements OnItemClickL
     }
 
     public void setupStatePanel() {
-        MasterImage.getImage().setHistoryManager(mMasterImage.getHistory());
+        PrimaryImage.getImage().setHistoryManager(mPrimaryImage.getHistory());
     }
 
     private void fillVersions() {
@@ -412,7 +414,7 @@ public class FilterShowActivity extends FragmentActivity implements OnItemClickL
                 getString(R.string.filtershow_version_original), new ImagePreset(), -1);
         mCategoryVersionsAdapter.add(
                 new Action(this, originalRep, Action.FULL_VIEW));
-        ImagePreset current = new ImagePreset(MasterImage.getImage().getPreset());
+        ImagePreset current = new ImagePreset(PrimaryImage.getImage().getPreset());
         FilterUserPresetRepresentation currentRep = new FilterUserPresetRepresentation(
                 getString(R.string.filtershow_version_current), current, -1);
         mCategoryVersionsAdapter.add(
@@ -428,7 +430,7 @@ public class FilterShowActivity extends FragmentActivity implements OnItemClickL
     }
 
     public void addCurrentVersion() {
-        ImagePreset current = new ImagePreset(MasterImage.getImage().getPreset());
+        ImagePreset current = new ImagePreset(PrimaryImage.getImage().getPreset());
         mVersionsCounter++;
         FilterUserPresetRepresentation rep = new FilterUserPresetRepresentation(
                 "" + mVersionsCounter, current, -1);
@@ -603,13 +605,13 @@ public class FilterShowActivity extends FragmentActivity implements OnItemClickL
         if (filterRepresentation == null) {
             return;
         }
-        ImagePreset oldPreset = MasterImage.getImage().getPreset();
+        ImagePreset oldPreset = PrimaryImage.getImage().getPreset();
         ImagePreset copy = new ImagePreset(oldPreset);
         copy.removeFilter(filterRepresentation);
-        MasterImage.getImage().setPreset(copy, copy.getLastRepresentation(), true);
-        if (MasterImage.getImage().getCurrentFilterRepresentation() == filterRepresentation) {
+        PrimaryImage.getImage().setPreset(copy, copy.getLastRepresentation(), true);
+        if (PrimaryImage.getImage().getCurrentFilterRepresentation() == filterRepresentation) {
             FilterRepresentation lastRepresentation = copy.getLastRepresentation();
-            MasterImage.getImage().setCurrentFilterRepresentation(lastRepresentation);
+            PrimaryImage.getImage().setCurrentFilterRepresentation(lastRepresentation);
         }
     }
 
@@ -619,15 +621,15 @@ public class FilterShowActivity extends FragmentActivity implements OnItemClickL
         }
         if (!(filterRepresentation instanceof FilterRotateRepresentation)
             && !(filterRepresentation instanceof FilterMirrorRepresentation)
-            && MasterImage.getImage().getCurrentFilterRepresentation() == filterRepresentation) {
+            && PrimaryImage.getImage().getCurrentFilterRepresentation() == filterRepresentation) {
             return;
         }
         if (filterRepresentation instanceof FilterUserPresetRepresentation
                 || filterRepresentation instanceof FilterRotateRepresentation
                 || filterRepresentation instanceof FilterMirrorRepresentation) {
-            MasterImage.getImage().onNewLook(filterRepresentation);
+            PrimaryImage.getImage().onNewLook(filterRepresentation);
         }
-        ImagePreset oldPreset = MasterImage.getImage().getPreset();
+        ImagePreset oldPreset = PrimaryImage.getImage().getPreset();
         ImagePreset copy = new ImagePreset(oldPreset);
         FilterRepresentation representation = copy.getRepresentation(filterRepresentation);
         if (representation == null) {
@@ -646,8 +648,8 @@ public class FilterShowActivity extends FragmentActivity implements OnItemClickL
                 }
             }
         }
-        MasterImage.getImage().setPreset(copy, filterRepresentation, true);
-        MasterImage.getImage().setCurrentFilterRepresentation(filterRepresentation);
+        PrimaryImage.getImage().setPreset(copy, filterRepresentation, true);
+        PrimaryImage.getImage().setCurrentFilterRepresentation(filterRepresentation);
     }
 
     public void showRepresentation(FilterRepresentation representation) {
@@ -664,14 +666,14 @@ public class FilterShowActivity extends FragmentActivity implements OnItemClickL
             r.cycle();
         }
         if (representation.isBooleanFilter()) {
-            ImagePreset preset = MasterImage.getImage().getPreset();
+            ImagePreset preset = PrimaryImage.getImage().getPreset();
             if (preset.getRepresentation(representation) != null) {
                 // remove
                 ImagePreset copy = new ImagePreset(preset);
                 copy.removeFilter(representation);
                 FilterRepresentation filterRepresentation = representation.copy();
-                MasterImage.getImage().setPreset(copy, filterRepresentation, true);
-                MasterImage.getImage().setCurrentFilterRepresentation(null);
+                PrimaryImage.getImage().setPreset(copy, filterRepresentation, true);
+                PrimaryImage.getImage().setCurrentFilterRepresentation(null);
                 return;
             }
         }
@@ -698,10 +700,10 @@ public class FilterShowActivity extends FragmentActivity implements OnItemClickL
     }
 
     public void updateCategories() {
-        if (mMasterImage == null) {
+        if (mPrimaryImage == null) {
             return;
         }
-        ImagePreset preset = mMasterImage.getPreset();
+        ImagePreset preset = mPrimaryImage.getPreset();
         mCategoryLooksAdapter.reflectImagePreset(preset);
         mCategoryBordersAdapter.reflectImagePreset(preset);
     }
@@ -737,34 +739,34 @@ public class FilterShowActivity extends FragmentActivity implements OnItemClickL
     private class LoadHighresBitmapTask extends AsyncTask<Void, Void, Boolean> {
         @Override
         protected Boolean doInBackground(Void... params) {
-            MasterImage master = MasterImage.getImage();
-            Rect originalBounds = master.getOriginalBounds();
-            if (master.supportsHighRes()) {
-                int highresPreviewSize = master.getOriginalBitmapLarge().getWidth() * 2;
+            PrimaryImage primary = PrimaryImage.getImage();
+            Rect originalBounds = primary.getOriginalBounds();
+            if (primary.supportsHighRes()) {
+                int highresPreviewSize = primary.getOriginalBitmapLarge().getWidth() * 2;
                 if (highresPreviewSize > originalBounds.width()) {
                     highresPreviewSize = originalBounds.width();
                 }
                 Rect bounds = new Rect();
-                Bitmap originalHires = ImageLoader.loadOrientedConstrainedBitmap(master.getUri(),
-                        master.getActivity(), highresPreviewSize,
-                        master.getOrientation(), bounds);
-                master.setOriginalBounds(bounds);
-                master.setOriginalBitmapHighres(originalHires);
+                Bitmap originalHires = ImageLoader.loadOrientedConstrainedBitmap(primary.getUri(),
+                        primary.getActivity(), highresPreviewSize,
+                        primary.getOrientation(), bounds);
+                primary.setOriginalBounds(bounds);
+                primary.setOriginalBitmapHighres(originalHires);
                 mBoundService.setOriginalBitmapHighres(originalHires);
-                master.warnListeners();
+                primary.warnListeners();
             }
             return true;
         }
 
         @Override
         protected void onPostExecute(Boolean result) {
-            Bitmap highresBitmap = MasterImage.getImage().getOriginalBitmapHighres();
+            Bitmap highresBitmap = PrimaryImage.getImage().getOriginalBitmapHighres();
             if (highresBitmap != null) {
                 float highResPreviewScale = (float) highresBitmap.getWidth()
-                        / (float) MasterImage.getImage().getOriginalBounds().width();
+                        / (float) PrimaryImage.getImage().getOriginalBounds().width();
                 mBoundService.setHighresPreviewScaleFactor(highResPreviewScale);
             }
-            MasterImage.getImage().warnListeners();
+            PrimaryImage.getImage().warnListeners();
         }
     }
 
@@ -793,10 +795,10 @@ public class FilterShowActivity extends FragmentActivity implements OnItemClickL
 
         @Override
         protected Boolean doInBackground(Uri... params) {
-            if (!MasterImage.getImage().loadBitmap(params[0], mBitmapSize)) {
+            if (!PrimaryImage.getImage().loadBitmap(params[0], mBitmapSize)) {
                 return false;
             }
-            publishProgress(ImageLoader.queryLightCycle360(MasterImage.getImage().getActivity()));
+            publishProgress(ImageLoader.queryLightCycle360(PrimaryImage.getImage().getActivity()));
             return true;
         }
 
@@ -813,7 +815,7 @@ public class FilterShowActivity extends FragmentActivity implements OnItemClickL
 
         @Override
         protected void onPostExecute(Boolean result) {
-            MasterImage.setMaster(mMasterImage);
+            PrimaryImage.setPrimary(mPrimaryImage);
             if (isCancelled()) {
                 return;
             }
@@ -832,19 +834,15 @@ public class FilterShowActivity extends FragmentActivity implements OnItemClickL
                 return;
             }
 
-            if (null == CachingPipeline.getRenderScriptContext()){
-                Log.v(LOGTAG,"RenderScript context destroyed during load");
-                return;
-            }
             final View imageShow = findViewById(R.id.imageShow);
             imageShow.setVisibility(View.VISIBLE);
 
 
-            Bitmap largeBitmap = MasterImage.getImage().getOriginalBitmapLarge();
+            Bitmap largeBitmap = PrimaryImage.getImage().getOriginalBitmapLarge();
             mBoundService.setOriginalBitmap(largeBitmap);
 
             float previewScale = (float) largeBitmap.getWidth()
-                    / (float) MasterImage.getImage().getOriginalBounds().width();
+                    / (float) PrimaryImage.getImage().getOriginalBounds().width();
             mBoundService.setPreviewScaleFactor(previewScale);
             if (!mShowingTinyPlanet) {
                 mCategoryFiltersAdapter.removeTinyPlanet();
@@ -855,26 +853,26 @@ public class FilterShowActivity extends FragmentActivity implements OnItemClickL
             mCategoryFiltersAdapter.imageLoaded();
             mLoadBitmapTask = null;
 
-            MasterImage.getImage().warnListeners();
+            PrimaryImage.getImage().warnListeners();
             loadActions();
 
             if (mOriginalPreset != null) {
-                MasterImage.getImage().setLoadedPreset(mOriginalPreset);
-                MasterImage.getImage().setPreset(mOriginalPreset,
+                PrimaryImage.getImage().setLoadedPreset(mOriginalPreset);
+                PrimaryImage.getImage().setPreset(mOriginalPreset,
                         mOriginalPreset.getLastRepresentation(), true);
                 mOriginalPreset = null;
             } else {
                 setDefaultPreset();
             }
 
-            MasterImage.getImage().resetGeometryImages(true);
+            PrimaryImage.getImage().resetGeometryImages(true);
 
             if (mAction == TINY_PLANET_ACTION) {
                 showRepresentation(mCategoryFiltersAdapter.getTinyPlanet());
             }
             LoadHighresBitmapTask highresLoad = new LoadHighresBitmapTask();
             highresLoad.execute();
-            MasterImage.getImage().warnListeners();
+            PrimaryImage.getImage().warnListeners();
             super.onPostExecute(result);
         }
 
@@ -973,7 +971,7 @@ public class FilterShowActivity extends FragmentActivity implements OnItemClickL
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         intent.setType(SharedImageProvider.MIME_TYPE);
-        mSharedOutputFile = SaveImage.getNewFile(this, MasterImage.getImage().getUri());
+        mSharedOutputFile = SaveImage.getNewFile(this, PrimaryImage.getImage().getUri());
         Uri uri = Uri.withAppendedPath(SharedImageProvider.CONTENT_URI,
                 Uri.encode(mSharedOutputFile.getAbsolutePath()));
         intent.putExtra(Intent.EXTRA_STREAM, uri);
@@ -999,7 +997,7 @@ public class FilterShowActivity extends FragmentActivity implements OnItemClickL
     }
 
     private void setupMenu(){
-        if (mMenu == null || mMasterImage == null) {
+        if (mMenu == null || mPrimaryImage == null) {
             return;
         }
         MenuItem undoItem = mMenu.findItem(R.id.undoButton);
@@ -1009,7 +1007,7 @@ public class FilterShowActivity extends FragmentActivity implements OnItemClickL
         if (!PrintHelper.systemSupportsPrint()) {
             printItem.setVisible(false);
         }
-        mMasterImage.getHistory().setMenuItems(undoItem, redoItem, resetItem);
+        mPrimaryImage.getHistory().setMenuItems(undoItem, redoItem, resetItem);
     }
 
     @Override
@@ -1032,17 +1030,17 @@ public class FilterShowActivity extends FragmentActivity implements OnItemClickL
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.undoButton: {
-                HistoryManager adapter = mMasterImage.getHistory();
+                HistoryManager adapter = mPrimaryImage.getHistory();
                 int position = adapter.undo();
-                mMasterImage.onHistoryItemClick(position);
+                mPrimaryImage.onHistoryItemClick(position);
                 backToMain();
                 invalidateViews();
                 return true;
             }
             case R.id.redoButton: {
-                HistoryManager adapter = mMasterImage.getHistory();
+                HistoryManager adapter = mPrimaryImage.getHistory();
                 int position = adapter.redo();
-                mMasterImage.onHistoryItemClick(position);
+                mPrimaryImage.onHistoryItemClick(position);
                 invalidateViews();
                 return true;
             }
@@ -1079,7 +1077,7 @@ public class FilterShowActivity extends FragmentActivity implements OnItemClickL
     }
 
     public void print() {
-        Bitmap bitmap = MasterImage.getImage().getHighresImage();
+        Bitmap bitmap = PrimaryImage.getImage().getHighresImage();
         PrintHelper printer = new PrintHelper(this);
         printer.printBitmap("ImagePrint", bitmap);
     }
@@ -1121,7 +1119,8 @@ public class FilterShowActivity extends FragmentActivity implements OnItemClickL
     }
 
     public void updateUserPresetsFromManager() {
-        ArrayList<FilterUserPresetRepresentation> presets = mUserPresetsManager.getRepresentations();
+        ArrayList<FilterUserPresetRepresentation> presets =
+                mUserPresetsManager.getRepresentations();
         if (presets == null) {
             return;
         }
@@ -1146,7 +1145,7 @@ public class FilterShowActivity extends FragmentActivity implements OnItemClickL
     }
 
     public void saveCurrentImagePreset(String name) {
-        mUserPresetsManager.save(MasterImage.getImage().getPreset(), name);
+        mUserPresetsManager.save(PrimaryImage.getImage().getPreset(), name);
     }
 
     private void deletePreset(int id) {
@@ -1193,7 +1192,7 @@ public class FilterShowActivity extends FragmentActivity implements OnItemClickL
     public void setDefaultPreset() {
         // Default preset (original)
         ImagePreset preset = new ImagePreset(); // empty
-        mMasterImage.setPreset(preset, preset.getLastRepresentation(), true);
+        mPrimaryImage.setPreset(preset, preset.getLastRepresentation(), true);
     }
 
     // //////////////////////////////////////////////////////////////////////////////
@@ -1246,7 +1245,7 @@ public class FilterShowActivity extends FragmentActivity implements OnItemClickL
         super.onConfigurationChanged(newConfig);
 
         setDefaultValues();
-        if (mMasterImage == null) {
+        if (mPrimaryImage == null) {
             return;
         }
         loadXML();
@@ -1268,25 +1267,25 @@ public class FilterShowActivity extends FragmentActivity implements OnItemClickL
         stopLoadingIndicator();
     }
 
-    public void setupMasterImage() {
+    public void setupPrimaryImage() {
 
         HistoryManager historyManager = new HistoryManager();
         StateAdapter imageStateAdapter = new StateAdapter(this, 0);
-        MasterImage.reset();
-        mMasterImage = MasterImage.getImage();
-        mMasterImage.setHistoryManager(historyManager);
-        mMasterImage.setStateAdapter(imageStateAdapter);
-        mMasterImage.setActivity(this);
+        PrimaryImage.reset();
+        mPrimaryImage = PrimaryImage.getImage();
+        mPrimaryImage.setHistoryManager(historyManager);
+        mPrimaryImage.setStateAdapter(imageStateAdapter);
+        mPrimaryImage.setActivity(this);
 
         if (Runtime.getRuntime().maxMemory() > LIMIT_SUPPORTS_HIGHRES) {
-            mMasterImage.setSupportsHighRes(true);
+            mPrimaryImage.setSupportsHighRes(true);
         } else {
-            mMasterImage.setSupportsHighRes(false);
+            mPrimaryImage.setSupportsHighRes(false);
         }
     }
 
     void resetHistory() {
-        HistoryManager adapter = mMasterImage.getHistory();
+        HistoryManager adapter = mPrimaryImage.getHistory();
         adapter.reset();
         HistoryItem historyItem = adapter.getItem(0);
         ImagePreset original = null;
@@ -1299,7 +1298,7 @@ public class FilterShowActivity extends FragmentActivity implements OnItemClickL
         if (historyItem != null) {
             rep = historyItem.getFilterRepresentation();
         }
-        mMasterImage.setPreset(original, rep, true);
+        mPrimaryImage.setPreset(original, rep, true);
         invalidateViews();
         backToMain();
     }
@@ -1307,12 +1306,13 @@ public class FilterShowActivity extends FragmentActivity implements OnItemClickL
     public void showDefaultImageView() {
         mEditorPlaceHolder.hide();
         mImageShow.setVisibility(View.VISIBLE);
-        MasterImage.getImage().setCurrentFilter(null);
-        MasterImage.getImage().setCurrentFilterRepresentation(null);
+        PrimaryImage.getImage().setCurrentFilter(null);
+        PrimaryImage.getImage().setCurrentFilterRepresentation(null);
     }
 
     public void backToMain() {
-        Fragment currentPanel = getSupportFragmentManager().findFragmentByTag(MainPanel.FRAGMENT_TAG);
+        Fragment currentPanel = getSupportFragmentManager().findFragmentByTag(
+                MainPanel.FRAGMENT_TAG);
         if (currentPanel instanceof MainPanel) {
             return;
         }
@@ -1322,14 +1322,17 @@ public class FilterShowActivity extends FragmentActivity implements OnItemClickL
 
     @Override
     public void onBackPressed() {
-        Fragment currentPanel = getSupportFragmentManager().findFragmentByTag(MainPanel.FRAGMENT_TAG);
+        Fragment currentPanel = getSupportFragmentManager().findFragmentByTag(
+                MainPanel.FRAGMENT_TAG);
         if (currentPanel instanceof MainPanel) {
             if (!mImageShow.hasModifications()) {
                 done();
             } else {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setMessage(R.string.unsaved).setTitle(R.string.save_before_exit);
-                builder.setPositiveButton(R.string.save_and_exit, new DialogInterface.OnClickListener() {
+                builder.setPositiveButton(
+                        R.string.save_and_exit,
+                        new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         saveImage();
@@ -1364,7 +1367,7 @@ public class FilterShowActivity extends FragmentActivity implements OnItemClickL
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position,
             long id) {
-        mMasterImage.onHistoryItemClick(position);
+        mPrimaryImage.onHistoryItemClick(position);
         invalidateViews();
     }
 
@@ -1376,6 +1379,7 @@ public class FilterShowActivity extends FragmentActivity implements OnItemClickL
                 SELECT_PICTURE);
     }
 
+    @SuppressWarnings("MissingSuperCall") // TODO: Fix me
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
@@ -1411,7 +1415,7 @@ public class FilterShowActivity extends FragmentActivity implements OnItemClickL
 
     private void extractXMPData() {
         XMresults res = XmpPresets.extractXMPData(
-                getBaseContext(), mMasterImage, getIntent().getData());
+                getBaseContext(), mPrimaryImage, getIntent().getData());
         if (res == null)
             return;
 

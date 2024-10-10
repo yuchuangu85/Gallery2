@@ -32,7 +32,6 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.drawable.NinePatchDrawable;
-import androidx.core.widget.EdgeEffectCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -42,6 +41,7 @@ import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.widget.LinearLayout;
+import androidx.core.widget.EdgeEffectCompat;
 
 import com.android.gallery3d.R;
 import com.android.gallery3d.filtershow.FilterShowActivity;
@@ -140,7 +140,7 @@ public class ImageShow extends View implements OnGestureListener,
     }
 
     public boolean hasModifications() {
-        return MasterImage.getImage().hasModifications();
+        return PrimaryImage.getImage().hasModifications();
     }
 
     public void resetParameter() {
@@ -187,13 +187,13 @@ public class ImageShow extends View implements OnGestureListener,
     }
 
     public void attach() {
-        MasterImage.getImage().addObserver(this);
+        PrimaryImage.getImage().addObserver(this);
         bindAsImageLoadListener();
-        MasterImage.getImage().resetGeometryImages(false);
+        PrimaryImage.getImage().resetGeometryImages(false);
     }
 
     public void detach() {
-        MasterImage.getImage().removeObserver(this);
+        PrimaryImage.getImage().removeObserver(this);
         mMaskPaint.reset();
     }
 
@@ -210,7 +210,7 @@ public class ImageShow extends View implements OnGestureListener,
     }
 
     public ImageFilter getCurrentFilter() {
-        return MasterImage.getImage().getCurrentFilter();
+        return PrimaryImage.getImage().getCurrentFilter();
     }
 
     /* consider moving the following 2 methods into a subclass */
@@ -221,14 +221,15 @@ public class ImageShow extends View implements OnGestureListener,
      * @return Image to Screen transformation matrix
      */
     protected Matrix getImageToScreenMatrix(boolean reflectRotation) {
-        MasterImage master = MasterImage.getImage();
-        if (master.getOriginalBounds() == null) {
+        PrimaryImage primary = PrimaryImage.getImage();
+        if (primary.getOriginalBounds() == null) {
             return new Matrix();
         }
-        Matrix m = GeometryMathUtils.getImageToScreenMatrix(master.getPreset().getGeometryFilters(),
-                reflectRotation, master.getOriginalBounds(), getWidth(), getHeight());
-        Point translate = master.getTranslation();
-        float scaleFactor = master.getScaleFactor();
+        Matrix m = GeometryMathUtils.getImageToScreenMatrix(
+                primary.getPreset().getGeometryFilters(), reflectRotation,
+                primary.getOriginalBounds(), getWidth(), getHeight());
+        Point translate = primary.getTranslation();
+        float scaleFactor = primary.getScaleFactor();
         m.postTranslate(translate.x, translate.y);
         m.postScale(scaleFactor, scaleFactor, getWidth() / 2.0f, getHeight() / 2.0f);
         return m;
@@ -248,7 +249,7 @@ public class ImageShow extends View implements OnGestureListener,
     }
 
     public ImagePreset getImagePreset() {
-        return MasterImage.getImage().getPreset();
+        return PrimaryImage.getImage().getPreset();
     }
 
     @Override
@@ -256,11 +257,11 @@ public class ImageShow extends View implements OnGestureListener,
         mPaint.reset();
         mPaint.setAntiAlias(true);
         mPaint.setFilterBitmap(true);
-        MasterImage.getImage().setImageShowSize(
+        PrimaryImage.getImage().setImageShowSize(
                 getWidth() - 2*mShadowMargin,
                 getHeight() - 2*mShadowMargin);
 
-        MasterImage img = MasterImage.getImage();
+        PrimaryImage img = PrimaryImage.getImage();
         // Hide the loading indicator as needed
         if (mActivity.isLoadingVisible() && getFilteredImage() != null) {
             if ((img.getLoadedPreset() == null)
@@ -277,10 +278,10 @@ public class ImageShow extends View implements OnGestureListener,
 
         mShadowDrawn = false;
 
-        Bitmap highresPreview = MasterImage.getImage().getHighresImage();
-        Bitmap fullHighres = MasterImage.getImage().getPartialImage();
+        Bitmap highresPreview = PrimaryImage.getImage().getHighresImage();
+        Bitmap fullHighres = PrimaryImage.getImage().getPartialImage();
 
-        boolean isDoingNewLookAnimation = MasterImage.getImage().onGoingNewLookAnimation();
+        boolean isDoingNewLookAnimation = PrimaryImage.getImage().onGoingNewLookAnimation();
 
         if (highresPreview == null || isDoingNewLookAnimation) {
             drawImageAndAnimate(canvas, getFilteredImage());
@@ -319,12 +320,12 @@ public class ImageShow extends View implements OnGestureListener,
     }
 
     private void drawHighresImage(Canvas canvas, Bitmap fullHighres) {
-        Matrix originalToScreen = MasterImage.getImage().originalImageToScreen();
+        Matrix originalToScreen = PrimaryImage.getImage().originalImageToScreen();
         if (fullHighres != null && originalToScreen != null) {
             Matrix screenToOriginal = new Matrix();
             originalToScreen.invert(screenToOriginal);
             Rect rBounds = new Rect();
-            rBounds.set(MasterImage.getImage().getPartialBounds());
+            rBounds.set(PrimaryImage.getImage().getPartialBounds());
             if (fullHighres != null) {
                 originalToScreen.preTranslate(rBounds.left, rBounds.top);
                 canvas.clipRect(mImageBounds);
@@ -334,19 +335,19 @@ public class ImageShow extends View implements OnGestureListener,
     }
 
     public void resetImageCaches(ImageShow caller) {
-        MasterImage.getImage().invalidatePreview();
+        PrimaryImage.getImage().invalidatePreview();
     }
 
     public Bitmap getFiltersOnlyImage() {
-        return MasterImage.getImage().getFiltersOnlyImage();
+        return PrimaryImage.getImage().getFiltersOnlyImage();
     }
 
     public Bitmap getGeometryOnlyImage() {
-        return MasterImage.getImage().getGeometryOnlyImage();
+        return PrimaryImage.getImage().getGeometryOnlyImage();
     }
 
     public Bitmap getFilteredImage() {
-        return MasterImage.getImage().getFilteredImage();
+        return PrimaryImage.getImage().getFilteredImage();
     }
 
     public void drawImageAndAnimate(Canvas canvas,
@@ -354,8 +355,8 @@ public class ImageShow extends View implements OnGestureListener,
         if (image == null) {
             return;
         }
-        MasterImage master = MasterImage.getImage();
-        Matrix m = master.computeImageToScreen(image, 0, false);
+        PrimaryImage primary = PrimaryImage.getImage();
+        Matrix m = primary.computeImageToScreen(image, 0, false);
         if (m == null) {
             return;
         }
@@ -366,13 +367,13 @@ public class ImageShow extends View implements OnGestureListener,
         m.mapRect(d);
         d.roundOut(mImageBounds);
 
-        boolean showAnimatedImage = master.onGoingNewLookAnimation();
+        boolean showAnimatedImage = primary.onGoingNewLookAnimation();
         if (!showAnimatedImage && mDidStartAnimation) {
             // animation ended, but do we have the correct image to show?
-            if (master.getPreset().equals(master.getCurrentPreset())) {
+            if (primary.getPreset().equals(primary.getCurrentPreset())) {
                 // we do, let's stop showing the animated image
                 mDidStartAnimation = false;
-                MasterImage.getImage().resetAnimBitmap();
+                PrimaryImage.getImage().resetAnimBitmap();
             } else {
                 showAnimatedImage = true;
             }
@@ -384,8 +385,8 @@ public class ImageShow extends View implements OnGestureListener,
             canvas.save();
 
             // Animation uses the image before the change
-            Bitmap previousImage = master.getPreviousImage();
-            Matrix mp = master.computeImageToScreen(previousImage, 0, false);
+            Bitmap previousImage = primary.getPreviousImage();
+            Matrix mp = primary.computeImageToScreen(previousImage, 0, false);
             RectF dp = new RectF(0, 0, previousImage.getWidth(), previousImage.getHeight());
             mp.mapRect(dp);
             Rect previousBounds = new Rect();
@@ -394,9 +395,9 @@ public class ImageShow extends View implements OnGestureListener,
             float centerY = dp.centerY();
             boolean needsToDrawImage = true;
 
-            if (master.getCurrentLookAnimation()
-                    == MasterImage.CIRCLE_ANIMATION) {
-                float maskScale = MasterImage.getImage().getMaskScale();
+            if (primary.getCurrentLookAnimation()
+                    == PrimaryImage.CIRCLE_ANIMATION) {
+                float maskScale = PrimaryImage.getImage().getMaskScale();
                 if (maskScale >= 0.0f) {
                     float maskW = sMask.getWidth() / 2.0f;
                     float maskH = sMask.getHeight() / 2.0f;
@@ -427,25 +428,25 @@ public class ImageShow extends View implements OnGestureListener,
                     canvas.drawBitmap(sMask, 0, 0, mMaskPaint);
                     needsToDrawImage = false;
                 }
-            } else if (master.getCurrentLookAnimation()
-                    == MasterImage.ROTATE_ANIMATION) {
-                Rect d1 = computeImageBounds(master.getPreviousImage().getHeight(),
-                        master.getPreviousImage().getWidth());
-                Rect d2 = computeImageBounds(master.getPreviousImage().getWidth(),
-                        master.getPreviousImage().getHeight());
+            } else if (primary.getCurrentLookAnimation()
+                    == PrimaryImage.ROTATE_ANIMATION) {
+                Rect d1 = computeImageBounds(primary.getPreviousImage().getHeight(),
+                        primary.getPreviousImage().getWidth());
+                Rect d2 = computeImageBounds(primary.getPreviousImage().getWidth(),
+                        primary.getPreviousImage().getHeight());
                 float finalScale = d1.width() / (float) d2.height();
-                finalScale = (1.0f * (1.0f - master.getAnimFraction()))
-                        + (finalScale * master.getAnimFraction());
-                canvas.rotate(master.getAnimRotationValue(), centerX, centerY);
+                finalScale = (1.0f * (1.0f - primary.getAnimFraction()))
+                        + (finalScale * primary.getAnimFraction());
+                canvas.rotate(primary.getAnimRotationValue(), centerX, centerY);
                 canvas.scale(finalScale, finalScale, centerX, centerY);
-            } else if (master.getCurrentLookAnimation()
-                    == MasterImage.MIRROR_ANIMATION) {
-                if (master.getCurrentFilterRepresentation()
+            } else if (primary.getCurrentLookAnimation()
+                    == PrimaryImage.MIRROR_ANIMATION) {
+                if (primary.getCurrentFilterRepresentation()
                         instanceof FilterMirrorRepresentation) {
                     FilterMirrorRepresentation rep =
-                            (FilterMirrorRepresentation) master.getCurrentFilterRepresentation();
+                            (FilterMirrorRepresentation) primary.getCurrentFilterRepresentation();
 
-                    ImagePreset preset = master.getPreset();
+                    ImagePreset preset = primary.getPreset();
                     ArrayList<FilterRepresentation> geometry =
                             (ArrayList<FilterRepresentation>) preset.getGeometryFilters();
                     GeometryMathUtils.GeometryHolder holder = null;
@@ -453,23 +454,23 @@ public class ImageShow extends View implements OnGestureListener,
 
                     if (holder.rotation.value() == 90 || holder.rotation.value() == 270) {
                         if (rep.isHorizontal() && !rep.isVertical()) {
-                            canvas.scale(1, master.getAnimRotationValue(), centerX, centerY);
+                            canvas.scale(1, primary.getAnimRotationValue(), centerX, centerY);
                         } else if (rep.isVertical() && !rep.isHorizontal()) {
-                            canvas.scale(1, master.getAnimRotationValue(), centerX, centerY);
+                            canvas.scale(1, primary.getAnimRotationValue(), centerX, centerY);
                         } else if (rep.isHorizontal() && rep.isVertical()) {
-                            canvas.scale(master.getAnimRotationValue(), 1, centerX, centerY);
+                            canvas.scale(primary.getAnimRotationValue(), 1, centerX, centerY);
                         } else {
-                            canvas.scale(master.getAnimRotationValue(), 1, centerX, centerY);
+                            canvas.scale(primary.getAnimRotationValue(), 1, centerX, centerY);
                         }
                     } else {
                         if (rep.isHorizontal() && !rep.isVertical()) {
-                            canvas.scale(master.getAnimRotationValue(), 1, centerX, centerY);
+                            canvas.scale(primary.getAnimRotationValue(), 1, centerX, centerY);
                         } else if (rep.isVertical() && !rep.isHorizontal()) {
-                            canvas.scale(master.getAnimRotationValue(), 1, centerX, centerY);
+                            canvas.scale(primary.getAnimRotationValue(), 1, centerX, centerY);
                         } else  if (rep.isHorizontal() && rep.isVertical()) {
-                            canvas.scale(1, master.getAnimRotationValue(), centerX, centerY);
+                            canvas.scale(1, primary.getAnimRotationValue(), centerX, centerY);
                         } else {
-                            canvas.scale(1, master.getAnimRotationValue(), centerX, centerY);
+                            canvas.scale(1, primary.getAnimRotationValue(), centerX, centerY);
                         }
                     }
                 }
@@ -514,8 +515,8 @@ public class ImageShow extends View implements OnGestureListener,
     }
 
     public void drawCompareImage(Canvas canvas, Bitmap image) {
-        MasterImage master = MasterImage.getImage();
-        boolean showsOriginal = master.showsOriginal();
+        PrimaryImage primary = PrimaryImage.getImage();
+        boolean showsOriginal = primary.showsOriginal();
         if (!showsOriginal && !mTouchShowOriginal)
             return;
         canvas.save();
@@ -555,7 +556,7 @@ public class ImageShow extends View implements OnGestureListener,
                 }
             }
             canvas.clipRect(d);
-            Matrix m = master.computeImageToScreen(image, 0, false);
+            Matrix m = primary.computeImageToScreen(image, 0, false);
             canvas.drawBitmap(image, m, mPaint);
             Paint paint = new Paint();
             paint.setColor(Color.BLACK);
@@ -588,7 +589,7 @@ public class ImageShow extends View implements OnGestureListener,
     }
 
     public void bindAsImageLoadListener() {
-        MasterImage.getImage().addListener(this);
+        PrimaryImage.getImage().addListener(this);
     }
 
     public void updateImage() {
@@ -634,22 +635,23 @@ public class ImageShow extends View implements OnGestureListener,
             mTouchDown.y = ey;
             mTouchShowOriginalDate = System.currentTimeMillis();
             mShowOriginalDirection = 0;
-            MasterImage.getImage().setOriginalTranslation(MasterImage.getImage().getTranslation());
+            PrimaryImage.getImage().setOriginalTranslation(
+                    PrimaryImage.getImage().getTranslation());
         }
 
         if (action == MotionEvent.ACTION_MOVE && mInteractionMode == InteractionMode.MOVE) {
             mTouch.x = ex;
             mTouch.y = ey;
 
-            float scaleFactor = MasterImage.getImage().getScaleFactor();
+            float scaleFactor = PrimaryImage.getImage().getScaleFactor();
             if (scaleFactor > 1 && (!ENABLE_ZOOMED_COMPARISON || event.getPointerCount() == 2)) {
                 float translateX = (mTouch.x - mTouchDown.x) / scaleFactor;
                 float translateY = (mTouch.y - mTouchDown.y) / scaleFactor;
-                Point originalTranslation = MasterImage.getImage().getOriginalTranslation();
-                Point translation = MasterImage.getImage().getTranslation();
+                Point originalTranslation = PrimaryImage.getImage().getOriginalTranslation();
+                Point translation = PrimaryImage.getImage().getTranslation();
                 translation.x = (int) (originalTranslation.x + translateX);
                 translation.y = (int) (originalTranslation.y + translateY);
-                MasterImage.getImage().setTranslation(translation);
+                PrimaryImage.getImage().setTranslation(translation);
                 mTouchShowOriginal = false;
             } else if (enableComparison() && !mOriginalDisabled
                     && (System.currentTimeMillis() - mTouchShowOriginalDate
@@ -668,16 +670,16 @@ public class ImageShow extends View implements OnGestureListener,
             mTouchDown.y = 0;
             mTouch.x = 0;
             mTouch.y = 0;
-            if (MasterImage.getImage().getScaleFactor() <= 1) {
-                MasterImage.getImage().setScaleFactor(1);
-                MasterImage.getImage().resetTranslation();
+            if (PrimaryImage.getImage().getScaleFactor() <= 1) {
+                PrimaryImage.getImage().setScaleFactor(1);
+                PrimaryImage.getImage().resetTranslation();
             }
         }
 
-        float scaleFactor = MasterImage.getImage().getScaleFactor();
-        Point translation = MasterImage.getImage().getTranslation();
+        float scaleFactor = PrimaryImage.getImage().getScaleFactor();
+        Point translation = PrimaryImage.getImage().getTranslation();
         constrainTranslation(translation, scaleFactor);
-        MasterImage.getImage().setTranslation(translation);
+        PrimaryImage.getImage().setTranslation(translation);
 
         invalidate();
         return true;
@@ -701,18 +703,18 @@ public class ImageShow extends View implements OnGestureListener,
         mAnimatorTranslateX.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                Point translation = MasterImage.getImage().getTranslation();
+                Point translation = PrimaryImage.getImage().getTranslation();
                 translation.x = (Integer) animation.getAnimatedValue();
-                MasterImage.getImage().setTranslation(translation);
+                PrimaryImage.getImage().setTranslation(translation);
                 invalidate();
             }
         });
         mAnimatorTranslateY.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                Point translation = MasterImage.getImage().getTranslation();
+                Point translation = PrimaryImage.getImage().getTranslation();
                 translation.y = (Integer) animation.getAnimatedValue();
-                MasterImage.getImage().setTranslation(translation);
+                PrimaryImage.getImage().setTranslation(translation);
                 invalidate();
             }
         });
@@ -721,8 +723,8 @@ public class ImageShow extends View implements OnGestureListener,
     }
 
     private void applyTranslationConstraints() {
-        float scaleFactor = MasterImage.getImage().getScaleFactor();
-        Point translation = MasterImage.getImage().getTranslation();
+        float scaleFactor = PrimaryImage.getImage().getScaleFactor();
+        Point translation = PrimaryImage.getImage().getTranslation();
         int x = translation.x;
         int y = translation.y;
         constrainTranslation(translation, scaleFactor);
@@ -745,19 +747,19 @@ public class ImageShow extends View implements OnGestureListener,
         final float x = arg0.getX();
         final float y = arg0.getY();
         if (mZoomIn) {
-            scale = MasterImage.getImage().getMaxScaleFactor();
+            scale = PrimaryImage.getImage().getMaxScaleFactor();
         }
-        if (scale != MasterImage.getImage().getScaleFactor()) {
+        if (scale != PrimaryImage.getImage().getScaleFactor()) {
             if (mAnimatorScale != null) {
                 mAnimatorScale.cancel();
             }
             mAnimatorScale = ValueAnimator.ofFloat(
-                    MasterImage.getImage().getScaleFactor(),
+                    PrimaryImage.getImage().getScaleFactor(),
                     scale
             );
             float translateX = (getWidth() / 2 - x);
             float translateY = (getHeight() / 2 - y);
-            Point translation = MasterImage.getImage().getTranslation();
+            Point translation = PrimaryImage.getImage().getTranslation();
             int startTranslateX = translation.x;
             int startTranslateY = translation.y;
             if (scale != 1.0f) {
@@ -776,7 +778,7 @@ public class ImageShow extends View implements OnGestureListener,
             mAnimatorScale.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimator animation) {
-                    MasterImage.getImage().setScaleFactor((Float) animation.getAnimatedValue());
+                    PrimaryImage.getImage().setScaleFactor((Float) animation.getAnimatedValue());
                     invalidate();
                 }
             });
@@ -788,7 +790,7 @@ public class ImageShow extends View implements OnGestureListener,
                 @Override
                 public void onAnimationEnd(Animator animation) {
                     applyTranslationConstraints();
-                    MasterImage.getImage().needsUpdatePartialPreview();
+                    PrimaryImage.getImage().needsUpdatePartialPreview();
                     invalidate();
                 }
 
@@ -815,8 +817,8 @@ public class ImageShow extends View implements OnGestureListener,
             return;
         }
 
-        Matrix originalToScreen = MasterImage.getImage().originalImageToScreen();
-        Rect originalBounds = MasterImage.getImage().getOriginalBounds();
+        Matrix originalToScreen = PrimaryImage.getImage().originalImageToScreen();
+        Rect originalBounds = PrimaryImage.getImage().getOriginalBounds();
         RectF screenPos = new RectF(originalBounds);
         originalToScreen.mapRect(screenPos);
 
@@ -922,36 +924,36 @@ public class ImageShow extends View implements OnGestureListener,
 
     @Override
     public boolean onScale(ScaleGestureDetector detector) {
-        MasterImage img = MasterImage.getImage();
+        PrimaryImage img = PrimaryImage.getImage();
         float scaleFactor = img.getScaleFactor();
 
         scaleFactor = scaleFactor * detector.getScaleFactor();
-        if (scaleFactor > MasterImage.getImage().getMaxScaleFactor()) {
-            scaleFactor = MasterImage.getImage().getMaxScaleFactor();
+        if (scaleFactor > PrimaryImage.getImage().getMaxScaleFactor()) {
+            scaleFactor = PrimaryImage.getImage().getMaxScaleFactor();
         }
         if (scaleFactor < 1.0f) {
             scaleFactor = 1.0f;
         }
-        MasterImage.getImage().setScaleFactor(scaleFactor);
+        PrimaryImage.getImage().setScaleFactor(scaleFactor);
         scaleFactor = img.getScaleFactor();
         float focusx = detector.getFocusX();
         float focusy = detector.getFocusY();
         float translateX = (focusx - mStartFocusX) / scaleFactor;
         float translateY = (focusy - mStartFocusY) / scaleFactor;
-        Point translation = MasterImage.getImage().getTranslation();
+        Point translation = PrimaryImage.getImage().getTranslation();
         translation.x = (int) (mOriginalTranslation.x + translateX);
         translation.y = (int) (mOriginalTranslation.y + translateY);
-        MasterImage.getImage().setTranslation(translation);
+        PrimaryImage.getImage().setTranslation(translation);
         invalidate();
         return true;
     }
 
     @Override
     public boolean onScaleBegin(ScaleGestureDetector detector) {
-        Point pos = MasterImage.getImage().getTranslation();
+        Point pos = PrimaryImage.getImage().getTranslation();
         mOriginalTranslation.x = pos.x;
         mOriginalTranslation.y = pos.y;
-        mOriginalScale = MasterImage.getImage().getScaleFactor();
+        mOriginalScale = PrimaryImage.getImage().getScaleFactor();
         mStartFocusX = detector.getFocusX();
         mStartFocusY = detector.getFocusY();
         mInteractionMode = InteractionMode.SCALE;
@@ -961,8 +963,8 @@ public class ImageShow extends View implements OnGestureListener,
     @Override
     public void onScaleEnd(ScaleGestureDetector detector) {
         mInteractionMode = InteractionMode.NONE;
-        if (MasterImage.getImage().getScaleFactor() < 1) {
-            MasterImage.getImage().setScaleFactor(1);
+        if (PrimaryImage.getImage().getScaleFactor() < 1) {
+            PrimaryImage.getImage().setScaleFactor(1);
             invalidate();
         }
     }

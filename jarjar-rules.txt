@@ -1,0 +1,1 @@
+rule android.util.Pools** com.android.photos.util.Pools@1

@@ -40,17 +40,18 @@ public class StateManager {
     private static final String KEY_STATE = "bundle";
     private static final String KEY_CLASS = "class";
 
-    private final AbstractGalleryActivity mActivity;
-    private final Stack<StateEntry> mStack = new Stack<>();
+    private AbstractGalleryActivity mActivity;
+    private Stack<StateEntry> mStack = new Stack<StateEntry>();
     private ActivityState.ResultEntry mResult;
 
     public StateManager(AbstractGalleryActivity activity) {
         mActivity = activity;
     }
 
-    public void startState(Class<? extends ActivityState> klass, Bundle data) {
+    public void startState(Class<? extends ActivityState> klass,
+            Bundle data) {
         Log.v(TAG, "startState " + klass);
-        ActivityState state;
+        ActivityState state = null;
         try {
             state = klass.newInstance();
         } catch (Exception e) {
@@ -63,7 +64,9 @@ public class StateManager {
             if (mIsResumed) top.onPause();
         }
 
-        UsageStatistics.onContentViewChanged(UsageStatistics.COMPONENT_GALLERY, klass.getSimpleName());
+        UsageStatistics.onContentViewChanged(
+                UsageStatistics.COMPONENT_GALLERY,
+                klass.getSimpleName());
         state.initialize(mActivity, data);
 
         mStack.push(new StateEntry(data, state));
@@ -72,9 +75,9 @@ public class StateManager {
     }
 
     public void startStateForResult(Class<? extends ActivityState> klass,
-                                    int requestCode, Bundle data) {
+            int requestCode, Bundle data) {
         Log.v(TAG, "startStateForResult " + klass + ", " + requestCode);
-        ActivityState state;
+        ActivityState state = null;
         try {
             state = klass.newInstance();
         } catch (Exception e) {
@@ -97,9 +100,7 @@ public class StateManager {
                 klass.getSimpleName());
         mStack.push(new StateEntry(data, state));
         state.onCreate(data, null);
-        if (mIsResumed) {
-            state.resume();
-        }
+        if (mIsResumed) state.resume();
     }
 
     public boolean createOptionsMenu(Menu menu) {
@@ -117,21 +118,15 @@ public class StateManager {
     }
 
     public void resume() {
-        if (mIsResumed) {
-            return;
-        }
+        if (mIsResumed) return;
         mIsResumed = true;
-        if (!mStack.isEmpty()) {
-            getTopState().resume();
-        }
+        if (!mStack.isEmpty()) getTopState().resume();
     }
 
     public void pause() {
         if (!mIsResumed) return;
         mIsResumed = false;
-        if (!mStack.isEmpty()){
-            getTopState().onPause();
-        }
+        if (!mStack.isEmpty()) getTopState().onPause();
     }
 
     public void notifyActivityResult(int requestCode, int resultCode, Intent data) {
@@ -228,7 +223,7 @@ public class StateManager {
     }
 
     public void switchState(ActivityState oldState,
-                            Class<? extends ActivityState> klass, Bundle data) {
+            Class<? extends ActivityState> klass, Bundle data) {
         Log.v(TAG, "switchState " + oldState + ", " + klass);
         if (oldState != mStack.peek().activityState) {
             throw new IllegalArgumentException("The stateview to be finished"

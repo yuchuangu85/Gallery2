@@ -37,7 +37,7 @@ import com.android.gallery3d.filtershow.FilterShowActivity;
 import com.android.gallery3d.filtershow.cache.ImageLoader;
 import com.android.gallery3d.filtershow.filters.FilterRepresentation;
 import com.android.gallery3d.filtershow.filters.FiltersManager;
-import com.android.gallery3d.filtershow.imageshow.MasterImage;
+import com.android.gallery3d.filtershow.imageshow.PrimaryImage;
 import com.android.gallery3d.filtershow.pipeline.CachingPipeline;
 import com.android.gallery3d.filtershow.pipeline.ImagePreset;
 import com.android.gallery3d.filtershow.pipeline.ProcessingService;
@@ -247,7 +247,7 @@ public class SaveImage {
         if (mimeType == null) {
             mimeType = ImageLoader.getMimeType(mSelectedImageUri);
         }
-        if (mimeType.equals(ImageLoader.JPEG_MIME_TYPE)) {
+        if ((mimeType != null) && mimeType.equals(ImageLoader.JPEG_MIME_TYPE)) {
             InputStream inStream = null;
             try {
                 inStream = mContext.getContentResolver().openInputStream(source);
@@ -535,7 +535,7 @@ public class SaveImage {
     public static void saveImage(ImagePreset preset, final FilterShowActivity filterShowActivity,
             File destination) {
         Uri selectedImageUri = filterShowActivity.getSelectedImageUri();
-        Uri sourceImageUri = MasterImage.getImage().getUri();
+        Uri sourceImageUri = PrimaryImage.getImage().getUri();
         boolean flatten = false;
         if (preset.contains(FilterRepresentation.TYPE_TINYPLANET)){
             flatten = true;

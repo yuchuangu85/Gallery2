@@ -28,7 +28,7 @@ import com.android.gallery3d.R;
 import com.android.gallery3d.filtershow.filters.FilterRepresentation;
 import com.android.gallery3d.filtershow.filters.FilterRotateRepresentation;
 import com.android.gallery3d.filtershow.imageshow.ImageRotate;
-import com.android.gallery3d.filtershow.imageshow.MasterImage;
+import com.android.gallery3d.filtershow.imageshow.PrimaryImage;
 
 public class EditorRotate extends Editor implements EditorInfo {
     public static final String TAG = EditorRotate.class.getSimpleName();
@@ -52,8 +52,8 @@ public class EditorRotate extends Editor implements EditorInfo {
 
     @Override
     public void reflectCurrentFilter() {
-        MasterImage master = MasterImage.getImage();
-        master.setCurrentFilterRepresentation(master.getPreset()
+        PrimaryImage primary = PrimaryImage.getImage();
+        primary.setCurrentFilterRepresentation(primary.getPreset()
                 .getFilterWithSerializationName(FilterRotateRepresentation.SERIALIZATION_NAME));
         super.reflectCurrentFilter();
         FilterRepresentation rep = getLocalRepresentation();

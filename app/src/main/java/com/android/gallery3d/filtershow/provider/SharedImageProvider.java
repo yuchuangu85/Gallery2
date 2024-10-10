@@ -29,15 +29,19 @@ import android.provider.OpenableColumns;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class SharedImageProvider extends ContentProvider {
 
     private static final String LOGTAG = "SharedImageProvider";
 
     public static final String MIME_TYPE = "image/jpeg";
-    public static final String AUTHORITY = "com.android.gallery3d.filtershow.provider.SharedImageProvider";
+    public static final String AUTHORITY =
+            "com.android.gallery3d.filtershow.provider.SharedImageProvider";
     public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/image");
     public static final String PREPARE = "prepare";
+
+    public static String LOCAL_PATH = (new File(CONTENT_URI.getPath())).getAbsolutePath();
 
     private final String[] mMimeStreamType = {
             MIME_TYPE
@@ -83,13 +87,14 @@ public class SharedImageProvider extends ContentProvider {
     }
 
     @Override
-    public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
+    public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs,
+            String sortOrder) {
         String uriPath = uri.getLastPathSegment();
         if (uriPath == null) {
             return null;
         }
         if (projection == null) {
-            projection = new String[] {
+            projection = new String[]{
                     BaseColumns._ID,
                     MediaStore.MediaColumns.DATA,
                     OpenableColumns.DISPLAY_NAME,
@@ -130,8 +135,32 @@ public class SharedImageProvider extends ContentProvider {
         // Here we need to block until the image is ready
         mImageReadyCond.block();
         File path = new File(uriPath);
+        ensureValidImagePath(path);
         int imode = 0;
         imode |= ParcelFileDescriptor.MODE_READ_ONLY;
         return ParcelFileDescriptor.open(path, imode);
+    }
+
+    /**
+     * Ensure that the provided file path is part of the image directory.
+     * Prevent unauthorized access to other directories by path traversal.
+     * Throw security exception for paths outside the directory.
+     *
+     * @param path The path of the file to check. This path is expected to point to the image
+     *             directory.
+     * @throws SecurityException     Throws SecurityException if the path is not part of the image
+     *                               directory.
+     * @throws FileNotFoundException Throws FileNotFoundException if there is
+     *                               no file associated with the given URI.
+     */
+    private void ensureValidImagePath(File path) throws FileNotFoundException {
+        try {
+            if (!path.getCanonicalPath().startsWith(LOCAL_PATH)) {
+                throw new SecurityException(
+                        "The requested file path is not part of the image directory");
+            }
+        } catch (IOException e) {
+            throw new FileNotFoundException(e.getMessage());
+        }
     }
 }

@@ -16,7 +16,6 @@
 
 package com.android.gallery3d.app;
 
-import android.app.IntentService;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -25,7 +24,6 @@ import android.preference.PreferenceManager;
 import androidx.core.app.JobIntentService;
 
 import com.android.gallery3d.picasasource.PicasaSource;
-import com.android.gallery3d.util.LightCycleHelper;
 
 public class PackagesMonitor extends BroadcastReceiver {
     public static final String KEY_PACKAGES_VERSION  = "packages-version";

@@ -14,6 +14,11 @@
   <init>(...);
 }
 
+# ctors of subclasses of ActivityState are called with Java reflection.
+-keep class * extends com.android.gallery3d.app.ActivityState {
+  <init>(...);
+}
+
 -keep class com.android.camera.CameraActivity {
   public boolean isRecording();
   public long getAutoFocusTime();
@@ -46,6 +51,9 @@
 -keep class com.actionbarsherlock.** { *; }
 -keep interface com.actionbarsherlock.** { *; }
 -keepattributes *Annotation*
+
+# Required for JobIntentService
+-keep class androidx.core.app.CoreComponentFactory { *; }
 
 # Required for mp4parser
 -keep public class * implements com.coremedia.iso.boxes.Box
@@ -84,5 +92,3 @@
 -keep class com.android.gallery3d.jpegstream.StreamUtils { *; }
 
 
-# TODO: remove or rename android.util.Pools.java from our source.
--dontwarn android.util.Pools*

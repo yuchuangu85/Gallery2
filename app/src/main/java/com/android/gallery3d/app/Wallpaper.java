@@ -131,7 +131,7 @@ public class Wallpaper extends Activity {
                     .putExtra(CropExtras.KEY_SPOTLIGHT_Y, spotlightY)
                     .putExtra(CropExtras.KEY_SCALE, true)
                     .putExtra(CropExtras.KEY_SCALE_UP_IF_NEEDED, true)
-                    .putExtra(CropExtras.KEY_SET_AS_WALLPAPER, true);
+                    .putExtra(CropExtras.KEY_SET_AS_WALLPAPER, false);
                 startActivity(cropAndSetWallpaperIntent);
                 finish();
             }

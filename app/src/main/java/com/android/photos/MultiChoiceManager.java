@@ -137,7 +137,6 @@ public class MultiChoiceManager implements MultiChoiceModeListener,
         MenuItem cropItem = menu.findItem(R.id.menu_crop);
         MenuItem trimItem = menu.findItem(R.id.menu_trim);
         MenuItem muteItem = menu.findItem(R.id.menu_mute);
-        MenuItem setAsItem = menu.findItem(R.id.menu_set_as);
 
         editItem.setVisible((supportedOperations & MediaObject.SUPPORT_EDIT) > 0);
         deleteItem.setVisible((supportedOperations & MediaObject.SUPPORT_DELETE) > 0);
@@ -145,7 +144,6 @@ public class MultiChoiceManager implements MultiChoiceModeListener,
         cropItem.setVisible((supportedOperations & MediaObject.SUPPORT_CROP) > 0);
         trimItem.setVisible((supportedOperations & MediaObject.SUPPORT_TRIM) > 0);
         muteItem.setVisible((supportedOperations & MediaObject.SUPPORT_MUTE) > 0);
-        setAsItem.setVisible((supportedOperations & MediaObject.SUPPORT_SETAS) > 0);
     }
 
     @Override
@@ -217,7 +215,6 @@ public class MultiChoiceManager implements MultiChoiceModeListener,
             case R.id.menu_crop:
             case R.id.menu_trim:
             case R.id.menu_mute:
-            case R.id.menu_set_as:
                 singleItemAction(getSelectedItem(), actionItemId);
                 mode.finish();
                 return true;
@@ -255,14 +252,6 @@ public class MultiChoiceManager implements MultiChoiceModeListener,
                         uri, (Activity) mContext);
                 muteVideo.muteInBackground();
                 */
-                return;
-            case R.id.menu_set_as:
-                intent.setDataAndType(uri, mime)
-                      .setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                      .setAction(Intent.ACTION_ATTACH_DATA)
-                      .putExtra("mimeType", mime);
-                mContext.startActivity(Intent.createChooser(
-                        intent, mContext.getString(R.string.set_as)));
                 return;
             default:
                 return;

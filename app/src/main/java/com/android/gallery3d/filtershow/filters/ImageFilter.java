@@ -19,11 +19,10 @@ package com.android.gallery3d.filtershow.filters;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
-import android.renderscript.Allocation;
 import android.widget.Toast;
 
 import com.android.gallery3d.filtershow.imageshow.GeometryMathUtils;
-import com.android.gallery3d.filtershow.imageshow.MasterImage;
+import com.android.gallery3d.filtershow.imageshow.PrimaryImage;
 import com.android.gallery3d.filtershow.pipeline.FilterEnvironment;
 
 public abstract class ImageFilter implements Cloneable {
@@ -66,12 +65,6 @@ public abstract class ImageFilter implements Cloneable {
         return mName;
     }
 
-    public boolean supportsAllocationInput() { return false; }
-
-    public void apply(Allocation in, Allocation out) {
-        setGeneralParameters();
-    }
-
     public Bitmap apply(Bitmap bitmap, float scaleFactor, int quality) {
         // do nothing here, subclasses will implement filtering here
         setGeneralParameters();
@@ -89,7 +82,7 @@ public abstract class ImageFilter implements Cloneable {
 
     protected Matrix getOriginalToScreenMatrix(int w, int h) {
         return GeometryMathUtils.getImageToScreenMatrix(getEnvironment().getImagePreset()
-                .getGeometryFilters(), true, MasterImage.getImage().getOriginalBounds(), w, h);
+                .getGeometryFilters(), true, PrimaryImage.getImage().getOriginalBounds(), w, h);
     }
 
     public void setEnvironment(FilterEnvironment environment) {

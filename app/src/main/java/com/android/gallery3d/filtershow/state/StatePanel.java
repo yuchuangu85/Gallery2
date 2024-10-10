@@ -24,9 +24,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+
 import com.android.gallery3d.R;
 import com.android.gallery3d.filtershow.category.MainPanel;
-import com.android.gallery3d.filtershow.imageshow.MasterImage;
+import com.android.gallery3d.filtershow.imageshow.PrimaryImage;
 import com.android.gallery3d.util.FilterShowHelper;
 
 public class StatePanel extends Fragment {
@@ -48,7 +49,7 @@ public class StatePanel extends Fragment {
 
         View panel = mMainView.findViewById(R.id.listStates);
         track = (StatePanelTrack) panel;
-        track.setAdapter(MasterImage.getImage().getState());
+        track.setAdapter(PrimaryImage.getImage().getState());
         mToggleVersionsPanel = (ImageButton) mMainView.findViewById(R.id.toggleVersionsPanel);
         if (FilterShowHelper.shouldUseVersions()) {
             if (mToggleVersionsPanel.getVisibility() == View.GONE

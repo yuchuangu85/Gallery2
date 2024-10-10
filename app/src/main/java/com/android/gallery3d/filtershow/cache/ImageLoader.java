@@ -38,7 +38,7 @@ import com.adobe.xmp.XMPMeta;
 import com.android.gallery3d.common.Utils;
 import com.android.gallery3d.exif.ExifInterface;
 import com.android.gallery3d.exif.ExifTag;
-import com.android.gallery3d.filtershow.imageshow.MasterImage;
+import com.android.gallery3d.filtershow.imageshow.PrimaryImage;
 import com.android.gallery3d.filtershow.pipeline.FilterEnvironment;
 import com.android.gallery3d.filtershow.tools.XmpPresets;
 import com.android.gallery3d.util.XmpUtilHelper;
@@ -511,7 +511,7 @@ public final class ImageLoader {
     public static XMPMeta getXmpObject(Context context) {
         try {
             InputStream is = context.getContentResolver().openInputStream(
-                    MasterImage.getImage().getUri());
+                    PrimaryImage.getImage().getUri());
             return XmpUtilHelper.extractXMPMeta(is);
         } catch (FileNotFoundException e) {
             return null;
@@ -526,7 +526,7 @@ public final class ImageLoader {
     public static boolean queryLightCycle360(Context context) {
         InputStream is = null;
         try {
-            is = context.getContentResolver().openInputStream(MasterImage.getImage().getUri());
+            is = context.getContentResolver().openInputStream(PrimaryImage.getImage().getUri());
             XMPMeta meta = XmpUtilHelper.extractXMPMeta(is);
             if (meta == null) {
                 return false;

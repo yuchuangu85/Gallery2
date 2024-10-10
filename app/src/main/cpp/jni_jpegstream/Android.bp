@@ -1,4 +1,8 @@
 // Jpeg Streaming native
+package {
+    default_applicable_licenses: ["Android-Apache-2.0"],
+}
+
 cc_library_shared {
     name: "libjni_jpegstream",
     product_specific: true,
@@ -20,6 +24,7 @@ cc_library_shared {
         "-Wextra",
         "-Werror",
     ],
+    header_libs: ["jni_headers"],
     local_include_dirs: ["src"],
     sdk_version: "17",
     stl: "c++_static",

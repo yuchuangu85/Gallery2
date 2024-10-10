@@ -26,6 +26,7 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
+import androidx.print.PrintHelper;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -43,9 +44,6 @@ import com.android.gallery3d.util.ThreadPool.Job;
 import com.android.gallery3d.util.ThreadPool.JobContext;
 
 import java.util.ArrayList;
-import java.util.List;
-
-import androidx.print.PrintHelper;
 
 public class MenuExecutor {
     private static final String TAG = "MenuExecutor";
@@ -174,7 +172,6 @@ public class MenuExecutor {
         boolean supportTrim = (supported & MediaObject.SUPPORT_TRIM) != 0;
         boolean supportMute = (supported & MediaObject.SUPPORT_MUTE) != 0;
         boolean supportShare = (supported & MediaObject.SUPPORT_SHARE) != 0;
-        boolean supportSetAs = (supported & MediaObject.SUPPORT_SETAS) != 0;
         boolean supportShowOnMap = (supported & MediaObject.SUPPORT_SHOW_ON_MAP) != 0;
         boolean supportCache = (supported & MediaObject.SUPPORT_CACHE) != 0;
         boolean supportEdit = (supported & MediaObject.SUPPORT_EDIT) != 0;
@@ -191,7 +188,6 @@ public class MenuExecutor {
         // Hide panorama until call to updateMenuForPanorama corrects it
         setMenuItemVisible(menu, R.id.action_share_panorama, false);
         setMenuItemVisible(menu, R.id.action_share, supportShare);
-        setMenuItemVisible(menu, R.id.action_setas, supportSetAs);
         setMenuItemVisible(menu, R.id.action_show_on_map, supportShowOnMap);
         setMenuItemVisible(menu, R.id.action_edit, supportEdit);
         // setMenuItemVisible(menu, R.id.action_simple_edit, supportEdit);
@@ -214,7 +210,7 @@ public class MenuExecutor {
     }
 
     private Path getSingleSelectedPath() {
-        List<Path> ids = mSelectionManager.getSelected(true);
+        ArrayList<Path> ids = mSelectionManager.getSelected(true);
         Utils.assertTrue(ids.size() == 1);
         return ids.get(0);
     }
@@ -250,15 +246,6 @@ public class MenuExecutor {
                 Intent intent = getIntentBySingleSelectedPath(Intent.ACTION_EDIT)
                         .setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
                 ((Activity) mActivity).startActivity(Intent.createChooser(intent, null));
-                return;
-            }
-            case R.id.action_setas: {
-                Intent intent = getIntentBySingleSelectedPath(Intent.ACTION_ATTACH_DATA)
-                        .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                intent.putExtra("mimeType", intent.getType());
-                Activity activity = mActivity;
-                activity.startActivity(Intent.createChooser(
-                        intent, activity.getString(R.string.set_as)));
                 return;
             }
             case R.id.action_delete:
@@ -334,7 +321,7 @@ public class MenuExecutor {
 
     public void startAction(int action, int title, ProgressListener listener,
             boolean waitOnStop, boolean showDialog) {
-        List<Path> ids = mSelectionManager.getSelected(false);
+        ArrayList<Path> ids = mSelectionManager.getSelected(false);
         stopTaskAndDismissDialog();
 
         Activity activity = mActivity;
@@ -413,11 +400,11 @@ public class MenuExecutor {
     }
 
     private class MediaOperation implements Job<Void> {
-        private final List<Path> mItems;
+        private final ArrayList<Path> mItems;
         private final int mOperation;
         private final ProgressListener mListener;
 
-        public MediaOperation(int operation, List<Path> items,
+        public MediaOperation(int operation, ArrayList<Path> items,
                 ProgressListener listener) {
             mOperation = operation;
             mItems = items;

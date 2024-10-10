@@ -24,7 +24,10 @@ import android.provider.MediaStore.MediaColumns;
 import android.view.View;
 import android.view.WindowManager;
 
+import java.lang.ClassNotFoundException;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.Arrays;
 
 public class ApiHelper {
     public static interface VERSION_CODES {
@@ -203,32 +206,32 @@ public class ApiHelper {
     }
 
     private static boolean hasField(Class<?> klass, String fieldName) {
-        try {
-            klass.getDeclaredField(fieldName);
-            return true;
-        } catch (NoSuchFieldException e) {
-            return false;
+        for (Field f : klass.getDeclaredFields()) {
+            if (f.getName().equals(fieldName)) {
+                return true;
+            }
         }
+        return false;
     }
 
     private static boolean hasMethod(String className, String methodName,
             Class<?>... parameterTypes) {
         try {
             Class<?> klass = Class.forName(className);
-            klass.getDeclaredMethod(methodName, parameterTypes);
-            return true;
-        } catch (Throwable th) {
+            return hasMethod(klass, methodName, parameterTypes);
+        } catch (ClassNotFoundException e) {
             return false;
         }
     }
 
     private static boolean hasMethod(
             Class<?> klass, String methodName, Class<?> ... paramTypes) {
-        try {
-            klass.getDeclaredMethod(methodName, paramTypes);
-            return true;
-        } catch (NoSuchMethodException e) {
-            return false;
+        for (Method method : klass.getDeclaredMethods()) {
+            if (method.getName().equals(methodName) &&
+                Arrays.equals(method.getParameterTypes(), paramTypes)) {
+                return true;
+            }
         }
+        return false;
     }
 }

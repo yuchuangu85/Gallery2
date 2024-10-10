@@ -221,7 +221,7 @@ public class BlobCache implements Closeable {
                 return false;
             }
 
-            // Sanity check
+            // Initial check
             if (mMaxEntries <= 0) {
                 Log.w(TAG, "invalid max entries");
                 return false;

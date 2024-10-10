@@ -170,11 +170,13 @@ void JNIFUNCF(ImageFilterGeometry, nativeApplyFilterStraighten, jobject src, jin
     AndroidBitmap_lockPixels(env, src, (void**) &source);
     AndroidBitmap_lockPixels(env, dst, (void**) &destination);
     // TODO: implement straighten
-    int i = 0;
-    for (; i < len; i += 4) {
-        destination[RED] = 128;
-        destination[GREEN] = source[GREEN];
-        destination[BLUE] = 128;
+    if (source != NULL && destination != NULL) {
+        int i = 0;
+        for (; i < len; i += 4) {
+            destination[RED] = (uint8_t) 128;
+            destination[GREEN] = (uint8_t) source[GREEN];
+            destination[BLUE] = (uint8_t) 128;
+        }
     }
     AndroidBitmap_unlockPixels(env, dst);
     AndroidBitmap_unlockPixels(env, src);

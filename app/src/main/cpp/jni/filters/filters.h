@@ -18,7 +18,7 @@
 #define FILTERS_H
 
 #include <jni.h>
-#include <string.h>
+#include <c++/v1/string.h>
 #include <android/log.h>
 #include <android/bitmap.h>
 
@@ -50,5 +50,4 @@ extern void rgb2hsv( unsigned char *rgb,int rgbOff,unsigned short *hsv,int hsvOf
 extern void hsv2rgb(unsigned short *hsv,int hsvOff,unsigned char  *rgb,int rgbOff);
 extern void filterRedEye(unsigned char *src, unsigned char *dest, int iw, int ih, short *rect);
 extern double fastevalPoly(double *poly,int n, double x);
-extern int interp(unsigned char  *src, int p , int *off ,float dr,float dg, float db);
 #endif // FILTERS_H

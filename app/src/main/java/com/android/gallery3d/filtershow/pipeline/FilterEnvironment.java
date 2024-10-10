@@ -18,7 +18,6 @@ package com.android.gallery3d.filtershow.pipeline;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.renderscript.Allocation;
 
 import com.android.gallery3d.app.Log;
 import com.android.gallery3d.filtershow.cache.BitmapCache;
@@ -105,18 +104,6 @@ public class FilterEnvironment {
 
     public FiltersManagerInterface getFiltersManager() {
         return mFiltersManager;
-    }
-
-    public void applyRepresentation(FilterRepresentation representation,
-                                    Allocation in, Allocation out) {
-        ImageFilter filter = mFiltersManager.getFilterForRepresentation(representation);
-        filter.useRepresentation(representation);
-        filter.setEnvironment(this);
-        if (filter.supportsAllocationInput()) {
-            filter.apply(in, out);
-        }
-        filter.setGeneralParameters();
-        filter.setEnvironment(null);
     }
 
     public Bitmap applyRepresentation(FilterRepresentation representation, Bitmap bitmap) {

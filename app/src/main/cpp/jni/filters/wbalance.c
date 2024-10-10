@@ -18,7 +18,7 @@
 
 #include "filters.h"
 
-void estmateWhite(unsigned char *src, int len, int *wr, int *wb, int *wg){
+void estmateWhite(unsigned char *src, int len, int *wr, int *wb, int *wg) {
 
     int STEP = 4;
     int RANGE = 256;
@@ -27,7 +27,7 @@ void estmateWhite(unsigned char *src, int len, int *wr, int *wb, int *wg){
     int *histB = (int *) malloc(256*sizeof(int));
     int i;
     for (i = 0; i < 255; i++) {
-        histR[i] = histG[i] = histB[i] =0;
+        histR[i] = histG[i] = histB[i] = 0;
     }
 
     for (i = 0; i < len; i+=STEP) {
@@ -35,9 +35,8 @@ void estmateWhite(unsigned char *src, int len, int *wr, int *wb, int *wg){
         histG[(src[GREEN])]++;
         histB[(src[BLUE])]++;
     }
-    int min_r = -1, min_g = -1,min_b = -1;
-    int max_r = 0, max_g = 0,max_b = 0;
-    int sum_r = 0,sum_g=0,sum_b=0;
+    int min_r = -1, min_g = -1, min_b = -1;
+    int sum_r = 0, sum_g = 0, sum_b = 0;
 
     for (i = 1; i < RANGE-1; i++) {
         int r = histR[i];
@@ -47,25 +46,22 @@ void estmateWhite(unsigned char *src, int len, int *wr, int *wb, int *wg){
         sum_g += g;
         sum_b += b;
 
-        if (r>0){
-            if (min_r < 0) min_r = i;
-            max_r = i;
+        if (r > 0 && min_r < 0) {
+            min_r = i;
         }
-        if (g>0){
-            if (min_g < 0) min_g = i;
-            max_g = i;
+        if (g > 0 && min_g < 0) {
+            min_g = i;
         }
-        if (b>0){
-            if (min_b < 0) min_b = i;
-            max_b = i;
+        if (b > 0 && min_b < 0) {
+            min_b = i;
         }
     }
 
-    int sum15r = 0,sum15g=0,sum15b=0;
-    int count15r = 0,count15g=0,count15b=0;
-    int tmp_r = 0,tmp_g=0,tmp_b=0;
+    int sum15r = 0, sum15g = 0, sum15b = 0;
+    int count15r = 0, count15g=0, count15b = 0;
+    int tmp_r = 0, tmp_g = 0, tmp_b = 0;
 
-    for (i = RANGE-2; i >0; i--) {
+    for (i = RANGE-2; i > 0; i--) {
         int r = histR[i];
         int g = histG[i];
         int b = histB[i];
@@ -91,33 +87,33 @@ void estmateWhite(unsigned char *src, int len, int *wr, int *wb, int *wg){
     free(histG);
     free(histB);
 
-    if ((count15r>0) && (count15g>0) && (count15b>0) ){
+    if ((count15r > 0) && (count15g > 0) && (count15b > 0)) {
         *wr = sum15r/count15r;
         *wb = sum15g/count15g;
         *wg = sum15b/count15b;
-    }else {
+    } else {
         *wg  = *wb = *wr=255;
     }
 }
 
-void estmateWhiteBox(unsigned char *src, int iw, int ih, int x,int y, int *wr, int *wb, int *wg){
+void estmateWhiteBox(unsigned char *src, int iw, int ih, int x,int y, int *wr, int *wb, int *wg) {
     int r = 0;
     int g = 0;
     int b = 0;
     int sum = 0;
-    int xp,yp;
+    int xp, yp;
     int bounds = 5;
-    if (x<0) x = bounds;
-    if (y<0) y = bounds;
-    if (x>=(iw-bounds)) x = (iw-bounds-1);
-    if (y>=(ih-bounds)) y = (ih-bounds-1);
+    if (x < 0) x = bounds;
+    if (y < 0) y = bounds;
+    if (x >= (iw-bounds)) x = (iw-bounds-1);
+    if (y >= (ih-bounds)) y = (ih-bounds-1);
     int startx = x - bounds;
     int starty = y - bounds;
     int endx = x + bounds;
     int endy = y + bounds;
 
-    for(yp= starty;yp<endy;yp++) {
-        for(xp= startx;xp<endx;xp++) {
+    for (yp = starty; yp < endy; yp++) {
+        for (xp = startx; xp < endx; xp++) {
             int i = 4*(xp+yp*iw);
             r += src[RED];
             g += src[GREEN];
@@ -141,7 +137,7 @@ void JNIFUNCF(ImageFilterWBalance, nativeApplyFilter, jobject bitmap, jint width
     int wg;
     int wb;
 
-    if (locX==-1)
+    if (locX == -1)
         estmateWhite(rgb,len,&wr,&wg,&wb);
     else
         estmateWhiteBox(rgb, width, height,locX,locY,&wr,&wg,&wb);
@@ -153,7 +149,7 @@ void JNIFUNCF(ImageFilterWBalance, nativeApplyFilter, jobject bitmap, jint width
     float scaleG =  avg/wg;
     float scaleB =  avg/wb;
 
-    for (i = 0; i < len; i+=4)
+    for (i = 0; i < len; i += 4)
     {
         int r = rgb[RED];
         int g = rgb[GREEN];

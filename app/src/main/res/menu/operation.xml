@@ -57,10 +57,6 @@
             android:title="@string/crop_action"
             android:showAsAction="never"
             android:visible="false" />
-    <item android:id="@+id/action_setas"
-            android:title="@string/set_image"
-            android:showAsAction="never"
-            android:visible="false" />
     <item android:id="@+id/action_details"
             android:icon="@drawable/ic_menu_info_details"
             android:title="@string/details"

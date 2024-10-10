@@ -23,7 +23,7 @@ import com.android.gallery3d.app.Log;
 import com.android.gallery3d.filtershow.FilterShowActivity;
 import com.android.gallery3d.filtershow.cache.BitmapCache;
 import com.android.gallery3d.filtershow.filters.FiltersManager;
-import com.android.gallery3d.filtershow.imageshow.MasterImage;
+import com.android.gallery3d.filtershow.imageshow.PrimaryImage;
 
 public class RenderingRequest {
     private static final String LOGTAG = "RenderingRequest";
@@ -71,14 +71,14 @@ public class RenderingRequest {
             bitmap = pipeline.renderGeometryIcon(source, preset);
         } else if (type != PARTIAL_RENDERING && type != HIGHRES_RENDERING
                 && type != GEOMETRY_RENDERING && type != FILTERS_RENDERING) {
-            bitmap = MasterImage.getImage().getBitmapCache().getBitmap(
+            bitmap = PrimaryImage.getImage().getBitmapCache().getBitmap(
                     source.getWidth(), source.getHeight(), BitmapCache.RENDERING_REQUEST);
         }
 
         request.setBitmap(bitmap);
         ImagePreset passedPreset = new ImagePreset(preset);
         request.setOriginalImagePreset(preset);
-        request.setScaleFactor(MasterImage.getImage().getScaleFactor());
+        request.setScaleFactor(PrimaryImage.getImage().getScaleFactor());
 
         if (type == PARTIAL_RENDERING) {
             request.setBounds(bounds);
@@ -103,7 +103,7 @@ public class RenderingRequest {
         RenderingRequest request = new RenderingRequest();
         ImagePreset passedPreset = new ImagePreset(preset);
         request.setOriginalImagePreset(preset);
-        request.setScaleFactor(MasterImage.getImage().getScaleFactor());
+        request.setScaleFactor(PrimaryImage.getImage().getScaleFactor());
         request.setImagePreset(passedPreset);
         request.setType(RenderingRequest.ICON_RENDERING);
         request.setCaller(caller);

@@ -25,7 +25,7 @@ import com.android.gallery3d.R;
 import com.android.gallery3d.filtershow.FilterShowActivity;
 import com.android.gallery3d.filtershow.editors.ImageOnlyEditor;
 import com.android.gallery3d.filtershow.filters.FilterRepresentation;
-import com.android.gallery3d.filtershow.imageshow.MasterImage;
+import com.android.gallery3d.filtershow.imageshow.PrimaryImage;
 
 import java.util.Vector;
 
@@ -52,7 +52,7 @@ public class StateAdapter extends ArrayAdapter<State> {
         State state = getItem(position);
         view.setState(state);
         view.setOrientation(mOrientation);
-        FilterRepresentation currentRep = MasterImage.getImage().getCurrentFilterRepresentation();
+        FilterRepresentation currentRep = PrimaryImage.getImage().getCurrentFilterRepresentation();
         FilterRepresentation stateRep = state.getFilterRepresentation();
         if (currentRep != null && stateRep != null
             && currentRep.getFilterClass() == stateRep.getFilterClass()

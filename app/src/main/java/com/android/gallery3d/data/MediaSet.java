@@ -20,7 +20,6 @@ import com.android.gallery3d.common.Utils;
 import com.android.gallery3d.util.Future;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.WeakHashMap;
 
 // MediaSet is a directory-like data structure.
@@ -44,7 +43,7 @@ public abstract class MediaSet extends MediaObject {
     public static final int SYNC_RESULT_ERROR = 2;
 
     /** Listener to be used with requestSync(SyncListener). */
-    public interface SyncListener {
+    public static interface SyncListener {
         /**
          * Called when the sync task completed. Completion may be due to normal termination,
          * an exception, or cancellation.
@@ -71,7 +70,7 @@ public abstract class MediaSet extends MediaObject {
     // getMediaItemCount() because the contents of database may have already
     // changed.
     public ArrayList<MediaItem> getMediaItem(int start, int count) {
-        return new ArrayList<>();
+        return new ArrayList<MediaItem>();
     }
 
     public MediaItem getCoverMediaItem() {
@@ -120,30 +119,26 @@ public abstract class MediaSet extends MediaObject {
     public int getIndexOfItem(Path path, int hint) {
         // hint < 0 is handled below
         // first, try to find it around the hint
-        int start = Math.max(0, hint - MEDIAITEM_BATCH_FETCH_COUNT / 2);
-        List<MediaItem> list = getMediaItem(start, MEDIAITEM_BATCH_FETCH_COUNT);
+        int start = Math.max(0,
+                hint - MEDIAITEM_BATCH_FETCH_COUNT / 2);
+        ArrayList<MediaItem> list = getMediaItem(
+                start, MEDIAITEM_BATCH_FETCH_COUNT);
         int index = getIndexOf(path, list);
-        if (index != INDEX_NOT_FOUND) {
-            return start + index;
-        }
+        if (index != INDEX_NOT_FOUND) return start + index;
 
         // try to find it globally
         start = start == 0 ? MEDIAITEM_BATCH_FETCH_COUNT : 0;
         list = getMediaItem(start, MEDIAITEM_BATCH_FETCH_COUNT);
         while (true) {
             index = getIndexOf(path, list);
-            if (index != INDEX_NOT_FOUND) {
-                return start + index;
-            }
-            if (list.size() < MEDIAITEM_BATCH_FETCH_COUNT) {
-                return INDEX_NOT_FOUND;
-            }
+            if (index != INDEX_NOT_FOUND) return start + index;
+            if (list.size() < MEDIAITEM_BATCH_FETCH_COUNT) return INDEX_NOT_FOUND;
             start += MEDIAITEM_BATCH_FETCH_COUNT;
             list = getMediaItem(start, MEDIAITEM_BATCH_FETCH_COUNT);
         }
     }
 
-    protected int getIndexOf(Path path, List<MediaItem> list) {
+    protected int getIndexOf(Path path, ArrayList<MediaItem> list) {
         for (int i = 0, n = list.size(); i < n; ++i) {
             // item could be null only in ClusterAlbum
             MediaObject item = list.get(i);
@@ -154,8 +149,8 @@ public abstract class MediaSet extends MediaObject {
 
     public abstract String getName();
 
-    private final WeakHashMap<ContentListener, Object> mListeners =
-            new WeakHashMap<>();
+    private WeakHashMap<ContentListener, Object> mListeners =
+            new WeakHashMap<ContentListener, Object>();
 
     // NOTE: The MediaSet only keeps a weak reference to the listener. The
     // listener is automatically removed when there is no other reference to
@@ -197,7 +192,7 @@ public abstract class MediaSet extends MediaObject {
         enumerateTotalMediaItems(consumer, 0);
     }
 
-    public interface ItemConsumer {
+    public static interface ItemConsumer {
         void consume(int index, MediaItem item);
     }
 
@@ -280,7 +275,7 @@ public abstract class MediaSet extends MediaObject {
         private static final String TAG = "Gallery.MultiSetSync";
 
         private final SyncListener mListener;
-        private final Future<Integer>[] mFutures;
+        private final Future<Integer> mFutures[];
 
         private boolean mIsCancelled = false;
         private int mResult = -1;

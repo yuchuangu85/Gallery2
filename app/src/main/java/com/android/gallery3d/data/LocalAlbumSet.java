@@ -69,7 +69,7 @@ public class LocalAlbumSet extends MediaSet
     }
 
     private static int getTypeFromPath(Path path) {
-        String[] name = path.split();
+        String name[] = path.split();
         if (name.length < 2) {
             throw new IllegalArgumentException(path.toString());
         }
@@ -165,9 +165,7 @@ public class LocalAlbumSet extends MediaSet
     //   2. Prevent calling onFutureDone() and reload() concurrently
     public synchronized long reload() {
         if (mNotifier.isDirty()) {
-            if (mLoadTask != null) {
-                mLoadTask.cancel();
-            }
+            if (mLoadTask != null) mLoadTask.cancel();
             mIsLoading = true;
             mLoadTask = mApplication.getThreadPool().submit(new AlbumsLoader(), this);
         }
@@ -187,8 +185,13 @@ public class LocalAlbumSet extends MediaSet
         if (mLoadTask != future) return; // ignore, wait for the latest task
         mLoadBuffer = future.get();
         mIsLoading = false;
-        if (mLoadBuffer == null) mLoadBuffer = new ArrayList<>();
-        mHandler.post(() -> notifyContentChanged());
+        if (mLoadBuffer == null) mLoadBuffer = new ArrayList<MediaSet>();
+        mHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                notifyContentChanged();
+            }
+        });
     }
 
     // For debug only. Fake there is a ContentObserver.onChange() event.

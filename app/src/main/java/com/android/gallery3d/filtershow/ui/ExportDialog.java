@@ -34,7 +34,7 @@ import android.widget.TextView;
 
 import com.android.gallery3d.R;
 import com.android.gallery3d.filtershow.FilterShowActivity;
-import com.android.gallery3d.filtershow.imageshow.MasterImage;
+import com.android.gallery3d.filtershow.imageshow.PrimaryImage;
 import com.android.gallery3d.filtershow.pipeline.ImagePreset;
 import com.android.gallery3d.filtershow.pipeline.ProcessingService;
 import com.android.gallery3d.filtershow.tools.SaveImage;
@@ -105,8 +105,8 @@ public class ExportDialog extends DialogFragment implements View.OnClickListener
         mHeightText = (EditText) view.findViewById(R.id.editableHeight);
         mEstimatedSize = (TextView) view.findViewById(R.id.estimadedSize);
 
-        mOriginalBounds = MasterImage.getImage().getOriginalBounds();
-        ImagePreset preset = MasterImage.getImage().getPreset();
+        mOriginalBounds = PrimaryImage.getImage().getOriginalBounds();
+        ImagePreset preset = PrimaryImage.getImage().getPreset();
         mOriginalBounds = preset.finalGeometryRect(mOriginalBounds.width(),
                 mOriginalBounds.height());
         mRatio = mOriginalBounds.width() / (float) mOriginalBounds.height();
@@ -156,10 +156,10 @@ public class ExportDialog extends DialogFragment implements View.OnClickListener
                 break;
             case R.id.done:
                 FilterShowActivity activity = (FilterShowActivity) getActivity();
-                Uri sourceUri = MasterImage.getImage().getUri();
+                Uri sourceUri = PrimaryImage.getImage().getUri();
                 File dest = SaveImage.getNewFile(activity,  activity.getSelectedImageUri());
                 float scaleFactor = mExportWidth / (float) mOriginalBounds.width();
-                Intent processIntent = ProcessingService.getSaveIntent(activity, MasterImage
+                Intent processIntent = ProcessingService.getSaveIntent(activity, PrimaryImage
                         .getImage().getPreset(), dest, activity.getSelectedImageUri(), sourceUri,
                         true, mSeekBar.getProgress(), scaleFactor, false);
                 activity.startService(processIntent);
@@ -169,7 +169,7 @@ public class ExportDialog extends DialogFragment implements View.OnClickListener
     }
 
     public void updateCompressionFactor() {
-        Bitmap bitmap = MasterImage.getImage().getFilteredImage();
+        Bitmap bitmap = PrimaryImage.getImage().getFilteredImage();
         if (bitmap == null) {
             return;
         }

@@ -25,7 +25,7 @@ import com.adobe.xmp.XMPMeta;
 import com.android.gallery3d.app.Log;
 import com.android.gallery3d.filtershow.cache.BitmapCache;
 import com.android.gallery3d.filtershow.cache.ImageLoader;
-import com.android.gallery3d.filtershow.imageshow.MasterImage;
+import com.android.gallery3d.filtershow.imageshow.PrimaryImage;
 import com.android.gallery3d.filtershow.pipeline.ImagePreset;
 
 /**
@@ -80,7 +80,7 @@ public class ImageFilterTinyPlanet extends SimpleImageFilter {
         ImagePreset preset = getEnvironment().getImagePreset();
         Bitmap mBitmapOut = null;
         if (preset != null) {
-            XMPMeta xmp = ImageLoader.getXmpObject(MasterImage.getImage().getActivity());
+            XMPMeta xmp = ImageLoader.getXmpObject(PrimaryImage.getImage().getActivity());
             // Do nothing, just use bitmapIn as is if we don't have XMP.
             if(xmp != null) {
                 bitmapIn = applyXmp(bitmapIn, xmp, w);

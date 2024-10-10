@@ -16,7 +16,7 @@
 
 package com.android.gallery3d.filtershow.imageshow;
 
-public class ControlPoint implements Comparable {
+public class ControlPoint implements Comparable<ControlPoint> {
     public float x;
     public float y;
 
@@ -52,8 +52,7 @@ public class ControlPoint implements Comparable {
     }
 
     @Override
-    public int compareTo(Object another) {
-        ControlPoint p = (ControlPoint) another;
+    public int compareTo(ControlPoint p) {
         if (p.x < x) {
             return 1;
         } else if (p.x > x) {

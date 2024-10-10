@@ -24,7 +24,7 @@ import com.android.gallery3d.R;
 import com.android.gallery3d.filtershow.filters.FilterRepresentation;
 import com.android.gallery3d.filtershow.filters.FilterStraightenRepresentation;
 import com.android.gallery3d.filtershow.imageshow.ImageStraighten;
-import com.android.gallery3d.filtershow.imageshow.MasterImage;
+import com.android.gallery3d.filtershow.imageshow.PrimaryImage;
 
 public class EditorStraighten extends Editor implements EditorInfo {
     public static final String TAG = EditorStraighten.class.getSimpleName();
@@ -56,8 +56,8 @@ public class EditorStraighten extends Editor implements EditorInfo {
 
     @Override
     public void reflectCurrentFilter() {
-        MasterImage master = MasterImage.getImage();
-        master.setCurrentFilterRepresentation(master.getPreset().getFilterWithSerializationName(
+        PrimaryImage primary = PrimaryImage.getImage();
+        primary.setCurrentFilterRepresentation(primary.getPreset().getFilterWithSerializationName(
                 FilterStraightenRepresentation.SERIALIZATION_NAME));
         super.reflectCurrentFilter();
         FilterRepresentation rep = getLocalRepresentation();

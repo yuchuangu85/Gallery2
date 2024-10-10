@@ -19,7 +19,7 @@ package com.android.gallery3d.filtershow.pipeline;
 import android.graphics.Bitmap;
 
 import com.android.gallery3d.filtershow.filters.FiltersManager;
-import com.android.gallery3d.filtershow.imageshow.MasterImage;
+import com.android.gallery3d.filtershow.imageshow.PrimaryImage;
 
 public class UpdatePreviewTask extends ProcessingTask {
     private static final String LOGTAG = "UpdatePreviewTask";
@@ -54,8 +54,8 @@ public class UpdatePreviewTask extends ProcessingTask {
 
     @Override
     public Result doInBackground(Request message) {
-        SharedBuffer buffer = MasterImage.getImage().getPreviewBuffer();
-        SharedPreset preset = MasterImage.getImage().getPreviewPreset();
+        SharedBuffer buffer = PrimaryImage.getImage().getPreviewBuffer();
+        SharedPreset preset = PrimaryImage.getImage().getPreviewPreset();
         ImagePreset renderingPreset = preset.dequeuePreset();
         if (renderingPreset != null) {
             mPreviewPipeline.compute(buffer, renderingPreset, 0);
@@ -69,7 +69,7 @@ public class UpdatePreviewTask extends ProcessingTask {
 
     @Override
     public void onResult(Result message) {
-        MasterImage.getImage().notifyObservers();
+        PrimaryImage.getImage().notifyObservers();
         if (mHasUnhandledPreviewRequest) {
             updatePreview();
         }

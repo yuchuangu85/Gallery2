@@ -32,7 +32,7 @@ import com.android.gallery3d.R;
 import com.android.gallery3d.app.Log;
 import com.android.gallery3d.filtershow.cache.ImageLoader;
 import com.android.gallery3d.filtershow.filters.FilterDrawRepresentation.StrokeData;
-import com.android.gallery3d.filtershow.imageshow.MasterImage;
+import com.android.gallery3d.filtershow.imageshow.PrimaryImage;
 import com.android.gallery3d.filtershow.pipeline.FilterEnvironment;
 
 import java.util.Vector;
@@ -147,7 +147,7 @@ public class ImageFilterDraw extends ImageFilter {
             if (mBrush == null) {
                 BitmapFactory.Options opt = new BitmapFactory.Options();
                 opt.inPreferredConfig = Bitmap.Config.ALPHA_8;
-                mBrush = BitmapFactory.decodeResource(MasterImage.getImage().getActivity()
+                mBrush = BitmapFactory.decodeResource(PrimaryImage.getImage().getActivity()
                         .getResources(), mBrushID, opt);
                 mBrush = mBrush.extractAlpha();
             }

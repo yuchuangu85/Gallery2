@@ -31,11 +31,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.LinearLayout;
+
 import com.android.gallery3d.R;
 import com.android.gallery3d.filtershow.FilterShowActivity;
 import com.android.gallery3d.filtershow.editors.ImageOnlyEditor;
 import com.android.gallery3d.filtershow.filters.FilterRepresentation;
-import com.android.gallery3d.filtershow.imageshow.MasterImage;
+import com.android.gallery3d.filtershow.imageshow.PrimaryImage;
 
 public class StatePanelTrack extends LinearLayout implements PanelTrack {
 
@@ -89,8 +90,8 @@ public class StatePanelTrack extends LinearLayout implements PanelTrack {
             mEndElemWidth = LayoutParams.MATCH_PARENT;
             mEndElemHeight = mElemEndSize;
         }
-        GestureDetector.SimpleOnGestureListener simpleOnGestureListener
-                = new GestureDetector.SimpleOnGestureListener(){
+        GestureDetector.SimpleOnGestureListener simpleOnGestureListener =
+                new GestureDetector.SimpleOnGestureListener(){
             @Override
             public void onLongPress(MotionEvent e) {
                 longPress(e);
@@ -259,7 +260,7 @@ public class StatePanelTrack extends LinearLayout implements PanelTrack {
                 && System.currentTimeMillis() - mTouchTime < mMaxTouchDelay) {
             FilterRepresentation representation = mCurrentView.getState().getFilterRepresentation();
             mCurrentView.setSelected(true);
-            if (representation != MasterImage.getImage().getCurrentFilterRepresentation()) {
+            if (representation != PrimaryImage.getImage().getCurrentFilterRepresentation()) {
                 FilterShowActivity activity = (FilterShowActivity) getContext();
                 activity.showRepresentation(representation);
                 mCurrentView.setSelected(false);
@@ -269,7 +270,8 @@ public class StatePanelTrack extends LinearLayout implements PanelTrack {
                 || (!mStartedDrag && event.getActionMasked() == MotionEvent.ACTION_CANCEL)) {
             checkEndState();
             if (mCurrentView != null) {
-                FilterRepresentation representation = mCurrentView.getState().getFilterRepresentation();
+                FilterRepresentation representation =
+                        mCurrentView.getState().getFilterRepresentation();
                 if (representation.getEditorId() == ImageOnlyEditor.ID) {
                     mCurrentView.setSelected(false);
                 }
@@ -285,7 +287,8 @@ public class StatePanelTrack extends LinearLayout implements PanelTrack {
             int origin = findChild(mCurrentView);
             if (origin != -1) {
                 State current = mAdapter.getItem(origin);
-                FilterRepresentation currentRep = MasterImage.getImage().getCurrentFilterRepresentation();
+                FilterRepresentation currentRep =
+                        PrimaryImage.getImage().getCurrentFilterRepresentation();
                 FilterRepresentation removedRep = current.getFilterRepresentation();
                 mAdapter.remove(current);
                 fillContent(true);

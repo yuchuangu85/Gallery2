@@ -1,3 +1,7 @@
+package {
+    default_applicable_licenses: ["Android-Apache-2.0"],
+}
+
 cc_defaults {
     name: "gallery2_jni_defaults",
     product_specific: true,
@@ -12,6 +16,7 @@ cc_defaults {
 
         "-Wno-unused-parameter",
     ],
+    header_libs: ["jni_headers"],
     sdk_version: "9",
     shared_libs: ["liblog"],
 }

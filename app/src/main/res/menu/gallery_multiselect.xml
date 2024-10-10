@@ -26,8 +26,4 @@
             android:title="@string/mute_action"
             android:visible="false"
             android:showAsAction="never" />
-    <item android:id="@+id/menu_set_as"
-            android:title="@string/set_as"
-            android:visible="false"
-            android:showAsAction="never" />
 </menu>

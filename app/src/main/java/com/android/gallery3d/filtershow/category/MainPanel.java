@@ -27,7 +27,7 @@ import android.widget.LinearLayout;
 
 import com.android.gallery3d.R;
 import com.android.gallery3d.filtershow.FilterShowActivity;
-import com.android.gallery3d.filtershow.imageshow.MasterImage;
+import com.android.gallery3d.filtershow.imageshow.PrimaryImage;
 import com.android.gallery3d.filtershow.state.StatePanel;
 
 public class MainPanel extends Fragment {
@@ -177,7 +177,7 @@ public class MainPanel extends Fragment {
         if (mCurrentSelected == GEOMETRY) {
             return;
         }
-        if (MasterImage.getImage().hasTinyPlanet()) {
+        if (PrimaryImage.getImage().hasTinyPlanet()) {
             return;
         }
         boolean fromRight = isRightAnimation(GEOMETRY);
@@ -283,7 +283,8 @@ public class MainPanel extends Fragment {
             transaction.replace(R.id.state_panel_container, statePanel, StatePanel.FRAGMENT_TAG);
         } else {
             container.setVisibility(View.GONE);
-            Fragment statePanel = getChildFragmentManager().findFragmentByTag(StatePanel.FRAGMENT_TAG);
+            Fragment statePanel = getChildFragmentManager().findFragmentByTag(
+                    StatePanel.FRAGMENT_TAG);
             if (statePanel != null) {
                 transaction.remove(statePanel);
             }

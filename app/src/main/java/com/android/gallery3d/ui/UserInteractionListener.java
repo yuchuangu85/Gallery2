@@ -18,11 +18,9 @@ package com.android.gallery3d.ui;
 
 public interface UserInteractionListener {
     // Called when a user interaction begins (for example, fling).
-    void onUserInteractionBegin();
-
+    public void onUserInteractionBegin();
     // Called when the user interaction ends.
-    void onUserInteractionEnd();
-
+    public void onUserInteractionEnd();
     // Other one-shot user interactions.
-    void onUserInteraction();
+    public void onUserInteraction();
 }
