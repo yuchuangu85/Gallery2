@@ -4,6 +4,8 @@
 
 ## 编译说明
 1.原生代码编译不支持Gradle编译，这里进行了修改，支持Android studio编译。
+* 将src_pd中的文件合入到了app/src/main/java中对应目录下。
+* 将jni和jni_jpegstream移动到了app/src/main/cpp下对应目录
 
 2.jni_libjpeg_turbo代码来源
 * 原生方案
@@ -17,6 +19,7 @@
 
 
 3.jniLibs-backup为备用
+该so为老版本，等新版本编译出来后替换掉。
 
 ## 流程图和数据结构图
 
